@@ -434,7 +434,7 @@ const currencyField=(x,u)=>{
 };
 const parsedMoney=x=>{
  if(x===null||x===undefined||String(x).trim()==='')return null;
- const v=String(x).trim().replace(/[\s,，]/g,'');
+ const v=String(x).trim().replace(/[\s,，]/g,'').replace(/^(?:NT\$|NTD|TWD|新台幣|JPY|¥|￥|日圓|日幣)/i,'').replace(/(?:元|円)$/,'');
  if(!/^\d+(?:\.\d{1,2})?$/.test(v))return null;
  const n=Number(v);return Number.isFinite(n)&&n>=0?n:null;
 };
