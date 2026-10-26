@@ -16,6 +16,28 @@ const ideaCode=between('const DATES=','const e=');
 const cat=vm.runInNewContext(ideaCode+'\n({ideaData,ideaThemes})');
 assert.equal(cat.ideaData.length,55,'靈感總數不應意外改變');
 assert.equal(cat.ideaThemes.length,8);
+const itineraryCatalog=vm.runInNewContext(between('const recommendedItinerary=','const e=')+'\nrecommendedItinerary');
+assert.equal(itineraryCatalog.length,9,'京都行程應涵蓋12/25–1/2共9日');
+const eventKeys=new Set();
+let total=0;
+for(const group of itineraryCatalog){
+ assert.match(group.date,/^20\d\d-\d\d-\d\d$/);
+ assert.ok(group.date>='2026-12-25'&&group.date<='2027-01-02');
+ let lastTime='';
+ for(const row of group.items){
+  assert.ok(cat.ideaData.some(idea=>idea.id===row.ideaId),'Unknown ideaId: '+row.ideaId);
+  assert.match(row.time,/^\d{2}:\d{2}$/,'Each suggested time must be a clock time');
+  assert.ok(row.time>=lastTime,'Suggestions should be chronologically ordered: '+group.date);
+  lastTime=row.time;
+  assert.ok(!eventKeys.has(row.ideaId),'Duplicate recommendation');
+  eventKeys.add(row.ideaId);
+  assert.ok(row.reminder.length>=12,'Need a substantive reservation or travel note');
+  total++;
+ }
+}
+assert.equal(total,31);
+assert.ok(source.includes('get readyForImport(){'),'Cloud write must wait for remote initialization');
+assert.ok(source.includes('function curatedImportEligibility(){'));
 const idset=new Set(cat.ideaData.map(x=>x.id));
 assert.equal(idset.size,cat.ideaData.length,'靈感 ID 必須唯一');
 for(let i=1;i<=12;i++)assert.ok(idset.has('i'+i),'不可移除原有靈感 id');
