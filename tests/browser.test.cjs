@@ -103,6 +103,7 @@ async function main(){
    old.notes='保留既有私人旅行筆記';
    old.flights[0].price='4321';
    old.shoppingItems=[{id:'legacy-own',title:'我原本的購物品項',category:'日用品',done:true}];
+   old.days[2].events.push({id:'user-kept-i5',ideaId:'i5',time:'14:00',title:'知恩院・除夜之鐘試敲',place:'知恩院',note:'使用者既有已確認活動，禁止覆蓋',transport:'巴士',status:'已確認',must:true,jpy:'',twd:''});
    window.KyotoPlanner.show(old);
    return window.KyotoPlanner.read();
   });
@@ -120,13 +121,39 @@ async function main(){
   assert.ok(notes.includes('芳輪 京五彩')&&notes.includes('¥1,650'));
   assert.equal(await page.locator('#editorForm input[name="shopPrice1"]').inputValue(),'3630');
   await page.locator('#modalClose').click();
+  // Curated itinerary: preview is opt-in and does not write until the user confirms.
+  let beforePlan=await page.evaluate(()=>window.KyotoPlanner.read());
+  assert.equal(beforePlan.days.reduce((n,d)=>n+d.events.length,0),1);
+  await page.locator('#previewCuratedItinerary').click();
+  assert.equal(await page.locator('#editor').evaluate(el=>el.open),true);
+  assert.equal(await page.locator('#editorForm input[name="choice__i5"]').count(),0,'Manual existing event must be skipped');
+  assert.equal(await page.locator('#editorForm input[name="choice__i1"]').isChecked(),true);
+  assert.equal(await page.locator('#editorForm input[name="choice__film-pontocho"]').isChecked(),false,'Optional event must start unchecked');
+  await page.locator('#editorForm button[type="submit"]').click();
+  let merged=await page.evaluate(()=>window.KyotoPlanner.read());
+  assert.equal(merged.days.filter(d=>d.events.some(e=>e.id==='user-kept-i5')).length,1);
+  assert.equal(merged.days[2].events.find(e=>e.id==='user-kept-i5').note,'使用者既有已確認活動，禁止覆蓋');
+  assert.equal(merged.flights[0].price,'4321','Flight price retained');
+  assert.equal(merged.notes,'保留既有私人旅行筆記','Existing notes retained');
+  assert.ok(merged.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'Shopping data retained');
+  const numAfter=merged.days.reduce((n,d)=>n+d.events.length,0);
+  assert.ok(numAfter>=24 && numAfter<=31,'Expected curated plan with defaults selected');
+  assert.equal(new Set(merged.days.flatMap(d=>d.events.map(e=>e.id))).size,numAfter,'Unique event IDs');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.querySelector('#previewCuratedItinerary'));
+  merged=await page.evaluate(()=>window.KyotoPlanner.read());
+  assert.equal(merged.days.reduce((n,d)=>n+d.events.length,0),numAfter,'Curated plan persisted after reload');
+  await page.locator('#previewCuratedItinerary').click();
+  const remaining=await page.locator('#editorForm input[type="checkbox"]').count();
+  assert.ok(remaining>=1 && remaining<=8,'After import, only previously unchecked alternatives remain');
+  await page.locator('#modalClose').click();
   await page.setViewportSize({width:1280,height:900});
   await page.locator('#ideasDrawer > summary').click();
   await page.locator('#ideaFilters [data-filter="全部"]').click();
   await page.locator('#ideaSearch').fill('');
   await page.locator('#ideas').screenshot({path:'test-artifacts/desktop-ideas.png',animations:'disabled'});
   assert.equal(jsErrors.length,0,'JS errors: '+jsErrors.join('; '));
-  console.log('PASS browser: session drawers, navigation deep links, nested tea categories, 320/375/768/1280 layout, theme/search, add/save/reload, tea check/delete/reload, legacy cloud payload');
+  console.log('PASS browser: opt-in curated Firebase-ready itinerary merge and reload, session drawers, navigation deep links, nested tea categories, 320/375/768/1280 layout, theme/search, add/save/reload, tea check/delete/reload, legacy cloud payload');
  }finally{
   await browser.close();
   await new Promise(ok=>server.close(ok));
