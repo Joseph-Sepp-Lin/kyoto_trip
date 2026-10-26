@@ -222,6 +222,33 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .spending-fold .spending-head{padding:15px 0 0}.spending-fold .spending-head h3{font-size:15px}
 .shopping-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media(max-width:660px){.before-fold-grid,.shopping-category-grid{grid-template-columns:1fr}.journey-phase-heading{flex-wrap:wrap;gap:6px;margin-top:22px}.journey-phase-heading h2{font-size:20px}}
+
+.restaurant-card{padding:16px;display:flex;flex-direction:column;gap:9px}
+.restaurant-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.restaurant-card h3{font-size:18px;line-height:1.35;margin:2px 0}
+.restaurant-dish,.restaurant-note{font-size:13px;line-height:1.6;margin:0;overflow-wrap:anywhere}
+.restaurant-note{color:#596874;white-space:pre-wrap}
+.restaurant-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:auto;padding-top:10px;border-top:1px dashed #B8C8C9}
+.restaurant-links a{font-size:12px;font-weight:800;color:#426781;text-decoration:none}
+.checklist-category{padding:16px;align-self:start}
+.checklist-category-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.checklist-category-head h3{font-size:18px;margin:0 0 5px}.checklist-category-head .subtle{font-size:11px}
+.shopping-items{display:grid;gap:10px;margin-top:14px}
+.shopping-checkitem{border-top:1px dashed #B8C7CC;padding:12px 0 2px}
+.shopping-checkitem.purchased{opacity:.72}
+.shopping-checktop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.shopping-checklabel{display:flex;align-items:center;gap:10px;min-width:0;font-size:14px;font-weight:800}
+.shopping-checklabel input{width:19px;height:19px;accent-color:#69896D;flex:none}
+.shopping-checklabel span{overflow-wrap:anywhere}
+.shopping-checkitem.purchased .shopping-checklabel span{text-decoration:line-through}
+.shopping-note{font-size:12px;color:#596B78;white-space:pre-wrap}
+.shop-quotes{display:grid;gap:5px;padding:9px 0}
+.shop-quote{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px}
+.shop-quote strong{font-variant-numeric:tabular-nums;white-space:nowrap}
+.shop-quote .cheapest{color:#336541;background:#DBEDD8;padding:2px 6px;border-radius:6px}
+.shopping-recommend-links{display:flex;flex-wrap:wrap;gap:8px}
+.shopping-recommend-links a{font-size:11px;color:#426781;font-weight:800}
+.shop-modal-title{font-size:13px;font-weight:900;margin-top:14px;border-bottom:1px solid #B8C6C9;padding-bottom:6px}
 </style>
 </head>
 <body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
@@ -431,6 +458,7 @@ migrateTripCalendar();
 adoptLegacyCosts();
 ensureIntercityData();
 migrateLedger();
+ensureTravelWishlists();
 const $=id=>document.getElementById(id);
 const money=n=>'NT$'+(Number(n)||0).toLocaleString('zh-TW',{maximumFractionDigits:0});
 
@@ -565,6 +593,15 @@ function migrateLedger(){
  }
  state.otherJPY=state.otherJPY??'';state.otherTWD=String(other||'');state.fxManualRate=state.fxManualRate??'';state.ledgerV3Migration=true;
 }
+
+/* Wishlist records are separate from actual expenses; comparisons never add to the wallet. */
+const shoppingCategories=['保健品','日用品','衣物鞋包','零食伴手禮'];
+const diningCategories=['拉麵','壽司／海鮮','和食','燒肉／鍋物','甜點／咖啡','其他'];
+let restaurantFilter='全部';
+function ensureTravelWishlists(){
+ if(!Array.isArray(state.restaurants))state.restaurants=[];
+ if(!Array.isArray(state.shoppingItems))state.shoppingItems=[];
+}
 function synchronizedItems(date){
  const items=[],add=(x)=>{if(x.date===date&&(x.time||x.isIntercity))items.push({...x,auto:true,must:false,status:'自動同步'})};
  state.flights.forEach((f,i)=>{
@@ -687,6 +724,80 @@ function removeOldCity(index,key){
  if(!confirm('確定移除此筆歷史市內交通費嗎？它也會從旅費總額中扣除。'))return;
  delete d.transfers[key];save();rerender();toast('已移除歷史交通費');
 }
+
+/* Wishlist of restaurants/dishes with Google Maps and saved Tabelog URLs. */
+function renderRestaurants(){
+ const filters=['全部',...diningCategories.filter(c=>state.restaurants.some(r=>r.category===c))];
+ if(!filters.includes(restaurantFilter))restaurantFilter='全部';
+ $('restaurantFilters').innerHTML=filters.map(c=>`<button class="filter ${c===restaurantFilter?'active':''}" type="button" data-restfilter="${attr(c)}" aria-pressed="${c===restaurantFilter}">${esc(c)}</button>`).join('');
+ const items=state.restaurants.filter(r=>restaurantFilter==='全部'||r.category===restaurantFilter);
+ $('restaurantCards').innerHTML=items.length?items.map(r=>{
+  const title=r.name||r.dish||'未命名餐廳／料理';
+  const mapUrl=urlSafe(r.googleUrl)||maps((r.name||r.dish||'餐廳')+' '+(r.area||'京都'));
+  const tabelogUrl=urlSafe(r.tabelogUrl)||'https://tabelog.com/tw/';
+  return `<article class="card restaurant-card">
+   <div class="restaurant-head"><span class="chip yellow">${esc(r.category||'其他')}</span><button class="btn small" type="button" data-editrestaurant="${attr(r.id)}">✎ 編輯</button></div>
+   <h3>${esc(title)}</h3>
+   ${r.dish?`<p class="restaurant-dish">🍽 想吃：${esc(r.dish)}</p>`:''}
+   ${r.area?`<p class="subtle">📍 ${esc(r.area)}</p>`:''}
+   ${r.note?`<p class="restaurant-note">${esc(r.note)}</p>`:''}
+   <div class="restaurant-links"><a href="${attr(mapUrl)}" target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href="${attr(tabelogUrl)}" target="_blank" rel="noopener noreferrer">${r.tabelogUrl?'Tabelog 店家頁 ↗':'Tabelog 搜尋 ↗'}</a>${urlSafe(r.url)?`<a href="${attr(urlSafe(r.url))}" target="_blank" rel="noopener noreferrer">推薦連結 ↗</a>`:''}</div>
+  </article>`;
+ }).join(''):'<div class="empty">還沒有餐廳收藏，點「收藏餐廳／料理」建立第一筆。</div>';
+}
+function editRestaurant(id=null){
+ const old=state.restaurants.find(r=>r.id===id),x=old||{name:'',dish:'',category:'其他',area:'',googleUrl:'',tabelogUrl:'',url:'',note:''};
+ openModal(old?'✎ 編輯餐廳收藏':'🍜 收藏餐廳／料理',
+ `${inputField('name','餐廳名稱（可暫留空）',x.name,'text','maxlength="120"')}
+ ${inputField('dish','想吃的料理或招牌品項',x.dish,'text','maxlength="160"')}
+ ${selectField('category','料理類型',diningCategories,x.category||'其他')}
+ ${inputField('area','地區／地址',x.area,'text','placeholder="例如 京都・四條河原町"')}
+ ${inputField('googleUrl','Google Maps 店家連結（選填）',x.googleUrl,'url')}
+ ${inputField('tabelogUrl','Tabelog 店家網址（選填）',x.tabelogUrl,'url')}
+ ${inputField('url','推薦文連結（Threads、IG 等）',x.url,'url')}
+ ${textareaField('note','預約提醒或口味筆記',x.note)}`,
+ o=>{if(!String(o.name||'').trim()&&!String(o.dish||'').trim()){alert('餐廳名稱或想吃的料理請至少填一項');return false}
+  if(old)Object.assign(old,o);else state.restaurants.push({...o,id:mkId()});return true;
+ },{danger:old?()=>{if(confirm('確定移除這則餐廳收藏？')){state.restaurants=state.restaurants.filter(r=>r.id!==id);closeModal();save();rerender();toast('已移除餐廳收藏')}}:null});
+}
+/* Wishlist with up to three actual store/price quotes and three recommendation URLs. */
+function productShopQuotes(x){
+ return [1,2,3].map(i=>({name:String(x['shop'+i]||'').trim(),price:parsedMoney(x['shopPrice'+i])})).filter(x=>x.name||x.price!==null);
+}
+function renderShoppingChecklist(){
+ $('shoppingChecklist').innerHTML=shoppingCategories.map(cat=>{
+  const list=state.shoppingItems.filter(x=>x.category===cat),done=list.filter(x=>x.done).length;
+  return `<div class="card checklist-category"><div class="checklist-category-head"><div><h3>${esc(cat)}</h3><span class="subtle">${done} / ${list.length} 已購買</span></div>
+   <button class="btn small sky" type="button" data-addshopcat="${attr(cat)}">＋ 項目</button></div>
+   <div class="shopping-items">${list.length?list.map(x=>{
+    const quotes=productShopQuotes(x),numeric=quotes.filter(q=>q.price!==null),lowest=numeric.length>1?Math.min(...numeric.map(q=>q.price)):null;
+    return `<article class="shopping-checkitem ${x.done?'purchased':''}"><div class="shopping-checktop">
+     <label class="shopping-checklabel"><input type="checkbox" data-checkshop="${attr(x.id)}" ${x.done?'checked':''}><span>${esc(x.title||'未命名品項')}</span></label>
+     <button class="btn small" data-editshopitem="${attr(x.id)}" type="button">✎</button></div>
+     ${x.note?`<p class="shopping-note">${esc(x.note)}</p>`:''}
+     ${quotes.length?`<div class="shop-quotes">${quotes.map(q=>`<div class="shop-quote"><span>${esc(q.name||'店家待補')}</span><strong class="${lowest!==null&&q.price===lowest?'cheapest':''}">${q.price!==null?'¥'+q.price.toLocaleString('zh-TW'):'價格待補'}${lowest!==null&&q.price===lowest?' ★ 最低價':''}</strong></div>`).join('')}</div>`:''}
+     <div class="shopping-recommend-links">${[1,2,3].map(i=>urlSafe(x['link'+i])?`<a href="${attr(urlSafe(x['link'+i]))}" target="_blank" rel="noopener noreferrer">推薦連結 ${i} ↗</a>`:'').join('')}</div>
+    </article>`}).join(''):'<p class="subtle">尚無清單，點「＋ 項目」新增。</p>'}</div></div>`
+ }).join('');
+}
+function editShoppingItem(id=null,selectedCategory=null){
+ const old=state.shoppingItems.find(x=>x.id===id),x=old||{title:'',category:selectedCategory||shoppingCategories[0],done:false,note:''};
+ const quotes=[1,2,3].map(i=>`<div class="form-2">${inputField('shop'+i,'候選購買地點 '+i,x['shop'+i]||'')}${inputField('shopPrice'+i,'該店報價 JPY（¥）',x['shopPrice'+i]??'','text','inputmode="decimal" placeholder="例如 1600"')}</div>`).join('');
+ const links=[1,2,3].map(i=>inputField('link'+i,'推薦連結 '+i+'（Threads、IG 或網頁）',x['link'+i]||'','url')).join('');
+ openModal(old?'✎ 編輯採購品項':'🛍️ 新增採購品項',
+ `${inputField('title','想買的商品（必填）',x.title,'text','required maxlength="120"')}
+ ${selectField('category','主類別',shoppingCategories,x.category||shoppingCategories[0])}
+ ${textareaField('note','款式、規格或購買提醒',x.note||'')}
+ <div class="shop-modal-title">候選購買地點與價格（最多三家）</div>${quotes}
+ <div class="shop-modal-title">推薦文章與參考連結（最多三則）</div>${links}
+ <p class="currency-help">比價資訊不等於已消費金額；實際購買後可填寫下方的購物支出紀錄。</p>`,
+ o=>{
+  if(!String(o.title||'').trim()){alert('請填商品名稱');return false}
+  for(let i=1;i<=3;i++)if(String(o['shopPrice'+i]||'').trim()&&parsedMoney(o['shopPrice'+i])===null){alert('價格 '+i+' 請填有效的日幣數字');return false}
+  const data={...o,done:old?.done||false};
+  if(old)Object.assign(old,data);else state.shoppingItems.push({...data,id:mkId()});return true;
+ },{danger:old?()=>{if(confirm('確定刪除採購清單中的這個品項？')){state.shoppingItems=state.shoppingItems.filter(x=>x.id!==id);closeModal();save();rerender();toast('已移除採購品項')}}:null});
+}
 function renderPurchases(){
  const cards=k=>(state.purchases||[]).filter(p=>p.kind===k).map(p=>`<article class="spending-item ${hasText(p.title)&&anyCurrencyFilled(p)?'card-complete':'card-incomplete'}"><div class="spending-item-body"><strong>${esc(p.title||'未命名')}</strong><small>${hasText(p.title)&&anyCurrencyFilled(p)?'✓ 資料完整':'✎ 名稱或費用尚待補齊'}</small><small>${esc(p.date||'日期未填')}</small><span class="spending-cost">${esc(currencySummary(p))}</span></div><button class="btn small" type="button" data-editpurchase="${attr(p.id)}">編輯</button></article>`).join('')||'<div class="empty">尚無紀錄，點「新增」即可開始。</div>';
  $('diningList').innerHTML=cards('餐飲');$('shoppingList').innerHTML=cards('購物');
@@ -759,7 +870,7 @@ function renderMissing(){let arr=[];
  $('missingCount').textContent=`待補 ${arr.length} 項`;
  $('missingList').innerHTML=arr.length?arr.map(x=>`<a class="missing-item" href="${x[3]}" style="text-decoration:none"><span class="missing-i">${x[0]}</span><div><strong>${esc(x[1])} ↗</strong><p>${esc(x[2])}</p></div></a>`).join(''):`<div class="empty">主要待補資料已完成！其他細節依喜好慢慢增加就好 🌷</div>`;
 }
-function rerender(){renderOverview();renderFlights();renderIntercity();renderCityTransit();renderDay();renderIdeas();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
+function rerender(){renderOverview();renderFlights();renderIntercity();renderCityTransit();renderDay();renderIdeas();renderRestaurants();renderShoppingChecklist();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
 const inputField=(key,label,value='',type='text',extra='')=>`<label class="field-label">${esc(label)}<input class="field" name="${attr(key)}" type="${type}" value="${attr(value)}" ${extra}></label>`;
 const textareaField=(key,label,value='')=>`<label class="field-label">${esc(label)}<textarea class="field" name="${attr(key)}" rows="3">${esc(value)}</textarea></label>`;
 const selectField=(key,label,options,value)=>`<label class="field-label">${esc(label)}<select class="field" name="${attr(key)}">${options.map(o=>`<option value="${attr(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
@@ -812,7 +923,7 @@ function exportJSON(){download(JSON.stringify({app:'kyoto-winter-journal',versio
 function exportHTML(){
  // 重要：不可直接發布目前 DOM；其中已有私人航班、住宿、筆記內容。
  const safeDOM=document.documentElement.cloneNode(true);
- for(const id of ['overview','flightCards','cityTransitCards','dayTabs','dayPanel','ideaFilters','ideaGrid','stayCards','diningList','shoppingList','todoList','budgetRows','missingList','editorForm']){
+ for(const id of ['overview','flightCards','cityTransitCards','dayTabs','dayPanel','ideaFilters','ideaGrid','stayCards','restaurantFilters','restaurantCards','shoppingChecklist','diningList','shoppingList','todoList','budgetRows','missingList','editorForm']){
    const el=safeDOM.querySelector('#'+id);if(el)el.replaceChildren();
  }
  for(const id of ['cloudAccount','cloudTopText','cloudTopDetail','cloudStatus','toast','modalTitle']){
@@ -831,14 +942,27 @@ function exportHTML(){
  download(html,'index.html','text/html;charset=utf-8');toast('已下載可公開部署的 index.html（不含私人行程）');
 }
 $('exportJSON').addEventListener('click',exportJSON);$('exportHTML').addEventListener('click',exportHTML);
-$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
-$('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);migrateLedger();currentDay=0;save();rerender();toast('已重設示範資料')});
+$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();ensureTravelWishlists();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
+$('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);migrateLedger();ensureTravelWishlists();currentDay=0;save();rerender();toast('已重設示範資料')});
 $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day]');if(el)switchDay(Number(el.dataset.day))});$('prevDay').addEventListener('click',()=>switchDay(currentDay-1));$('nextDay').addEventListener('click',()=>switchDay(currentDay+1));$('addEvent').addEventListener('click',()=>editEvent());
 $('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
 $('cityTransitCards').addEventListener('click',ev=>{
  const edit=ev.target.closest('[data-citydate]');if(edit)return editDailyTransit(Number(edit.dataset.citydate));
  const old=ev.target.closest('[data-removeoldcity]');if(old)return removeOldCity(Number(old.dataset.removeoldcity),old.dataset.oldcitykey);
+});
+$('addRestaurant').addEventListener('click',()=>editRestaurant());
+$('restaurantFilters').addEventListener('click',ev=>{const b=ev.target.closest('[data-restfilter]');if(b){restaurantFilter=b.dataset.restfilter;renderRestaurants()}});
+$('restaurantCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editrestaurant]');if(b)editRestaurant(b.dataset.editrestaurant)});
+$('addShoppingItem').addEventListener('click',()=>editShoppingItem());
+$('shoppingChecklist').addEventListener('click',ev=>{
+ const add=ev.target.closest('[data-addshopcat]');if(add)return editShoppingItem(null,add.dataset.addshopcat);
+ const edit=ev.target.closest('[data-editshopitem]');if(edit)return editShoppingItem(edit.dataset.editshopitem);
+});
+$('shoppingChecklist').addEventListener('change',ev=>{
+ const c=ev.target.closest('[data-checkshop]');if(!c)return;
+ const item=state.shoppingItems.find(x=>x.id===c.dataset.checkshop);if(!item)return;
+ item.done=c.checked;save();renderShoppingChecklist();
 });
 $('addDining').addEventListener('click',()=>editPurchase('餐飲'));$('addShopping').addEventListener('click',()=>editPurchase('購物'));
 for(const id of ['diningList','shoppingList'])$(id).addEventListener('click',e=>{const b=e.target.closest('[data-editpurchase]');if(b)editPurchase(id==='diningList'?'餐飲':'購物',b.dataset.editpurchase)});
@@ -864,7 +988,7 @@ window.KyotoPlanner={
  read:()=>clone(state),
  valid:verifyData,
  seed:()=>clone(seedData),
- show:(data)=>{if(!verifyData(data))return false;state=clone(data);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();rerender();return true},
+ show:(data)=>{if(!verifyData(data))return false;state=clone(data);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();ensureTravelWishlists();rerender();return true},
  oldDraft:()=>{try{let d=JSON.parse(localStorage.getItem(namespace));return verifyData(d)?d:null}catch{return null}},
  setCloudStatus:(message,detail='',tone='')=>{
   $('cloudStatus').textContent=message+(detail?'｜'+detail:'');
