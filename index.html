@@ -186,6 +186,19 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .city-route-arrow{font-size:18px;color:#426781;font-weight:900}.city-transfer-info{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
 .city-transfer-info span{font-weight:800;font-size:12px}.city-transfer-info small{font-size:11px;color:#546976;overflow-wrap:anywhere}
 @media(max-width:650px){.spending-grid{grid-template-columns:1fr}.city-transfer{gap:7px;padding:8px}.city-transfer .btn{font-size:11px;padding:6px 8px}}
+
+.daily-transit-list{display:grid;gap:9px}
+.daily-transit-entry{border:1.5px solid #BE8170;background:#FBEDE8;border-radius:14px;padding:13px}
+.daily-transit-entry.done{background:#E8F2E7;border-color:#69896D}
+.daily-transit-head{display:flex;align-items:center;gap:12px}
+.daily-transit-name{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.daily-transit-name strong{font-size:14px}.daily-transit-name small{font-size:11px;color:#64737B}
+.daily-transit-amount{display:flex;flex-direction:column;gap:4px;text-align:right;white-space:nowrap}
+.daily-transit-amount b{font-size:16px}.daily-transit-amount small{font-size:11px;color:#64737B}
+.daily-transit-legacy{margin-top:10px;padding-top:8px;border-top:1px dashed #B4C3C9;font-size:12px;color:#526979}
+.daily-transit-legacy summary{cursor:pointer}
+.daily-transit-legacy-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0}
+@media(max-width:620px){.daily-transit-head{flex-wrap:wrap;gap:7px}.daily-transit-name{flex-basis:42%}.daily-transit-amount{margin-left:auto}.daily-transit-head>.btn{width:100%}}
 </style>
 </head>
 <body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
@@ -205,11 +218,11 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 <section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">02 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">點日期切換，直接增刪改時間軸行程；活動時間請以主辦單位公告為準。</p></div><button class="btn primary" id="addEvent">＋ 新增行程</button></div><div class="days-top"><button class="btn icon ghost" id="prevDay" aria-label="前一天">‹</button><div class="days" id="dayTabs" role="tablist" aria-label="行程日期"></div><button class="btn icon ghost" id="nextDay" aria-label="後一天">›</button></div><div class="card day-panel" id="dayPanel" role="tabpanel"></div></section>
 <section id="ideas" class="section"><div class="sect-head"><div><p class="eyebrow">03 / LITTLE DISCOVERIES</p><h2><svg class="ui-line  ink-red" aria-hidden="true"><use href="#u-flower"></use></svg> 京都靈感抽屜</h2><p class="description">已先收錄年末年始特色體驗，點「加入行程」即可放進指定日期，後續自由編輯。</p></div></div><div class="inspo-head" id="ideaFilters"></div><div class="inspo-grid" id="ideaGrid"></div><p class="description" style="margin-top:12px">＊清單中的時間為初步參考；門票、營業日與是否需預約，出發前請再向官方查核。</p></section>
 <section id="travel-logistics" class="section">
- <div class="sect-head"><div><p class="eyebrow">04 / TRAVEL ESSENTIALS</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 交通與住宿</h2><p class="description">機票、城際交通和飯店集中在這裡。平常先收合，需要查車次或入住資訊再展開；填好的時間與費用仍會自動連動每日散策、旅費小帳本。</p></div></div>
+ <div class="sect-head"><div><p class="eyebrow">04 / TRAVEL ESSENTIALS</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 交通與住宿</h2><p class="description">機票、城際交通、市內交通與住宿集中在這裡；市內交通依日期記錄，不需要逐站規劃。</p></div></div>
  <details class="logistics-drawer" id="logisticsDrawer">
  <summary class="logistics-toggle">
   <span class="logistics-toggle-icon"><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg></span>
-  <span class="logistics-summary-text"><strong>旅程交通與住宿總覽</strong><small id="logisticsProgress">航班 0/2 · 城際交通 0/3 · 住宿 0/2</small></span>
+  <span class="logistics-summary-text"><strong>旅程交通與住宿總覽</strong><small id="logisticsProgress">航班 0/2 · 城際交通 0/3 · 市內交通 0/11 · 住宿 0/2</small></span>
   <span class="logistics-cta">展開查閱 <span aria-hidden="true">⌄</span></span>
  </summary>
  <div class="logistics-inner">
@@ -222,6 +235,12 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
    <div id="intercity" class="logistics-body">
     <p class="description">已預留三段移動路線，可編輯交通方式、車次、日期、出發／抵達站、時間、實際車資、訂票連結及備註。尚未購票的資訊先以「待規劃」顯示。</p>
     <div class="intercity-grid" id="intercityCards"></div>
+   </div>
+  </details>
+  <details class="logistics-part" id="cityTransitPanel">
+   <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 市內交通｜每日車資</span><small>依日期填寫 · 日圓優先</small></summary>
+   <div id="city-transit" class="logistics-body"><p class="description">每天記錄市內交通總花費，不再逐段規劃。以日圓為主，台幣可補登；免費或當天沒交通費請填 0。過去逐段填過的費用仍保留並計入。</p>
+     <p class="subtle" id="cityDayProgress"></p><div class="daily-transit-list" id="cityTransitCards"></div>
    </div>
   </details>
   <details class="logistics-part" id="staysPanel">
@@ -477,9 +496,8 @@ const ledgerRecords=()=>{
  state.intercity.forEach(x=>out.push({category:'城際交通',item:x}));
  state.days.forEach(d=>{
   d.events.forEach(x=>out.push({category:'活動／門票',item:x}));
-  const arr=displayedItems(d),used=new Set();
-  for(let i=1;i<arr.length;i++){const key=cityRouteKey(arr[i-1],arr[i]);used.add(key);out.push({category:'市內交通',item:d.transfers?.[key]||{jpy:'',twd:''}})}
-  for(const [key,x] of Object.entries(d.transfers||{}))if(!used.has(key)&&anyCurrencyFilled(x))out.push({category:'市內交通',item:x});
+  out.push({category:'市內交通',item:d.cityTransit||{jpy:'',twd:''}});
+  for(const x of Object.values(d.transfers||{}))if(anyCurrencyFilled(x))out.push({category:'市內交通',item:x});
  });
  (state.purchases||[]).forEach(x=>out.push({category:x.kind||'其他',item:x}));
  if(amountFilled(state.otherJPY)||amountFilled(state.otherTWD))out.push({category:'其他',item:{jpy:state.otherJPY??'',twd:state.otherTWD??''}});
@@ -550,7 +568,7 @@ function timeSort(t){let s=String(t||'');let m=s.match(/(?:^|\s)(\d{1,2}):(\d{2}
 function transportColor(t){return t==='電車'||t==='飛機'?'blue':t==='巴士'?'yellow':t==='步行'?'green':t==='計程車'?'pink':'soft'}
 function renderDay(){
  renderTabs();const day=state.days[currentDay];const displayed=displayedItems(day);
- $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map((x,i)=>{const h=eventHealth(x);return `${i>0?cityTransferHTML(day,displayed[i-1],x):''}<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span>${completenessTag(h)}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}${missingSummary(h)}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}${orphanCityHTML(day,displayed)}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}<div class="day-note">🗒️ 機票起降與飯店入住／退房時間會自動顯示在這裡，請回來源卡片修改；其餘行程依你自己的規劃調整。</div>`
+ $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map(x=>{const h=eventHealth(x);return `<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span>${completenessTag(h)}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}${missingSummary(h)}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}<div class="day-note">🗒️ 機票起降與飯店入住／退房時間會自動顯示在這裡，請回來源卡片修改；其餘行程依你自己的規劃調整。</div>`
 }
 function switchDay(i){currentDay=Math.max(0,Math.min(state.days.length-1,i));renderDay();const btn=$('dayTabs').querySelector(`[data-day="${currentDay}"]`);btn?.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(btn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){btn.classList.remove('bounce');void btn.offsetWidth;btn.classList.add('bounce')}}
 function renderIdeas(){let cats=['全部','祭典','跨年','新年','藝文'];$('ideaFilters').innerHTML=cats.map(c=>`<button class="filter ${c===ideaFilter?'active':''}" data-filter="${esc(c)}" type="button" aria-pressed="${c===ideaFilter}">${esc(c)}</button>`).join('');let arr=ideaFilter==='全部'?ideaData:ideaData.filter(i=>i.category===ideaFilter);$('ideaGrid').innerHTML=arr.map(x=>{const added=state.days.some(d=>d.events.some(y=>y.ideaId===x.id));return `<article class="card idea"><div class="idea-top"><div class="idea-icon">${uiIcon(x.category==="跨年"?"umbrella":x.category==="祭典"?"flower":x.category==="新年"?"scroll":"note",x.category==="跨年"?"red":"blue")}</div><div style="min-width:0"><h3>${esc(x.title)}</h3><div class="flex" style="margin-top:6px"><span class="chip ${x.category==='跨年'?'pink':x.category==='新年'?'green':'yellow'}">${esc(x.category)}</span><span class="subtle">${esc(x.date.slice(5).replace('-','/'))} · ${esc(x.time)}</span></div><p>${esc(x.note)}</p></div></div><div class="idea-bottom"><div class="flex"><a class="subtle" href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">${uiIcon("pin","blue",true)} 地圖 ↗</a>${urlSafe(x.url)?`<a class="subtle" href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方 ↗</a>`:''}</div><button type="button" class="btn small ${added?'mint':'sun'}" data-addidea="${x.id}">${added?'＋ 再加入':'＋ 加入行程'}</button></div></article>`}).join('')}
@@ -567,6 +585,57 @@ function renderIntercity(){
  $('logisticsProgress').textContent=`航班 ${state.flights.filter(f=>evaluateCard('flight',f).complete).length}/2 · 城際交通 ${confirmed}/3 · 住宿 ${state.stays.filter(s=>evaluateCard('stay',s).complete).length}/2`;
 }
 
+
+/* The only new urban-transport input is a daily total. Existing paid route records remain as a separate legacy record. */
+function dailyTransitSum(d){
+ const previous=Object.entries(d.transfers||{}).filter(([,x])=>anyCurrencyFilled(x));
+ const entries=[d.cityTransit||{},...previous.map(([,v])=>v)];
+ const sum={jpy:0,twd:0,converted:0,pending:0,count:0,previous};
+ for(const e of entries){
+  const n=normalizedCost(e);if(n.yen===null&&n.twd===null)continue;
+  sum.count++;if(n.yen!==null)sum.jpy+=n.yen;if(n.twd!==null)sum.twd+=n.twd;
+  if(n.converted!==null)sum.converted+=n.converted;else sum.pending++;
+ }
+ return sum;
+}
+function renderCityTransit(){
+ let completed=0;
+ $('cityTransitCards').innerHTML=state.days.map((d,i)=>{
+  const v=d.cityTransit||{},sum=dailyTransitSum(d);
+  const done=sum.count>0;if(done)completed++;
+  const amount=!done?'尚未填寫':sum.jpy>0?'¥'+sum.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2}):sum.twd>0?money(sum.twd):'¥0';
+  const converted=sum.pending?'部分 '+money(sum.converted)+'（尚待匯率）':money(sum.converted);
+  return `<article class="daily-transit-entry ${done?'done':''}">
+   <div class="daily-transit-head">
+    <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
+    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>折合台幣 ${esc(converted)}${sum.twd?' · 記錄 '+money(sum.twd):''}</small></div>
+    <button class="btn small ${done?'mint':'sky'}" type="button" data-citydate="${i}">${anyCurrencyFilled(v)?'✎ 編輯':'＋ 填寫'}</button>
+   </div>
+   ${sum.previous.length?`<details class="daily-transit-legacy"><summary>舊版逐段費用 ${sum.previous.length} 筆，已計入總額（如改填整日總額請先移除，避免重複）</summary>
+   ${sum.previous.map(([k,x])=>`<div class="daily-transit-legacy-line"><span>${esc(x.mode||'歷史記錄')} · ${esc(currencySummary(x))}</span><button type="button" class="btn small danger" data-removeoldcity="${i}" data-oldcitykey="${attr(k)}">移除</button></div>`).join('')}</details>`:''}
+  </article>`;
+ }).join('');
+ $('cityDayProgress').textContent=`已填寫 ${completed} / ${state.days.length} 天；費用自動計入旅費小帳本。`;
+ const progress=$('logisticsProgress'),label='市內交通 '+completed+'/'+state.days.length;
+ const text=progress.textContent||'';
+ progress.textContent=/市內交通 \d+\/\d+/.test(text)?text.replace(/市內交通 \d+\/\d+/,label):text.replace(' · 住宿 ', ' · '+label+' · 住宿 ');
+}
+function editDailyTransit(index){
+ const day=state.days[index];if(!day)return;const x=day.cityTransit||{jpy:'',twd:'',note:''};
+ const historical=dailyTransitSum(day).previous.length;
+ openModal('🚇 '+DATES[index][1]+' 市內交通費',
+ `<p class="currency-help">以日圓記錄當日車資；台幣為選填的實刷金額。兩種都填時以日圓換算計入旅費。</p>${currencyInputs(x)}${textareaField('note','備註（可留空）',x.note||'')}${historical?'<p class="currency-help">本日仍有歷史逐段交通費；填寫今日總額前，請評估是否要刪除舊紀錄避免重複。</p>':''}`,
+ o=>{
+  if(['jpy','twd'].some(k=>String(o[k]??'').trim()&&!amountFilled(o[k]))){alert('請輸入正數或 0，尚未確定可留白');return false}
+  day.cityTransit={jpy:String(o.jpy??''),twd:String(o.twd??''),note:o.note||''};return true;
+ });
+}
+function removeOldCity(index,key){
+ const d=state.days[index];
+ if(!d?.transfers||!Object.prototype.hasOwnProperty.call(d.transfers,key))return;
+ if(!confirm('確定移除此筆歷史市內交通費嗎？它也會從旅費總額中扣除。'))return;
+ delete d.transfers[key];save();rerender();toast('已移除歷史交通費');
+}
 function renderPurchases(){
  const cards=k=>(state.purchases||[]).filter(p=>p.kind===k).map(p=>`<article class="spending-item ${hasText(p.title)&&anyCurrencyFilled(p)?'card-complete':'card-incomplete'}"><div class="spending-item-body"><strong>${esc(p.title||'未命名')}</strong><small>${hasText(p.title)&&anyCurrencyFilled(p)?'✓ 資料完整':'✎ 名稱或費用尚待補齊'}</small><small>${esc(p.date||'日期未填')}</small><span class="spending-cost">${esc(currencySummary(p))}</span></div><button class="btn small" type="button" data-editpurchase="${attr(p.id)}">編輯</button></article>`).join('')||'<div class="empty">尚無紀錄，點「新增」即可開始。</div>';
  $('diningList').innerHTML=cards('餐飲');$('shoppingList').innerHTML=cards('購物');
@@ -621,7 +690,7 @@ function renderBudget(){
  $('fxManualRate').value=state.fxManualRate??'';
  $('otherJPY').value=state.otherJPY??'';
  $('otherTWD').value=state.otherTWD??'';
- const links={機票:'#flights',住宿:'#stays',城際交通:'#intercity','活動／門票':'#itinerary',市內交通:'#itinerary',餐飲:'#spending',購物:'#spending',其他:'#budget'};
+ const links={機票:'#flights',住宿:'#stays',城際交通:'#intercity','活動／門票':'#itinerary',市內交通:'#city-transit',餐飲:'#spending',購物:'#spending',其他:'#budget'};
  $('budgetRows').innerHTML=keys.map(k=>{const x=rows.get(k);return `<tr class="linked-expense"><td><a class="ledger-category" href="${links[k]}">${esc(k)} ↗</a>${x.missingRate?`<small class="expense-source">待匯率</small>`:''}</td><td class="numeric-cell">¥${x.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2})}</td><td class="numeric-cell">${money(x.twd)}</td><td class="numeric-cell"><strong>${x.missingRate?'部分 '+money(x.converted):money(x.converted)}</strong></td></tr>`}).join('');
 }
 function renderMissing(){let arr=[];
@@ -639,7 +708,7 @@ function renderMissing(){let arr=[];
  $('missingCount').textContent=`待補 ${arr.length} 項`;
  $('missingList').innerHTML=arr.length?arr.map(x=>`<a class="missing-item" href="${x[3]}" style="text-decoration:none"><span class="missing-i">${x[0]}</span><div><strong>${esc(x[1])} ↗</strong><p>${esc(x[2])}</p></div></a>`).join(''):`<div class="empty">主要待補資料已完成！其他細節依喜好慢慢增加就好 🌷</div>`;
 }
-function rerender(){renderOverview();renderFlights();renderIntercity();renderDay();renderIdeas();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
+function rerender(){renderOverview();renderFlights();renderIntercity();renderCityTransit();renderDay();renderIdeas();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
 const inputField=(key,label,value='',type='text',extra='')=>`<label class="field-label">${esc(label)}<input class="field" name="${attr(key)}" type="${type}" value="${attr(value)}" ${extra}></label>`;
 const textareaField=(key,label,value='')=>`<label class="field-label">${esc(label)}<textarea class="field" name="${attr(key)}" rows="3">${esc(value)}</textarea></label>`;
 const selectField=(key,label,options,value)=>`<label class="field-label">${esc(label)}<select class="field" name="${attr(key)}">${options.map(o=>`<option value="${attr(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
@@ -692,7 +761,7 @@ function exportJSON(){download(JSON.stringify({app:'kyoto-winter-journal',versio
 function exportHTML(){
  // 重要：不可直接發布目前 DOM；其中已有私人航班、住宿、筆記內容。
  const safeDOM=document.documentElement.cloneNode(true);
- for(const id of ['overview','flightCards','dayTabs','dayPanel','ideaFilters','ideaGrid','stayCards','diningList','shoppingList','todoList','budgetRows','missingList','editorForm']){
+ for(const id of ['overview','flightCards','cityTransitCards','dayTabs','dayPanel','ideaFilters','ideaGrid','stayCards','diningList','shoppingList','todoList','budgetRows','missingList','editorForm']){
    const el=safeDOM.querySelector('#'+id);if(el)el.replaceChildren();
  }
  for(const id of ['cloudAccount','cloudTopText','cloudTopDetail','cloudStatus','toast','modalTitle']){
@@ -714,8 +783,12 @@ $('exportJSON').addEventListener('click',exportJSON);$('exportHTML').addEventLis
 $('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
 $('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);migrateLedger();currentDay=0;save();rerender();toast('已重設示範資料')});
 $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day]');if(el)switchDay(Number(el.dataset.day))});$('prevDay').addEventListener('click',()=>switchDay(currentDay-1));$('nextDay').addEventListener('click',()=>switchDay(currentDay+1));$('addEvent').addEventListener('click',()=>editEvent());
-$('dayPanel').addEventListener('click',ev=>{const link=ev.target.closest('[data-edittransfer]');if(link)return editCityTransfer(link.dataset.edittransfer);if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
+$('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
+$('cityTransitCards').addEventListener('click',ev=>{
+ const edit=ev.target.closest('[data-citydate]');if(edit)return editDailyTransit(Number(edit.dataset.citydate));
+ const old=ev.target.closest('[data-removeoldcity]');if(old)return removeOldCity(Number(old.dataset.removeoldcity),old.dataset.oldcitykey);
+});
 $('addDining').addEventListener('click',()=>editPurchase('餐飲'));$('addShopping').addEventListener('click',()=>editPurchase('購物'));
 for(const id of ['diningList','shoppingList'])$(id).addEventListener('click',e=>{const b=e.target.closest('[data-editpurchase]');if(b)editPurchase(id==='diningList'?'餐飲':'購物',b.dataset.editpurchase)});
 $('intercityCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editintercity]');if(b)editIntercity(Number(b.dataset.editintercity))});
@@ -727,10 +800,10 @@ $('fxManualRate').addEventListener('change',e=>{const x=e.target.value;if(x&&!(N
 $('refreshFX').addEventListener('click',()=>refreshFx(true));$('freeNotes').addEventListener('input',ev=>{state.notes=ev.target.value;save()});
 function revealLogistics(hash=location.hash){
  const h=String(hash||'').replace(/^#/,'');
- if(!['travel-logistics','flights','stays','intercity'].includes(h))return;
+ if(!['travel-logistics','flights','stays','intercity','city-transit'].includes(h))return;
  const main=$('logisticsDrawer');if(!main)return;
  main.open=true;
- const sub=h==='flights'?'flightsPanel':h==='stays'?'staysPanel':h==='intercity'?'intercityPanel':null;
+ const sub=h==='flights'?'flightsPanel':h==='stays'?'staysPanel':h==='intercity'?'intercityPanel':h==='city-transit'?'cityTransitPanel':null;
  if(sub)$(sub).open=true;
 }
 document.addEventListener('click',ev=>{const a=ev.target.closest('a[href^="#"]');if(a)revealLogistics(a.getAttribute('href'))});
