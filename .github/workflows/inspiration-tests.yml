@@ -21,7 +21,6 @@ jobs:
       - name: Install isolated browser test environment
         run: |
           npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium
       - name: Check responsive layout, adding ideas, legacy data and shopping persistence
         run: node tests/browser.test.cjs
       - name: Attach sanitized screenshots to CI review
