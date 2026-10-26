@@ -616,7 +616,9 @@ function renderCityTransit(){
   </article>`;
  }).join('');
  $('cityDayProgress').textContent=`已填寫 ${completed} / ${state.days.length} 天；費用自動計入旅費小帳本。`;
- $('logisticsProgress').textContent=$('logisticsProgress').textContent.replace(/市內交通 \d+\/\d+/,`市內交通 ${completed}/${state.days.length}`);
+ const progress=$('logisticsProgress'),label='市內交通 '+completed+'/'+state.days.length;
+ const text=progress.textContent||'';
+ progress.textContent=/市內交通 \d+\/\d+/.test(text)?text.replace(/市內交通 \d+\/\d+/,label):text.replace(' · 住宿 ', ' · '+label+' · 住宿 ');
 }
 function editDailyTransit(index){
  const day=state.days[index];if(!day)return;const x=day.cityTransit||{jpy:'',twd:'',note:''};
