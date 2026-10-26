@@ -6,7 +6,7 @@ on:
   pull_request:
     paths:
       - 'index.html'
-      - 'tests/inspiration.test.cjs'
+      - 'tests/**'
       - '.github/workflows/inspiration-tests.yml'
 jobs:
   smoke:
@@ -18,3 +18,16 @@ jobs:
           node-version: '22'
       - name: Validate single-file trip app and curated content
         run: node tests/inspiration.test.cjs
+      - name: Install isolated browser test environment
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Check responsive layout, adding ideas, legacy data and shopping persistence
+        run: node tests/browser.test.cjs
+      - name: Attach sanitized screenshots to CI review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyoto-themed-ui-screenshots
+          path: test-artifacts/
+          if-no-files-found: ignore
