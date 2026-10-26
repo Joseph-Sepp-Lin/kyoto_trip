@@ -36,7 +36,7 @@ for(const group of itineraryCatalog){
  }
 }
 assert.equal(total,31);
-assert.ok(source.includes('get readyForImport(){'),'Cloud write must wait for remote initialization');
+assert.ok(html.includes('get readyForImport(){'),'Cloud write must wait for remote initialization');
 assert.ok(source.includes('function curatedImportEligibility(){'));
 const idset=new Set(cat.ideaData.map(x=>x.id));
 assert.equal(idset.size,cat.ideaData.length,'靈感 ID 必須唯一');
