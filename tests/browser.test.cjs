@@ -19,7 +19,7 @@ async function main(){
  });
  await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
  const url='http://127.0.0.1:'+server.address().port+'/';
- const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
  const jsErrors=[];
  page.on('pageerror',e=>jsErrors.push(String(e)));
