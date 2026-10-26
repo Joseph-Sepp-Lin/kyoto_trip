@@ -364,7 +364,7 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
   </details>
   <details class="logistics-part" id="cityTransitPanel">
    <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 市內交通｜每日車資</span><small>依日期填寫 · 日圓優先</small></summary>
-   <div id="city-transit" class="logistics-body"><p class="description">每日車資採逐筆加減：每搭一趟車就按「＋加一筆」，有退款或修正則按「－扣一筆」。日圓優先、台幣可補登；原本記過的金額也會保留。</p>
+   <div id="city-transit" class="logistics-body"><p class="description">每日車資採逐筆加減：每搭一趟車就按「＋加一筆」，有退款或修正則按「－扣一筆」。可逐筆填寫日幣，台幣實刷亦可補登；若同筆有台幣，就以台幣計入總額。原本記過的金額仍保留。</p>
      <p class="subtle" id="cityDayProgress"></p><div class="daily-transit-list" id="cityTransitCards"></div>
    </div>
   </details>
@@ -376,13 +376,13 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
  </details>
 </section>
 <div id="after-trip" class="journey-phase-heading"><span class="phase-no">03 / AFTER THE JOURNEY</span><h2>旅行後</h2></div>
-<section id="budget" class="section"><div class="sect-head"><div><p class="eyebrow">06 / TRAVEL EXPENSES</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-money"></use></svg> 旅費小帳本</h2><p class="description">由機票、住宿、交通、每日行程、餐飲及購物自動彙整。只有「其他」在此直接輸入調整；同筆雙幣皆有記錄時，以日圓換算計入台幣合計。</p></div></div>
+<section id="budget" class="section"><div class="sect-head"><div><p class="eyebrow">06 / TRAVEL EXPENSES</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-money"></use></svg> 旅費小帳本</h2><p class="description">由機票、住宿、交通、每日行程、餐飲及購物自動彙整。只有「其他」在此直接輸入調整；僅填台幣就直接計入；僅填日幣則依匯率換算；雙幣都有則採台幣實際紀錄，日幣僅供參考。</p></div></div>
 <div class="card finance"><div class="fx-toolbar"><div><strong>每日匯率</strong><p id="fxStatus" class="subtle">讀取中…</p></div><button id="refreshFX" type="button" class="btn small sky">↻ 更新匯率</button></div>
 <details class="fx-manual"><summary>網路匯率無法使用？手動填寫換算匯率</summary><label class="field-label">每 1 JPY 可兌換多少 TWD<input class="field" type="number" id="fxManualRate" step="0.00001" min="0" placeholder="選填，若留白則使用公開匯率"></label></details>
 <div class="finance-totals"><div class="money-total"><small>累計台幣實際花費</small><strong id="budgetActual">NT$0</strong>
 <div class="currency-totals"><span>日幣花費 <b id="budgetJpy">¥0</b></span><span>台幣紀錄（含實刷） <b id="budgetTwdRecorded">NT$0</b></span></div>
 <small id="expenseCoverage" class="expense-coverage"></small></div></div>
-<div class="budget-scroll"><table class="budget-table currency-table"><thead><tr><th>分類</th><th>日幣記錄</th><th>台幣記錄</th><th>換算後台幣</th></tr></thead><tbody id="budgetRows"></tbody></table></div>
+<div class="budget-scroll"><table class="budget-table currency-table"><thead><tr><th>分類</th><th>日幣記錄</th><th>台幣記錄</th><th>計入總額（TWD）</th></tr></thead><tbody id="budgetRows"></tbody></table></div>
 <div class="other-adjust"><h3>其他｜費用調整</h3><p class="description">此為旅費帳本唯一的手動調整欄位；其他費用請從來源卡片填入。</p><div class="form-2"><label class="field-label">日幣 JPY<input class="field" id="otherJPY" type="number" step="0.01" min="0" placeholder="¥0"></label><label class="field-label">台幣 TWD<input class="field" id="otherTWD" type="number" step="0.01" min="0" placeholder="NT$0"></label></div></div>
 </div></section>
 <section id="notes" class="section"><div class="sect-head"><div><p class="eyebrow">07 / SCRAPBOOK</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-note"></use></svg> 旅行備忘錄</h2><p class="description">想去的咖啡店、餐廳、伴手禮，甚至旅途中的心得都可以先寫在這。</p></div></div><div class="card note-card"><label for="freeNotes" class="strong" style="display:block;margin-bottom:11px">我的京都小筆記</label><textarea id="freeNotes" class="field" placeholder="例如：想找京都特別的咖啡館、冬季限定和菓子、古董市集……"></textarea><div class="subtle" style="margin-top:8px">輸入時自動儲存，不需額外按儲存。</div></div></section>
@@ -587,7 +587,7 @@ const parsedMoney=x=>{
 };
 const amountFilled=x=>parsedMoney(x)!==null;
 const anyCurrencyFilled=x=>amountFilled(currencyField(x,'JPY'))||amountFilled(currencyField(x,'TWD'));
-const currencyInputs=x=>`<div class="form-2">${inputField('jpy','日幣 JPY（¥）',currencyField(x,'JPY'),'text','inputmode="decimal" placeholder="例如 1200"')}${inputField('twd','台幣 TWD（NT$）',currencyField(x,'TWD'),'text','inputmode="decimal" placeholder="實刷請款可補登"')}</div><p class="currency-help">兩欄擇一即可；兩者皆填以日幣換算計入總額，台幣保留為實刷紀錄。免費請填 0。</p>`;
+const currencyInputs=x=>`<div class="form-2">${inputField('jpy','日幣 JPY（¥）',currencyField(x,'JPY'),'text','inputmode="decimal" placeholder="例如 1200"')}${inputField('twd','台幣 TWD（NT$）',currencyField(x,'TWD'),'text','inputmode="decimal" placeholder="實刷請款可補登"')}</div><p class="currency-help">兩欄擇一即可；兩者皆填時，以台幣實際紀錄計入總額，日幣僅供參考。只有日幣才使用匯率換算；免費請填 0。</p>`;
 function saveMoney(x,o){for(const k of ['jpy','twd'])if(String(o[k]??'').trim()&&!amountFilled(o[k])){alert('金額必須是 0 或正數');return false}x.jpy=String(o.jpy??'').trim();x.twd=String(o.twd??'').trim();x.price='';return true}
 const fareRecord=()=>{
  const a=state.flights[0]||{};return {jpy:a.jpy??'',twd:Object.prototype.hasOwnProperty.call(a,'twd')?a.twd:roundtripFare()};
@@ -598,7 +598,7 @@ let fxCached=null;try{fxCached=JSON.parse(localStorage.getItem('kyoto-jpy-twd-da
 if(fxCached?.checked===taipeiToday()&&Number(fxCached.rate)>0){fxRate=Number(fxCached.rate);fxDate=fxCached.date||''}
 const appliedRate=()=>String(state.fxManualRate??'').trim()?Number(state.fxManualRate)||null:fxRate;
 const fxLabel=()=>String(state.fxManualRate??'').trim()?('手動換算：¥1 = NT$'+Number(state.fxManualRate).toFixed(5)):
- fxRate?('Frankfurter '+fxDate+' 公布參考匯率：¥1 ≈ NT$'+fxRate.toFixed(5)):'暫無可用匯率，日幣費用尚未列入台幣總額';
+ fxRate?('Frankfurter '+fxDate+' 公布參考匯率：¥1 ≈ NT$'+fxRate.toFixed(5)):'暫無可用匯率，僅填日幣的費用尚未列入台幣總額';
 async function refreshFx(force=false){
  if(fxPending)return;
  if(!force&&fxRate&&fxCached?.checked===taipeiToday())return;
@@ -610,11 +610,14 @@ async function refreshFx(force=false){
   try{localStorage.setItem('kyoto-jpy-twd-daily-v1',JSON.stringify(fxCached))}catch{}
  }catch(e){fxError=String(e.message||e)}finally{fxPending=false;renderBudget()}
 }
+/* Accounting priority: actual TWD if present (including explicit 0);
+   otherwise use JPY translated at the current reference rate. Never add both. */
 const normalizedCost=x=>{
  const yen=parsedMoney(currencyField(x,'JPY')),twd=parsedMoney(currencyField(x,'TWD')),rate=appliedRate();
- return {yen,twd,converted:yen!==null?(yen===0?0:rate!==null?Math.round(yen*rate):null):twd};
+ const converted=twd!==null?twd:yen!==null?(yen===0?0:rate!==null?Math.round(yen*rate):null):null;
+ return {yen,twd,converted};
 };
-const currencySummary=x=>{const v=normalizedCost(x);return v.yen!==null?('¥'+v.yen.toLocaleString('zh-TW')+(v.twd!==null?' · 實刷 '+money(v.twd):'')):v.twd!==null?money(v.twd):'待填'};
+const currencySummary=x=>{const v=normalizedCost(x);return v.twd!==null?(money(v.twd)+(v.yen!==null?' · 日幣參考 ¥'+v.yen.toLocaleString('zh-TW') : '')):v.yen!==null?'¥'+v.yen.toLocaleString('zh-TW'):'待填'};
 const ledgerRecords=()=>{
  const out=[{category:'機票',item:fareRecord()}];
  state.stays.forEach(x=>out.push({category:'住宿',item:x}));
@@ -756,7 +759,7 @@ function renderCityTransit(){
   return `<article class="daily-transit-entry ${done?'done':''}">
    <div class="daily-transit-head">
     <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
-    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>折合台幣 ${esc(converted)}${sum.twd?' · 台幣紀錄 '+money(sum.twd):''}</small></div>
+    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>計入台幣 ${esc(converted)}${sum.twd?' · 台幣紀錄 '+money(sum.twd):''}</small></div>
    </div>
    <div class="transit-calc-actions">
     <button type="button" class="btn small mint" data-transit-add="${i}">＋ 加一筆</button>
@@ -788,7 +791,7 @@ function editTransitLine(index,id=null,operation='+'){
  if(id&&!previous)return;
  const value=previous||{op:operation,jpy:'',twd:'',memo:''};
  openModal('🚇 '+DATES[index][1]+'｜'+(previous?'編輯車資':operation==='-'?'扣除／退費':'新增車資'),
- `<div class="transit-modal-help">每筆選擇「＋支出」或「－扣除」，儲存後自動計算當日合計。以日圓為主，台幣實刷金額可補登，不會重複計費。</div>
+ `<div class="transit-modal-help">每筆選擇「＋支出」或「－扣除」；只有日幣時依匯率換算，若已補登台幣實刷就以台幣計入總額，日幣留作參考。</div>
  ${selectField('operation','計算方式',['＋ 支出','－ 扣除／退款'],value.op==='-'?'－ 扣除／退款':'＋ 支出')}
  ${inputField('memo','車資項目（選填）',value.memo||'','text','maxlength="100" placeholder="例如：地鐵、公車、交通卡退費"')}
  ${currencyInputs(value)}`,
@@ -934,7 +937,7 @@ function renderBudget(){
  $('budgetActual').textContent=money(summary.converted)+(summary.missingRate?' ＋':'');
  $('budgetJpy').textContent='¥'+summary.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2});
  $('budgetTwdRecorded').textContent=money(summary.twd);
- $('expenseCoverage').textContent=(summary.missingRate?'有 '+summary.missingRate+' 筆日圓費用尚未換算，合計為部分金額。':'')+(summary.missingAmount?' 尚有 '+summary.missingAmount+' 筆費用未填。':'')+' 台幣實刷與日圓同時填寫時，不重複計入總額。';
+ $('expenseCoverage').textContent=(summary.missingRate?'有 '+summary.missingRate+' 筆僅填日幣的費用尚未換算，合計為部分金額。':'')+(summary.missingAmount?' 尚有 '+summary.missingAmount+' 筆費用未填。':'')+' 有台幣實際紀錄即優先計入；只有日幣的費用才使用匯率換算，不重複加總。';
  $('fxStatus').textContent=fxLabel()+(fxError?' · 匯率更新失敗':'');
  $('fxManualRate').value=state.fxManualRate??'';
  $('otherJPY').value=state.otherJPY??'';
