@@ -1,0 +1,20 @@
+name: Kyoto inspiration checks
+on:
+  push:
+    branches:
+      - feature/kyoto-themed-inspiration-2026
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'tests/inspiration.test.cjs'
+      - '.github/workflows/inspiration-tests.yml'
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate single-file trip app and curated content
+        run: node tests/inspiration.test.cjs
