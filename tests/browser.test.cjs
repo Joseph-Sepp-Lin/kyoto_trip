@@ -32,7 +32,20 @@ async function main(){
   await page.goto(url,{waitUntil:'domcontentloaded'});
   await page.waitForTimeout(1000);
   console.log('DIAGNOSTIC',JSON.stringify({ideaCount:await page.locator('#ideaCount').textContent(),gridCount:await page.locator('#ideaGrid .idea').count(),shoppingCount:await page.locator('#shoppingChecklist .checklist-category').count(),html:await page.title(),jsErrors}));
-  await page.locator('#ideaGrid .idea').first().waitFor({timeout:7000});
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55,{timeout:10000});
+  const sessionIds=['before-tripDrawer','itineraryDrawer','ideasDrawer','restaurantsDrawer','shoppingDrawer','logisticsDrawer','budgetDrawer','notesDrawer'];
+  for(const id of sessionIds)assert.equal(await page.locator('#'+id).evaluate(x=>x.open),false,'Default collapsed: '+id);
+  // Keyboard and navigation should open the right parent, including deep hash targets.
+  await page.locator('a[href="#itinerary"]').first().click();
+  assert.equal(await page.locator('#itineraryDrawer').evaluate(x=>x.open),true,'Nav opens daily itinerary');
+  await page.locator('#itineraryDrawer > summary').click();
+  assert.equal(await page.locator('#itineraryDrawer').evaluate(x=>x.open),false,'Daily itinerary can close');
+  await page.evaluate(()=>{location.hash='#flights'});
+  await page.waitForFunction(()=>document.querySelector('#logisticsDrawer').open&&document.querySelector('#flightsPanel').open);
+  await page.evaluate(()=>{location.hash='#sync'});
+  await page.waitForFunction(()=>document.querySelector('#accountSettings').open&&document.querySelector('#syncDrawer').open);
+  await page.locator('#ideasDrawer > summary').click();
+  assert.equal(await page.locator('#ideasDrawer').evaluate(x=>x.open),true,'Ideas can expand');
   assert.match(await page.locator('#ideaCount').innerText(),/55／55/);
   assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),5);
   const themes=await page.locator('#ideaFilters button').allTextContents();
@@ -64,12 +77,16 @@ async function main(){
   let saved=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.ok(saved.days.some(d=>d.events.some(e=>e.ideaId==='tea-kambayashi-shunsho')),'Added idea must exist');
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.locator('#ideaGrid .idea').first().waitFor();
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55);
   saved=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.ok(saved.days.some(d=>d.events.some(e=>e.ideaId==='tea-kambayashi-shunsho')),'Added idea must survive reload');
   assert.equal(saved.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4);
+  await page.locator('#shoppingDrawer > summary').click();
+  await page.locator('#shoppingChecklist details[data-shopcat="日本茶／茶葉"] > summary').click();
   await page.locator('#shoppingChecklist [data-checkshop="tea-ayataka"]').check();
   await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('#shoppingDrawer > summary').click();
+  await page.locator('#shoppingChecklist details[data-shopcat="日本茶／茶葉"] > summary').click();
   await page.locator('#shoppingChecklist [data-checkshop="tea-ayataka"]').waitFor();
   assert.equal(await page.locator('#shoppingChecklist [data-checkshop="tea-ayataka"]').isChecked(),true);
   await page.locator('#shoppingChecklist [data-editshopitem="tea-karigane"]').click();
@@ -77,7 +94,7 @@ async function main(){
   await page.locator('#modalDanger').click();
   assert.equal(await page.locator('#shoppingChecklist [data-checkshop="tea-karigane"]').count(),0);
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.locator('#ideaGrid .idea').first().waitFor();
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55);
   assert.equal(await page.locator('#shoppingChecklist [data-checkshop="tea-karigane"]').count(),0,'Deleted tea should not resurrect after reload');
   const legacy=await page.evaluate(()=>{
    const old=window.KyotoPlanner.seed();
@@ -92,11 +109,12 @@ async function main(){
   assert.ok(legacy.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'legacy shopping item lost');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4,'Cloud legacy show migration');
   await page.setViewportSize({width:1280,height:900});
+  await page.locator('#ideasDrawer > summary').click();
   await page.locator('#ideaFilters [data-filter="全部"]').click();
   await page.locator('#ideaSearch').fill('');
   await page.locator('#ideas').screenshot({path:'test-artifacts/desktop-ideas.png',animations:'disabled'});
   assert.equal(jsErrors.length,0,'JS errors: '+jsErrors.join('; '));
-  console.log('PASS browser: 320/375/768/1280 layout, theme/search, detail links, add/save/reload, tea check/delete/reload, legacy cloud payload');
+  console.log('PASS browser: session drawers, navigation deep links, nested tea categories, 320/375/768/1280 layout, theme/search, add/save/reload, tea check/delete/reload, legacy cloud payload');
  }finally{
   await browser.close();
   await new Promise(ok=>server.close(ok));
