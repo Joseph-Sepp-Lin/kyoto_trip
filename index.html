@@ -249,6 +249,18 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .shopping-recommend-links{display:flex;flex-wrap:wrap;gap:8px}
 .shopping-recommend-links a{font-size:11px;color:#426781;font-weight:800}
 .shop-modal-title{font-size:13px;font-weight:900;margin-top:14px;border-bottom:1px solid #B8C6C9;padding-bottom:6px}
+
+.city-calc{border-top:1px dashed #B1C0C2;margin-top:11px;padding-top:9px}
+.city-calc>summary{font-size:12px;font-weight:800;color:#426781;cursor:pointer}
+.city-calc>summary strong{color:#243447}
+.city-calc-inside{margin-top:10px;border-top:1px solid #C7D3D7;padding-top:12px}
+.city-calc-inputs{display:grid;grid-template-columns:1fr 1.1fr;gap:9px}
+.city-calc-inputs label{display:grid;gap:6px;font-size:11px;font-weight:800;color:#5D7180}
+.city-calc-actions{display:flex;gap:9px;margin:10px 0}
+.city-calc-history{display:grid;gap:4px}
+.city-calc-entry{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:5px 0;border-top:1px dashed #B2C0C2;font-size:12px}
+.day-panel .event-t{font-size:18px!important;font-weight:900!important;color:#243447!important;line-height:1.35;letter-spacing:.015em;font-variant-numeric:tabular-nums}
+@media(max-width:500px){.city-calc-inputs{grid-template-columns:1fr}.day-panel .event-t{font-size:17px!important}}
 </style>
 </head>
 <body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
@@ -319,7 +331,7 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
   </details>
   <details class="logistics-part" id="cityTransitPanel">
    <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 市內交通｜每日車資</span><small>依日期填寫 · 日圓優先</small></summary>
-   <div id="city-transit" class="logistics-body"><p class="description">每天記錄市內交通總花費，不再逐段規劃。以日圓為主，台幣可補登；免費或當天沒交通費請填 0。過去逐段填過的費用仍保留並計入。</p>
+   <div id="city-transit" class="logistics-body"><p class="description">日圓交通費可以一筆一筆「＋ 加上」或「－ 扣除」，每日自動累計。台幣實際請款可另外補登；舊版逐段費用仍保留。</p>
      <p class="subtle" id="cityDayProgress"></p><div class="daily-transit-list" id="cityTransitCards"></div>
    </div>
   </details>
@@ -656,7 +668,7 @@ function timeSort(t){let s=String(t||'');let m=s.match(/(?:^|\s)(\d{1,2}):(\d{2}
 function transportColor(t){return t==='電車'||t==='飛機'?'blue':t==='巴士'?'yellow':t==='步行'?'green':t==='計程車'?'pink':'soft'}
 function renderDay(){
  renderTabs();const day=state.days[currentDay];const displayed=displayedItems(day);
- $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map(x=>{const h=eventHealth(x);return `<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span>${completenessTag(h)}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}${missingSummary(h)}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}<div class="day-note">🗒️ 機票起降與飯店入住／退房時間會自動顯示在這裡，請回來源卡片修改；其餘行程依你自己的規劃調整。</div>`
+ $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map(x=>{const h=eventHealth(x);return `<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span>${h.complete?'':completenessTag(h)}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}${h.complete?'':missingSummary(h)}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}<div class="day-note">🗒️ 機票起降與飯店入住／退房時間會自動顯示在這裡，請回來源卡片修改；其餘行程依你自己的規劃調整。</div>`
 }
 function switchDay(i){currentDay=Math.max(0,Math.min(state.days.length-1,i));renderDay();const btn=$('dayTabs').querySelector(`[data-day="${currentDay}"]`);btn?.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(btn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){btn.classList.remove('bounce');void btn.offsetWidth;btn.classList.add('bounce')}}
 function renderIdeas(){let cats=['全部','祭典','跨年','新年','藝文'];$('ideaFilters').innerHTML=cats.map(c=>`<button class="filter ${c===ideaFilter?'active':''}" data-filter="${esc(c)}" type="button" aria-pressed="${c===ideaFilter}">${esc(c)}</button>`).join('');let arr=ideaFilter==='全部'?ideaData:ideaData.filter(i=>i.category===ideaFilter);$('ideaGrid').innerHTML=arr.map(x=>{const added=state.days.some(d=>d.events.some(y=>y.ideaId===x.id));return `<article class="card idea"><div class="idea-top"><div class="idea-icon">${uiIcon(x.category==="跨年"?"umbrella":x.category==="祭典"?"flower":x.category==="新年"?"scroll":"note",x.category==="跨年"?"red":"blue")}</div><div style="min-width:0"><h3>${esc(x.title)}</h3><div class="flex" style="margin-top:6px"><span class="chip ${x.category==='跨年'?'pink':x.category==='新年'?'green':'yellow'}">${esc(x.category)}</span><span class="subtle">${esc(x.date.slice(5).replace('-','/'))} · ${esc(x.time)}</span></div><p>${esc(x.note)}</p></div></div><div class="idea-bottom"><div class="flex"><a class="subtle" href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">${uiIcon("pin","blue",true)} 地圖 ↗</a>${urlSafe(x.url)?`<a class="subtle" href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方 ↗</a>`:''}</div><button type="button" class="btn small ${added?'mint':'sun'}" data-addidea="${x.id}">${added?'＋ 再加入':'＋ 加入行程'}</button></div></article>`}).join('')}
@@ -686,37 +698,68 @@ function dailyTransitSum(d){
  }
  return sum;
 }
+
+const expandedCityCalculators=new Set();
+function cityCalculatorEntries(day){
+ if(!day.cityTransit)day.cityTransit={jpy:'',twd:'',note:''};
+ const t=day.cityTransit;
+ if(!Array.isArray(t.entries)){
+  const old=parsedMoney(t.jpy);
+  t.entries=old===null?[]:[{id:'initial-'+day.date,sign:1,amount:old,note:'原填當日金額'}];
+ }
+ return t.entries;
+}
+const cityCalcTotal=day=>Math.round(cityCalculatorEntries(day).reduce((v,x)=>v+(x.sign===-1?-1:1)*Number(x.amount||0),0)*100)/100;
+function appendCityCalc(i,sign){
+ const day=state.days[i],container=$('cityTransitCards');if(!day)return;
+ const input=container.querySelector('[data-cityamount="'+i+'"]'),memo=container.querySelector('[data-citymemo="'+i+'"]'),price=parsedMoney(input?.value);
+ if(price===null||price<=0){alert('請輸入正數日圓金額再加上或扣除。');return}
+ const old=cityCalcTotal(day);if(sign<0&&price>old){alert('不能扣除超過當天已累計的金額。');return}
+ cityCalculatorEntries(day).push({id:mkId(),sign,amount:price,note:String(memo?.value||'').trim()});
+ day.cityTransit.jpy=String(Math.round((old+sign*price)*100)/100);
+ expandedCityCalculators.add(i);save();renderCityTransit();renderBudget();
+}
+function removeCityCalc(i,id){
+ const day=state.days[i];if(!day)return;const list=cityCalculatorEntries(day);
+ const rest=list.filter(x=>x.id!==id);if(rest.length===list.length)return;
+ const total=rest.reduce((v,x)=>v+(x.sign===-1?-1:1)*Number(x.amount||0),0);
+ if(total<0){alert('刪除此筆會讓當日總額低於 0，請先刪除其他扣款紀錄。');return}
+ day.cityTransit.entries=rest;day.cityTransit.jpy=rest.length?String(Math.round(total*100)/100):'';
+ expandedCityCalculators.add(i);save();renderCityTransit();renderBudget();
+}
 function renderCityTransit(){
- let completed=0;
+ let filled=0;
  $('cityTransitCards').innerHTML=state.days.map((d,i)=>{
-  const v=d.cityTransit||{},sum=dailyTransitSum(d);
-  const done=sum.count>0;if(done)completed++;
-  const amount=!done?'尚未填寫':sum.jpy>0?'¥'+sum.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2}):sum.twd>0?money(sum.twd):'¥0';
-  const converted=sum.pending?'部分 '+money(sum.converted)+'（尚待匯率）':money(sum.converted);
-  return `<article class="daily-transit-entry ${done?'done':''}">
-   <div class="daily-transit-head">
-    <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
-    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>折合台幣 ${esc(converted)}${sum.twd?' · 記錄 '+money(sum.twd):''}</small></div>
-    <button class="btn small ${done?'mint':'sky'}" type="button" data-citydate="${i}">${anyCurrencyFilled(v)?'✎ 編輯':'＋ 填寫'}</button>
-   </div>
-   ${sum.previous.length?`<details class="daily-transit-legacy"><summary>舊版逐段費用 ${sum.previous.length} 筆，已計入總額（如改填整日總額請先移除，避免重複）</summary>
-   ${sum.previous.map(([k,x])=>`<div class="daily-transit-legacy-line"><span>${esc(x.mode||'歷史記錄')} · ${esc(currencySummary(x))}</span><button type="button" class="btn small danger" data-removeoldcity="${i}" data-oldcitykey="${attr(k)}">移除</button></div>`).join('')}</details>`:''}
-  </article>`;
+  const entries=cityCalculatorEntries(d),v=d.cityTransit||{},sum=dailyTransitSum(d);
+  const complete=sum.count>0;if(complete)filled++;
+  const amount=!complete?'尚未填寫':sum.jpy>0?'¥'+sum.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2}):sum.twd>0?money(sum.twd):'¥0';
+  const equiv=sum.pending?'部分 '+money(sum.converted)+'（待匯率）':money(sum.converted);
+  return `<article class="daily-transit-entry ${complete?'done':''}">
+   <div class="daily-transit-head"><div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
+    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>折合台幣 ${esc(equiv)}${sum.twd?' · 實刷 '+money(sum.twd):''}</small></div>
+    <button class="btn small sky" type="button" data-citydate="${i}">台幣補登／備註</button></div>
+   <details class="city-calc" data-calcday="${i}" ${expandedCityCalculators.has(i)?'open':''}>
+    <summary>逐筆加減計算機 · 日圓小計 <strong>¥${cityCalcTotal(d).toLocaleString('zh-TW',{maximumFractionDigits:2})}</strong>（${entries.length} 筆）</summary>
+    <div class="city-calc-inside"><div class="city-calc-inputs">
+     <label>日圓金額<input class="field" type="number" inputmode="decimal" min="0" step="0.01" placeholder="例如 230" data-cityamount="${i}"></label>
+     <label>備註（可留空）<input class="field" type="text" placeholder="例如 市巴士" data-citymemo="${i}"></label></div>
+     <div class="city-calc-actions"><button type="button" class="btn small mint" data-calcaction="plus" data-calcindex="${i}">＋ 加上</button><button type="button" class="btn small ghost" data-calcaction="minus" data-calcindex="${i}">－ 扣除</button></div>
+     <div class="city-calc-history">${entries.length?entries.map(x=>`<div class="city-calc-entry"><span>${x.sign===-1?'－':'＋'} ¥${Number(x.amount||0).toLocaleString('zh-TW',{maximumFractionDigits:2})}${x.note?' · '+esc(x.note):''}</span><button type="button" class="btn small danger" data-calcremove="${i}" data-calckey="${attr(x.id)}">✕</button></div>`).join(''):'<p class="subtle">尚無紀錄，輸入金額後按「＋ 加上」。</p>'}</div>
+    </div>
+   </details>
+   ${sum.previous.length?`<details class="daily-transit-legacy"><summary>舊版逐段費用 ${sum.previous.length} 筆，已計入總額（改填整日總額時請避免重複）</summary>${sum.previous.map(([k,x])=>`<div class="daily-transit-legacy-line"><span>${esc(x.mode||'舊紀錄')} · ${esc(currencySummary(x))}</span><button type="button" class="btn small danger" data-removeoldcity="${i}" data-oldcitykey="${attr(k)}">移除</button></div>`).join('')}</details>`:''}
+   </article>`;
  }).join('');
- $('cityDayProgress').textContent=`已填寫 ${completed} / ${state.days.length} 天；費用自動計入旅費小帳本。`;
- const progress=$('logisticsProgress'),label='市內交通 '+completed+'/'+state.days.length;
- const text=progress.textContent||'';
- progress.textContent=/市內交通 \d+\/\d+/.test(text)?text.replace(/市內交通 \d+\/\d+/,label):text.replace(' · 住宿 ', ' · '+label+' · 住宿 ');
+ $('cityDayProgress').textContent=`已填寫 ${filled} / ${state.days.length} 天；費用自動計入旅費小帳本。`;
+ const progress=$('logisticsProgress'),label='市內交通 '+filled+'/'+state.days.length,t=progress.textContent||'';
+ progress.textContent=/市內交通 \d+\/\d+/.test(t)?t.replace(/市內交通 \d+\/\d+/,label):t.replace(' · 住宿 ',' · '+label+' · 住宿 ');
 }
 function editDailyTransit(index){
- const day=state.days[index];if(!day)return;const x=day.cityTransit||{jpy:'',twd:'',note:''};
- const historical=dailyTransitSum(day).previous.length;
- openModal('🚇 '+DATES[index][1]+' 市內交通費',
- `<p class="currency-help">以日圓記錄當日車資；台幣為選填的實刷金額。兩種都填時以日圓換算計入旅費。</p>${currencyInputs(x)}${textareaField('note','備註（可留空）',x.note||'')}${historical?'<p class="currency-help">本日仍有歷史逐段交通費；填寫今日總額前，請評估是否要刪除舊紀錄避免重複。</p>':''}`,
- o=>{
-  if(['jpy','twd'].some(k=>String(o[k]??'').trim()&&!amountFilled(o[k]))){alert('請輸入正數或 0，尚未確定可留白');return false}
-  day.cityTransit={jpy:String(o.jpy??''),twd:String(o.twd??''),note:o.note||''};return true;
- });
+ const d=state.days[index];if(!d)return;const x=d.cityTransit||{jpy:'',twd:'',note:''};
+ openModal('🚇 '+DATES[index][1]+' 交通費備註',`<p class="currency-help">請在每日計算機逐筆加減日圓；此處僅補登台幣實刷、備註，不會再加一筆日圓。</p>
+ ${inputField('twd','台幣實刷（選填）',currencyField(x,'TWD'),'text','inputmode="decimal" placeholder="例如 580"')}${textareaField('note','交通備註',x.note||'')}`,
+ o=>{if(String(o.twd??'').trim()&&!amountFilled(o.twd)){alert('請填有效台幣數字');return false}
+ d.cityTransit={...d.cityTransit,twd:String(o.twd??''),note:o.note||''};return true});
 }
 function removeOldCity(index,key){
  const d=state.days[index];
@@ -948,9 +991,17 @@ $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day
 $('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
 $('cityTransitCards').addEventListener('click',ev=>{
+ const action=ev.target.closest('[data-calcaction]');
+ if(action)return appendCityCalc(Number(action.dataset.calcindex),action.dataset.calcaction==='minus'?-1:1);
+ const remove=ev.target.closest('[data-calcremove]');
+ if(remove)return removeCityCalc(Number(remove.dataset.calcremove),remove.dataset.calckey);
  const edit=ev.target.closest('[data-citydate]');if(edit)return editDailyTransit(Number(edit.dataset.citydate));
  const old=ev.target.closest('[data-removeoldcity]');if(old)return removeOldCity(Number(old.dataset.removeoldcity),old.dataset.oldcitykey);
 });
+$('cityTransitCards').addEventListener('toggle',ev=>{
+ const d=ev.target?.closest?.('[data-calcday]');if(!d)return;
+ const n=Number(d.dataset.calcday);if(d.open)expandedCityCalculators.add(n);else expandedCityCalculators.delete(n);
+},true);
 $('addRestaurant').addEventListener('click',()=>editRestaurant());
 $('restaurantFilters').addEventListener('click',ev=>{const b=ev.target.closest('[data-restfilter]');if(b){restaurantFilter=b.dataset.restfilter;renderRestaurants()}});
 $('restaurantCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editrestaurant]');if(b)editRestaurant(b.dataset.editrestaurant)});
