@@ -28,9 +28,27 @@ for(const idea of cat.ideaData){
  assert.ok(cat.ideaThemes.includes(idea.category),'未知主題: '+idea.category);
  assert.ok(/^https:\/\//.test(idea.url),'官方／活動來源需要安全連結: '+idea.id);
 }
-const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=').replace(/\nensureTravelWishlists\(\);\n/,'\n')+'\n({shoppingCategories,teaShoppingSeeds})');
+const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=').replace(/\nensureTravelWishlists\(\);\n/,'\n')+'\n({shoppingCategories,teaShoppingSeeds,incenseShoppingSeeds})');
 assert.ok(categoryData.shoppingCategories.includes('日本茶／茶葉'));
 assert.equal(categoryData.teaShoppingSeeds.length,4);
+assert.ok(categoryData.shoppingCategories.includes('香品／線香'));
+assert.equal(categoryData.incenseShoppingSeeds.length,8);
+const uniqueStoreIds=new Set();
+let allIncenseTotal=0;
+for(const shop of categoryData.incenseShoppingSeeds){
+ assert.equal(shop.category,'香品／線香');
+ assert.ok(!uniqueStoreIds.has(shop.id),'Duplicate store id: '+shop.id);
+ uniqueStoreIds.add(shop.id);
+ assert.equal(shop.done,false);
+ assert.ok(shop.title&&shop.note&&shop.shop1&&shop.link1&&shop.link2);
+ const lines=shop.note.split('\\n').filter(s=>s.startsWith('• '));
+ assert.ok(lines.length>=1&&lines.length<=5,'1–5 scents/store: '+shop.id);
+ const costs=lines.map(s=>{const m=s.match(/｜¥([0-9,]+)/);assert.ok(m,'Missing unit price: '+s);return Number(m[1].replace(/,/g,''))});
+ assert.ok(costs.every(n=>n>0&&n<=2000),'Each scent must be <= ¥2,000');
+ assert.equal(costs.reduce((x,y)=>x+y,0),Number(shop.shopPrice1),'Store total must equal sum of scents: '+shop.id);
+ allIncenseTotal+=Number(shop.shopPrice1);
+}
+assert.equal(allIncenseTotal,35050);
 for(const item of categoryData.teaShoppingSeeds){
  assert.ok(item.id&&item.title&&item.note&&item.link1);
  assert.equal(item.category,'日本茶／茶葉');
@@ -38,16 +56,21 @@ for(const item of categoryData.teaShoppingSeeds){
 }
 const ensureSource=between('function ensureTravelWishlists(){','function synchronizedItems(');
 const state={restaurants:[{id:'food1'}],shoppingItems:[{id:'existing',title:'原有購物清單',category:'日用品'}]};
-const migrate=vm.createContext({state,teaShoppingSeeds:categoryData.teaShoppingSeeds});
+const migrate=vm.createContext({state,teaShoppingSeeds:categoryData.teaShoppingSeeds,incenseShoppingSeeds:categoryData.incenseShoppingSeeds});
 vm.runInContext(ensureSource+'\nensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,5,'僅應增加4款茶');
+assert.equal(state.shoppingItems.length,13,'應增加4款茶及8個購香地點');
 assert.equal(state.shoppingItems[0].title,'原有購物清單','原有資料必須保留');
 state.shoppingItems[1].done=true;
 vm.runInContext('ensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,5,'已標記品項不可重複');
+assert.equal(state.shoppingItems.length,13,'已標記品項不可重複');
 const removed=state.shoppingItems.splice(1,1)[0];
 vm.runInContext('ensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,4,'使用者刪除後不可復活: '+removed.id);
+assert.equal(state.shoppingItems.length,12,'使用者刪除後不可復活: '+removed.id);
+const incenseRemoved=state.shoppingItems.find(x=>x.id==='incense-store-lisn');
+state.shoppingItems=state.shoppingItems.filter(x=>x.id!==incenseRemoved.id);
+vm.runInContext('ensureTravelWishlists()',migrate);
+assert.equal(state.shoppingItems.length,11,'刪除的香舖不應重複出現');
+assert.equal(state.shoppingItems.filter(x=>x.category==='香品／線香').length,7);
 const els={ideaFilters:{innerHTML:''},ideaGrid:{innerHTML:''},ideaCount:{textContent:''}};
 const renderer=between('function renderIdeas(){','function renderIntercity(){');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -66,4 +89,4 @@ ctx.ideaSearch='綾鷹';
 vm.runInContext('renderIdeas()',ctx);
 assert.match(els.ideaGrid.innerHTML,/綾鷹/);
 assert.doesNotMatch(els.ideaGrid.innerHTML,/福壽園・宇治茶工房/);
-console.log('PASS: 內嵌 JS 語法／55 筆8主題／舊 ID／各欄位／主題及文字篩選／購物清單遷移、勾選與刪除保留');
+console.log('PASS: 內嵌 JS 語法／55 筆8主題／舊 ID／各欄位／主題及文字篩選／購物與線香分類價格總和、遷移與刪除保留');
