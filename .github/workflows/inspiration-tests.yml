@@ -5,6 +5,7 @@ on:
       - feature/kyoto-themed-inspiration-2026
       - feature/foldable-sessions-2026
       - feature/incense-shopping-by-store-2026
+      - feature/curated-itinerary-safe-cloud-import-2026
   pull_request:
     paths:
       - 'index.html'
@@ -29,6 +30,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kyoto-foldable-ui-screenshots
+          name: kyoto-curated-itinerary-ui-screenshots
           path: test-artifacts/
           if-no-files-found: ignore
