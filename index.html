@@ -585,6 +585,55 @@ function renderIntercity(){
  $('logisticsProgress').textContent=`航班 ${state.flights.filter(f=>evaluateCard('flight',f).complete).length}/2 · 城際交通 ${confirmed}/3 · 住宿 ${state.stays.filter(s=>evaluateCard('stay',s).complete).length}/2`;
 }
 
+
+/* The only new urban-transport input is a daily total. Existing paid route records remain as a separate legacy record. */
+function dailyTransitSum(d){
+ const previous=Object.entries(d.transfers||{}).filter(([,x])=>anyCurrencyFilled(x));
+ const entries=[d.cityTransit||{},...previous.map(([,v])=>v)];
+ const sum={jpy:0,twd:0,converted:0,pending:0,count:0,previous};
+ for(const e of entries){
+  const n=normalizedCost(e);if(n.yen===null&&n.twd===null)continue;
+  sum.count++;if(n.yen!==null)sum.jpy+=n.yen;if(n.twd!==null)sum.twd+=n.twd;
+  if(n.converted!==null)sum.converted+=n.converted;else sum.pending++;
+ }
+ return sum;
+}
+function renderCityTransit(){
+ let completed=0;
+ $('cityTransitCards').innerHTML=state.days.map((d,i)=>{
+  const v=d.cityTransit||{},sum=dailyTransitSum(d);
+  const done=sum.count>0;if(done)completed++;
+  const amount=!done?'尚未填寫':sum.jpy>0?'¥'+sum.jpy.toLocaleString('zh-TW',{maximumFractionDigits:2}):sum.twd>0?money(sum.twd):'¥0';
+  const converted=sum.pending?'部分 '+money(sum.converted)+'（尚待匯率）':money(sum.converted);
+  return `<article class="daily-transit-entry ${done?'done':''}">
+   <div class="daily-transit-head">
+    <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
+    <div class="daily-transit-amount"><b>${esc(amount)}</b><small>折合台幣 ${esc(converted)}${sum.twd?' · 記錄 '+money(sum.twd):''}</small></div>
+    <button class="btn small ${done?'mint':'sky'}" type="button" data-citydate="${i}">${anyCurrencyFilled(v)?'✎ 編輯':'＋ 填寫'}</button>
+   </div>
+   ${sum.previous.length?`<details class="daily-transit-legacy"><summary>舊版逐段費用 ${sum.previous.length} 筆，已計入總額（如改填整日總額請先移除，避免重複）</summary>
+   ${sum.previous.map(([k,x])=>`<div class="daily-transit-legacy-line"><span>${esc(x.mode||'歷史記錄')} · ${esc(currencySummary(x))}</span><button type="button" class="btn small danger" data-removeoldcity="${i}" data-oldcitykey="${attr(k)}">移除</button></div>`).join('')}</details>`:''}
+  </article>`;
+ }).join('');
+ $('cityDayProgress').textContent=`已填寫 ${completed} / ${state.days.length} 天；費用自動計入旅費小帳本。`;
+ $('logisticsProgress').textContent=$('logisticsProgress').textContent.replace(/市內交通 \d+\/\d+/,`市內交通 ${completed}/${state.days.length}`);
+}
+function editDailyTransit(index){
+ const day=state.days[index];if(!day)return;const x=day.cityTransit||{jpy:'',twd:'',note:''};
+ const historical=dailyTransitSum(day).previous.length;
+ openModal('🚇 '+DATES[index][1]+' 市內交通費',
+ `<p class="currency-help">以日圓記錄當日車資；台幣為選填的實刷金額。兩種都填時以日圓換算計入旅費。</p>${currencyInputs(x)}${textareaField('note','備註（可留空）',x.note||'')}${historical?'<p class="currency-help">本日仍有歷史逐段交通費；填寫今日總額前，請評估是否要刪除舊紀錄避免重複。</p>':''}`,
+ o=>{
+  if(['jpy','twd'].some(k=>String(o[k]??'').trim()&&!amountFilled(o[k]))){alert('請輸入正數或 0，尚未確定可留白');return false}
+  day.cityTransit={jpy:String(o.jpy??''),twd:String(o.twd??''),note:o.note||''};return true;
+ });
+}
+function removeOldCity(index,key){
+ const d=state.days[index];
+ if(!d?.transfers||!Object.prototype.hasOwnProperty.call(d.transfers,key))return;
+ if(!confirm('確定移除此筆歷史市內交通費嗎？它也會從旅費總額中扣除。'))return;
+ delete d.transfers[key];save();rerender();toast('已移除歷史交通費');
+}
 function renderPurchases(){
  const cards=k=>(state.purchases||[]).filter(p=>p.kind===k).map(p=>`<article class="spending-item ${hasText(p.title)&&anyCurrencyFilled(p)?'card-complete':'card-incomplete'}"><div class="spending-item-body"><strong>${esc(p.title||'未命名')}</strong><small>${hasText(p.title)&&anyCurrencyFilled(p)?'✓ 資料完整':'✎ 名稱或費用尚待補齊'}</small><small>${esc(p.date||'日期未填')}</small><span class="spending-cost">${esc(currencySummary(p))}</span></div><button class="btn small" type="button" data-editpurchase="${attr(p.id)}">編輯</button></article>`).join('')||'<div class="empty">尚無紀錄，點「新增」即可開始。</div>';
  $('diningList').innerHTML=cards('餐飲');$('shoppingList').innerHTML=cards('購物');
@@ -734,6 +783,10 @@ $('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待�
 $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day]');if(el)switchDay(Number(el.dataset.day))});$('prevDay').addEventListener('click',()=>switchDay(currentDay-1));$('nextDay').addEventListener('click',()=>switchDay(currentDay+1));$('addEvent').addEventListener('click',()=>editEvent());
 $('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
+$('cityTransitCards').addEventListener('click',ev=>{
+ const edit=ev.target.closest('[data-citydate]');if(edit)return editDailyTransit(Number(edit.dataset.citydate));
+ const old=ev.target.closest('[data-removeoldcity]');if(old)return removeOldCity(Number(old.dataset.removeoldcity),old.dataset.oldcitykey);
+});
 $('addDining').addEventListener('click',()=>editPurchase('餐飲'));$('addShopping').addEventListener('click',()=>editPurchase('購物'));
 for(const id of ['diningList','shoppingList'])$(id).addEventListener('click',e=>{const b=e.target.closest('[data-editpurchase]');if(b)editPurchase(id==='diningList'?'餐飲':'購物',b.dataset.editpurchase)});
 $('intercityCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editintercity]');if(b)editIntercity(Number(b.dataset.editintercity))});
