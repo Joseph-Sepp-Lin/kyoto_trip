@@ -28,7 +28,7 @@ for(const idea of cat.ideaData){
  assert.ok(cat.ideaThemes.includes(idea.category),'未知主題: '+idea.category);
  assert.ok(/^https:\/\//.test(idea.url),'官方／活動來源需要安全連結: '+idea.id);
 }
-const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=')+'\n({shoppingCategories,teaShoppingSeeds})');
+const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=').replace(/\nensureTravelWishlists\(\);\n/,'\n')+'\n({shoppingCategories,teaShoppingSeeds})');
 assert.ok(categoryData.shoppingCategories.includes('日本茶／茶葉'));
 assert.equal(categoryData.teaShoppingSeeds.length,4);
 for(const item of categoryData.teaShoppingSeeds){
