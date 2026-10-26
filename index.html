@@ -397,6 +397,7 @@ migrateTripCalendar();
 adoptLegacyCosts();
 ensureIntercityData();
 migrateLedger();
+migrateCityTransitLines();
 const $=id=>document.getElementById(id);
 const money=n=>'NT$'+(Number(n)||0).toLocaleString('zh-TW',{maximumFractionDigits:0});
 
@@ -513,8 +514,11 @@ const ledgerRecords=()=>{
  state.intercity.forEach(x=>out.push({category:'城際交通',item:x}));
  state.days.forEach(d=>{
   d.events.forEach(x=>out.push({category:'活動／門票',item:x}));
-  out.push({category:'市內交通',item:d.cityTransit||{jpy:'',twd:''}});
-  for(const x of Object.values(d.transfers||{}))if(anyCurrencyFilled(x))out.push({category:'市內交通',item:x});
+  const lines=Array.isArray(d.cityTransitLines)?d.cityTransitLines:[];
+  const historical=Object.values(d.transfers||{}).filter(x=>anyCurrencyFilled(x));
+  if(!lines.length&&!historical.length)out.push({category:'市內交通',item:{jpy:'',twd:''}});
+  for(const line of lines)out.push({category:'市內交通',item:line,factor:line.op==='-'?-1:1});
+  for(const item of historical)out.push({category:'市內交通',item});
  });
  (state.purchases||[]).forEach(x=>out.push({category:x.kind||'其他',item:x}));
  if(amountFilled(state.otherJPY)||amountFilled(state.otherTWD))out.push({category:'其他',item:{jpy:state.otherJPY??'',twd:state.otherTWD??''}});
@@ -604,6 +608,18 @@ function renderIntercity(){
 
 
 /* The only new urban-transport input is a daily total. Existing paid route records remain as a separate legacy record. */
+
+function migrateCityTransitLines(){
+ for(const d of state.days){
+  if(Array.isArray(d.cityTransitLines))continue;
+  d.cityTransitLines=[];
+  const prior=d.cityTransit||{};
+  const jpy=prior.jpy??'',twd=Object.prototype.hasOwnProperty.call(prior,'twd')?prior.twd:(prior.price??'');
+  if(String(jpy).trim()||String(twd).trim())d.cityTransitLines.push({
+   id:mkId(),op:'+',jpy:String(jpy),twd:String(twd),memo:prior.note||'原每日市內交通費'
+  });
+ }
+}
 function dailyTransitSum(d){
  const previous=Object.entries(d.transfers||{}).filter(([,x])=>anyCurrencyFilled(x));
  const entries=[d.cityTransit||{},...previous.map(([,v])=>v)];
@@ -690,13 +706,13 @@ function renderTodos(){const done=state.todos.filter(t=>t.done).length,total=sta
 function renderBudget(){
  const keys=['機票','住宿','城際交通','活動／門票','市內交通','餐飲','購物','其他'];
  const rows=new Map(keys.map(k=>[k,{jpy:0,twd:0,converted:0,missingRate:0,missingAmount:0}]));
- for(const {category,item} of ledgerRecords()){
+ for(const {category,item,factor=1} of ledgerRecords()){
   if(!rows.has(category))rows.set(category,{jpy:0,twd:0,converted:0,missingRate:0,missingAmount:0});
   const x=rows.get(category),v=normalizedCost(item);
   if(v.yen===null&&v.twd===null){x.missingAmount++;continue}
-  if(v.yen!==null)x.jpy+=v.yen;
-  if(v.twd!==null)x.twd+=v.twd;
-  if(v.converted!==null)x.converted+=v.converted;else x.missingRate++;
+  if(v.yen!==null)x.jpy+=factor*v.yen;
+  if(v.twd!==null)x.twd+=factor*v.twd;
+  if(v.converted!==null)x.converted+=factor*v.converted;else x.missingRate++;
  }
  const summary=[...rows.values()].reduce((x,y)=>({jpy:x.jpy+y.jpy,twd:x.twd+y.twd,converted:x.converted+y.converted,missingRate:x.missingRate+y.missingRate,missingAmount:x.missingAmount+y.missingAmount}),{jpy:0,twd:0,converted:0,missingRate:0,missingAmount:0});
  $('budgetActual').textContent=money(summary.converted)+(summary.missingRate?' ＋':'');
@@ -797,8 +813,8 @@ function exportHTML(){
  download(html,'index.html','text/html;charset=utf-8');toast('已下載可公開部署的 index.html（不含私人行程）');
 }
 $('exportJSON').addEventListener('click',exportJSON);$('exportHTML').addEventListener('click',exportHTML);
-$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
-$('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);migrateLedger();currentDay=0;save();rerender();toast('已重設示範資料')});
+$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();migrateCityTransitLines();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
+$('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);migrateLedger();migrateCityTransitLines();currentDay=0;save();rerender();toast('已重設示範資料')});
 $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day]');if(el)switchDay(Number(el.dataset.day))});$('prevDay').addEventListener('click',()=>switchDay(currentDay-1));$('nextDay').addEventListener('click',()=>switchDay(currentDay+1));$('addEvent').addEventListener('click',()=>editEvent());
 $('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
@@ -830,7 +846,7 @@ window.KyotoPlanner={
  read:()=>clone(state),
  valid:verifyData,
  seed:()=>clone(seedData),
- show:(data)=>{if(!verifyData(data))return false;state=clone(data);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();rerender();return true},
+ show:(data)=>{if(!verifyData(data))return false;state=clone(data);migrateTripCalendar();adoptLegacyCosts();ensureIntercityData();migrateLedger();migrateCityTransitLines();rerender();return true},
  oldDraft:()=>{try{let d=JSON.parse(localStorage.getItem(namespace));return verifyData(d)?d:null}catch{return null}},
  setCloudStatus:(message,detail='',tone='')=>{
   $('cloudStatus').textContent=message+(detail?'｜'+detail:'');
