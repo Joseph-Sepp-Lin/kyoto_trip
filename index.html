@@ -1225,7 +1225,7 @@ function revealSectionForHash(hash=location.hash,scroll=false){
   const drawer=target.querySelector(':scope > details.session-drawer,:scope > details.logistics-drawer');
   if(drawer)drawer.open=true;
  }
- if(scroll)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));
+ if(scroll)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'auto'}));
 }
 document.addEventListener('click',ev=>{const a=ev.target.closest('a[href^="#"]');if(a)revealSectionForHash(a.getAttribute('href'),true)});
 window.addEventListener('hashchange',()=>revealSectionForHash(location.hash,true));
