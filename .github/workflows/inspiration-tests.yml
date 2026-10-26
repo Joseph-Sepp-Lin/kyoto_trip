@@ -1,8 +1,9 @@
-name: Kyoto inspiration checks
+name: Kyoto travel app checks
 on:
   push:
     branches:
       - feature/kyoto-themed-inspiration-2026
+      - feature/foldable-sessions-2026
   pull_request:
     paths:
       - 'index.html'
@@ -27,6 +28,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kyoto-themed-ui-screenshots
+          name: kyoto-foldable-ui-screenshots
           path: test-artifacts/
           if-no-files-found: ignore
