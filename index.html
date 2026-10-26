@@ -225,7 +225,7 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 
 .restaurant-card{padding:16px;display:flex;flex-direction:column;gap:9px}
 .restaurant-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.restaurant-card h3{font-size:18px;line-height:1.35;margin:2px 0}
+.restaurant-card h3{font-size:18px;line-height:1.35;margin:2px 0}.restaurant-plan{align-self:flex-start}
 .restaurant-dish,.restaurant-note{font-size:13px;line-height:1.6;margin:0;overflow-wrap:anywhere}
 .restaurant-note{color:#596874;white-space:pre-wrap}
 .restaurant-links{display:flex;gap:9px;flex-wrap:wrap;margin-top:auto;padding-top:10px;border-top:1px dashed #B8C8C9}
@@ -784,7 +784,7 @@ function renderRestaurants(){
    ${r.dish?`<p class="restaurant-dish">🍽 想吃：${esc(r.dish)}</p>`:''}
    ${r.area?`<p class="subtle">📍 ${esc(r.area)}</p>`:''}
    ${r.note?`<p class="restaurant-note">${esc(r.note)}</p>`:''}
-   <div class="restaurant-links"><a href="${attr(mapUrl)}" target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href="${attr(tabelogUrl)}" target="_blank" rel="noopener noreferrer">${r.tabelogUrl?'Tabelog 店家頁 ↗':'Tabelog 搜尋 ↗'}</a>${urlSafe(r.url)?`<a href="${attr(urlSafe(r.url))}" target="_blank" rel="noopener noreferrer">推薦連結 ↗</a>`:''}</div>
+   <div class="restaurant-links"><a href="${attr(mapUrl)}" target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href="${attr(tabelogUrl)}" target="_blank" rel="noopener noreferrer">${r.tabelogUrl?'Tabelog 店家頁 ↗':'Tabelog 搜尋 ↗'}</a>${urlSafe(r.url)?`<a href="${attr(urlSafe(r.url))}" target="_blank" rel="noopener noreferrer">推薦連結 ↗</a>`:''}</div><button class="btn small sky restaurant-plan" type="button" data-planrestaurant="${attr(r.id)}">＋ 排入每日散策</button>
   </article>`;
  }).join(''):'<div class="empty">還沒有餐廳收藏，點「收藏餐廳／料理」建立第一筆。</div>';
 }
@@ -1004,7 +1004,14 @@ $('cityTransitCards').addEventListener('toggle',ev=>{
 },true);
 $('addRestaurant').addEventListener('click',()=>editRestaurant());
 $('restaurantFilters').addEventListener('click',ev=>{const b=ev.target.closest('[data-restfilter]');if(b){restaurantFilter=b.dataset.restfilter;renderRestaurants()}});
-$('restaurantCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editrestaurant]');if(b)editRestaurant(b.dataset.editrestaurant)});
+$('restaurantCards').addEventListener('click',ev=>{
+ const plan=ev.target.closest('[data-planrestaurant]');
+ if(plan){
+  const r=state.restaurants.find(x=>x.id===plan.dataset.planrestaurant);if(!r)return;
+  return editEvent(null,{title:r.name||r.dish||'餐廳',place:[r.name,r.area].filter(Boolean).join(' '),note:[r.dish?'想吃：'+r.dish:'',r.note||''].filter(Boolean).join(' · '),url:r.tabelogUrl||r.url||'',time:''});
+ }
+ const b=ev.target.closest('[data-editrestaurant]');if(b)editRestaurant(b.dataset.editrestaurant);
+});
 $('addShoppingItem').addEventListener('click',()=>editShoppingItem());
 $('shoppingChecklist').addEventListener('click',ev=>{
  const add=ev.target.closest('[data-addshopcat]');if(add)return editShoppingItem(null,add.dataset.addshopcat);
