@@ -311,6 +311,40 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .theme-detail-content{padding:1px 12px 13px;border-top:1px dashed #CDD4CC;display:grid;gap:9px}.theme-detail-content p{margin:9px 0 0!important;display:grid;gap:3px;font-size:12px}.theme-detail-content strong{font-size:11px;color:#526C70}.theme-detail-content span{line-height:1.6;color:#4C4C4A;overflow-wrap:anywhere}
 .idea-link-row{gap:8px}.idea-link-row a{font-size:11px;font-weight:800;text-underline-offset:2px}.theme-idea .idea-bottom{gap:11px}
 @media(max-width:480px){.idea-search-bar{flex-wrap:wrap}.idea-search-bar .subtle{margin-left:auto}.theme-idea .idea-bottom .btn{width:100%}}
+
+/* Two-level collapsible sections. Native details/summary preserves keyboard, touch and screen reader operation. */
+.session-drawer{margin-top:14px;background:#F1F5F7;border:2px solid var(--ink);border-radius:22px;box-shadow:3px 3px 0 var(--ink);overflow:hidden;min-width:0}
+.session-drawer>summary{list-style:none;cursor:pointer;min-height:86px;display:flex;align-items:center;gap:14px;padding:18px 20px}
+.session-drawer>summary::-webkit-details-marker,.shop-category-fold>summary::-webkit-details-marker,.settings-subdrawer>summary::-webkit-details-marker{display:none}
+.session-toggle-icon{flex:none;width:49px;height:49px;border:2px solid var(--ink);border-radius:14px;background:#DDE9EC;display:grid;place-items:center;font-size:25px}
+.session-summary-text{display:flex;flex:1;min-width:0;flex-direction:column;gap:6px}
+.session-summary-text strong{font-size:18px;line-height:1.3;color:var(--ink)}
+.session-summary-text small{font-size:12px;color:var(--sub);line-height:1.5}
+.session-cta{display:flex;align-items:center;gap:5px;white-space:nowrap;color:#426781;font-size:13px;font-weight:850}
+.session-chevron,.shop-fold-chevron,.settings-subtoggle>span{display:inline-block;transition:transform .2s}
+.session-drawer[open] .session-chevron,.shop-category-fold[open] .shop-fold-chevron,.settings-subdrawer[open] .settings-subtoggle>span{transform:rotate(180deg)}
+.session-drawer[open]>.session-toggle{background:#E4EDF0;border-bottom:1px dashed #9EAFBA}
+.session-inner{padding:17px 15px 19px;min-width:0}
+.session-inner .days-top{margin-top:2px}
+.session-inner .before-fold-grid{margin:0}
+.session-inner .shopping-category-grid{margin:0}
+.session-toggle:focus-visible,.shop-category-fold>summary:focus-visible,.settings-subtoggle:focus-visible{outline:3px solid #426781;outline-offset:-4px}
+.shop-category-fold{padding:0!important;overflow:hidden;min-width:0}
+.shop-category-fold>summary{padding:16px;list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px}
+.shop-category-fold>summary>div{flex:1;min-width:0}
+.shop-fold-chevron{color:#426781;font-size:22px;font-weight:850}
+.shop-category-fold[open]>summary{background:#E7F0EE;border-bottom:1px dashed #B8C7CC}
+.shop-category-content{padding:2px 16px 16px}
+.shop-category-actions{display:flex;justify-content:flex-end;margin-top:12px}
+.shop-category-content .shopping-items{margin-top:4px}
+.settings-subdrawer{background:#F1F5F7;border:1.5px solid #AEC0C9;border-radius:14px;overflow:hidden;margin-bottom:12px}
+.settings-subtoggle{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;font-weight:850;font-size:15px;cursor:pointer}
+.settings-subdrawer[open]>.settings-subtoggle{background:#E6EFF2;border-bottom:1px dashed #B3C4CB}
+.settings-subinner{padding:0 12px 14px}
+.settings-subinner>.section{margin:10px 0 0;padding:0}
+.settings-subinner>.section>.sect-head{display:none}
+@media(max-width:600px){.session-drawer>summary{padding:14px 12px;gap:10px;min-height:78px}.session-toggle-icon{width:41px;height:41px;font-size:21px}.session-summary-text strong{font-size:16px}.session-summary-text small{font-size:11px}.session-cta{font-size:12px}.session-cta-label{display:none}.session-inner{padding:14px 10px 16px}}
+@media(prefers-reduced-motion:reduce){.session-chevron,.shop-fold-chevron,.settings-subtoggle>span{transition:none}}
 </style>
 </head>
 <body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
@@ -329,29 +363,59 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 </section>
 <section id="before-trip" class="section journey-before">
  <div class="journey-phase-heading"><span class="phase-no">01 / BEFORE THE JOURNEY</span><h2>出發前</h2></div>
+ <details class="session-drawer" id="before-tripDrawer" data-session="before-trip">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">📋</span><span class="session-summary-text"><strong>行前準備總覽</strong><small>待補資訊與出發清單，展開後可再逐項查閱</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
  <div class="before-fold-grid">
   <details class="before-fold"><summary><span><strong>📌 還有什麼要補</strong><small>展開待補資訊</small></span><span aria-hidden="true">⌄</span></summary><div class="before-fold-inside"><section id="missing" class="section"><div class="sect-head"><div><p class="eyebrow">01 / FILL IN LATER</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-pin"></use></svg> 還有什麼要補</h2><p class="description">根據已填資料即時整理缺口，逐步補上就好。</p></div><span class="chip pink" id="missingCount">待補 0 項</span></div><div class="missing-list" id="missingList"></div></section>
 </div></details>
   <details class="before-fold"><summary><span><strong>✅ 出發小清單</strong><small>展開出發前待辦</small></span><span aria-hidden="true">⌄</span></summary><div class="before-fold-inside"><section id="todos" class="section"><div class="sect-head"><div><p class="eyebrow">02 / BEFORE WE GO</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-check"></use></svg> 出發小清單</h2><p class="description">登入後跨裝置同步；同步期間會先保留本機暫存。</p></div></div><div class="card todo-section"><div class="todo-title"><h3>行前準備進度</h3><span class="chip green" id="todoProgressLabel">0 / 0 完成</span></div><div class="progress" role="progressbar" aria-label="待辦完成比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="todoBar"><div class="progress-fill" id="todoProgressFill" style="width:0%"></div></div><div class="todo-list" id="todoList"></div><form class="add-todo" id="todoForm"><input class="field" id="todoInput" required maxlength="120" aria-label="新增待辦事項" placeholder="例如：預訂知恩院除夜鐘門票"><button class="btn mint" type="submit">＋ 加入</button></form></div></section>
 </div></details>
  </div>
+
+ </div>
+ </details>
 </section>
 <div id="during-trip" class="journey-phase-heading"><span class="phase-no">02 / ON THE JOURNEY</span><h2>旅行中</h2></div>
-<section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">01 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">點日期切換，直接增刪改時間軸行程；活動時間請以主辦單位公告為準。</p></div><button class="btn primary" id="addEvent">＋ 新增行程</button></div><div class="days-top"><button class="btn icon ghost" id="prevDay" aria-label="前一天">‹</button><div class="days" id="dayTabs" role="tablist" aria-label="行程日期"></div><button class="btn icon ghost" id="nextDay" aria-label="後一天">›</button></div><div class="card day-panel" id="dayPanel" role="tabpanel"></div></section>
-<section id="ideas" class="section"><div class="sect-head"><div><p class="eyebrow">02 / LITTLE DISCOVERIES</p><h2><svg class="ui-line  ink-red" aria-hidden="true"><use href="#u-flower"></use></svg> 京都靈感抽屜</h2><p class="description">依市集、寺社、茶、香、影視與藝文分類收藏；展開卡片可看營業日、官方公告與注意事項，再加入每日行程。</p></div></div><div class="idea-search-bar"><input id="ideaSearch" class="field" type="search" placeholder="搜尋景點、香舖、宇治茶或作品名稱" aria-label="搜尋靈感"><span id="ideaCount" class="subtle"></span></div><div class="inspo-head theme-filters" id="ideaFilters"></div><div class="inspo-grid" id="ideaGrid"></div><p class="description" style="margin-top:12px">＊清單中的時間為初步參考；門票、營業日與是否需預約，出發前請再向官方查核。</p></section>
+<section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">01 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">點日期切換，直接增刪改時間軸行程；活動時間請以主辦單位公告為準。</p></div><button class="btn primary" id="addEvent">＋ 新增行程</button></div><details class="session-drawer" id="itineraryDrawer" data-session="itinerary">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🗓️</span><span class="session-summary-text"><strong>每日行程時間軸</strong><small>選擇旅行日期、編輯景點與交通安排</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
+ <div class="days-top"><button class="btn icon ghost" id="prevDay" aria-label="前一天">‹</button><div class="days" id="dayTabs" role="tablist" aria-label="行程日期"></div><button class="btn icon ghost" id="nextDay" aria-label="後一天">›</button></div><div class="card day-panel" id="dayPanel" role="tabpanel"></div>
+ </div>
+ </details>
+</section>
+<section id="ideas" class="section"><div class="sect-head"><div><p class="eyebrow">02 / LITTLE DISCOVERIES</p><h2><svg class="ui-line  ink-red" aria-hidden="true"><use href="#u-flower"></use></svg> 京都靈感抽屜</h2><p class="description">依市集、寺社、茶、香、影視與藝文分類收藏；展開卡片可看營業日、官方公告與注意事項，再加入每日行程。</p></div></div><details class="session-drawer" id="ideasDrawer" data-session="ideas">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🌸</span><span class="session-summary-text"><strong>京都探索與收藏</strong><small>八大主題・55 筆推薦・搜尋與加入行程</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
+ <div class="idea-search-bar"><input id="ideaSearch" class="field" type="search" placeholder="搜尋景點、香舖、宇治茶或作品名稱" aria-label="搜尋靈感"><span id="ideaCount" class="subtle"></span></div><div class="inspo-head theme-filters" id="ideaFilters"></div><div class="inspo-grid" id="ideaGrid"></div><p class="description" style="margin-top:12px">＊清單中的時間為初步參考；門票、營業日與是否需預約，出發前請再向官方查核。</p>
+ </div>
+ </details>
+</section>
 <section id="restaurants" class="section">
  <div class="sect-head"><div><p class="eyebrow">FOOD / TASTE OF KYOTO</p><h2>🍜 要吃什麼</h2>
  <p class="description">收藏想去的餐廳、想吃的料理，隨時開啟 Google Maps 與 Tabelog。</p></div><button class="btn mint" id="addRestaurant" type="button">＋ 收藏餐廳／料理</button></div>
+ <details class="session-drawer" id="restaurantsDrawer" data-session="restaurants">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🍜</span><span class="session-summary-text"><strong>餐飲願望與花費</strong><small>查看餐廳收藏、分類與已消費紀錄</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
  <div id="restaurantFilters" class="inspo-head"></div><div id="restaurantCards" class="restaurant-grid"></div>
  <details class="spending-fold"><summary>🍡 已消費餐飲紀錄 <span class="subtle">查看／新增實際花費</span></summary>
  <div class="spending-head"><h3>餐飲實際支出</h3><button class="btn small mint" id="addDining" type="button">＋ 新增餐費</button></div><div id="diningList" class="spending-list"></div></details>
+
+ </div>
+ </details>
 </section>
 <section id="shopping" class="section">
  <div class="sect-head"><div><p class="eyebrow">SHOPPING / TO-BUY LIST</p><h2>🛍️ 要買什麼</h2>
  <p class="description">按照購物類別建立清單，保存推薦連結和 2–3 個購買地點的價格，比較後再決定在哪裡買。</p></div><button class="btn sky" id="addShoppingItem" type="button">＋ 新增採購項目</button></div>
+ <details class="session-drawer" id="shoppingDrawer" data-session="shopping">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🛍️</span><span class="session-summary-text"><strong>旅行採購與比價</strong><small>分品類查看商品、茶葉推薦與購物支出</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
  <div id="shoppingChecklist" class="shopping-category-grid"></div>
  <details class="spending-fold"><summary>🧾 已消費購物紀錄 <span class="subtle">查看／新增實際花費</span></summary>
  <div class="spending-head"><h3>購物實際支出</h3><button class="btn small sky" id="addShopping" type="button">＋ 新增購物支出</button></div><div id="shoppingList" class="spending-list"></div></details>
+
+ </div>
+ </details>
 </section>
 <section id="travel-logistics" class="section">
  <div class="sect-head"><div><p class="eyebrow">05 / TRAVEL ESSENTIALS</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 交通與住宿</h2><p class="description">機票、城際交通、市內交通與住宿集中在這裡；市內交通依日期記錄，不需要逐站規劃。</p></div></div>
@@ -388,16 +452,29 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 </section>
 <div id="after-trip" class="journey-phase-heading"><span class="phase-no">03 / AFTER THE JOURNEY</span><h2>旅行後</h2></div>
 <section id="budget" class="section"><div class="sect-head"><div><p class="eyebrow">06 / TRAVEL EXPENSES</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-money"></use></svg> 旅費小帳本</h2><p class="description">由機票、住宿、交通、每日行程、餐飲及購物自動彙整。只有「其他」在此直接輸入調整；僅填台幣就直接計入；僅填日幣則依匯率換算；雙幣都有則採台幣實際紀錄，日幣僅供參考。</p></div></div>
-<div class="card finance"><div class="fx-toolbar"><div><strong>每日匯率</strong><p id="fxStatus" class="subtle">讀取中…</p></div><button id="refreshFX" type="button" class="btn small sky">↻ 更新匯率</button></div>
+<details class="session-drawer" id="budgetDrawer" data-session="budget">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">💴</span><span class="session-summary-text"><strong>旅費統計與匯率</strong><small>自動彙總交通、餐飲、購物及其他費用</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
+ <div class="card finance"><div class="fx-toolbar"><div><strong>每日匯率</strong><p id="fxStatus" class="subtle">讀取中…</p></div><button id="refreshFX" type="button" class="btn small sky">↻ 更新匯率</button></div>
 <details class="fx-manual"><summary>網路匯率無法使用？手動填寫換算匯率</summary><label class="field-label">每 1 JPY 可兌換多少 TWD<input class="field" type="number" id="fxManualRate" step="0.00001" min="0" placeholder="選填，若留白則使用公開匯率"></label></details>
 <div class="finance-totals"><div class="money-total"><small>累計台幣實際花費</small><strong id="budgetActual">NT$0</strong>
 <div class="currency-totals"><span>日幣花費 <b id="budgetJpy">¥0</b></span><span>台幣紀錄（含實刷） <b id="budgetTwdRecorded">NT$0</b></span></div>
 <small id="expenseCoverage" class="expense-coverage"></small></div></div>
 <div class="budget-scroll"><table class="budget-table currency-table"><thead><tr><th>分類</th><th>日幣記錄</th><th>台幣記錄</th><th>計入總額（TWD）</th></tr></thead><tbody id="budgetRows"></tbody></table></div>
 <div class="other-adjust"><h3>其他｜費用調整</h3><p class="description">此為旅費帳本唯一的手動調整欄位；其他費用請從來源卡片填入。</p><div class="form-2"><label class="field-label">日幣 JPY<input class="field" id="otherJPY" type="number" step="0.01" min="0" placeholder="¥0"></label><label class="field-label">台幣 TWD<input class="field" id="otherTWD" type="number" step="0.01" min="0" placeholder="NT$0"></label></div></div>
-</div></section>
-<section id="notes" class="section"><div class="sect-head"><div><p class="eyebrow">07 / SCRAPBOOK</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-note"></use></svg> 旅行備忘錄</h2><p class="description">想去的咖啡店、餐廳、伴手禮，甚至旅途中的心得都可以先寫在這。</p></div></div><div class="card note-card"><label for="freeNotes" class="strong" style="display:block;margin-bottom:11px">我的京都小筆記</label><textarea id="freeNotes" class="field" placeholder="例如：想找京都特別的咖啡館、冬季限定和菓子、古董市集……"></textarea><div class="subtle" style="margin-top:8px">輸入時自動儲存，不需額外按儲存。</div></div></section>
-<details class="folded-tools" id="accountSettings"><summary class="folded-tools-title">⚙ 個人設定・Google 同步與資料備份 <span class="subtle">點選展開</span></summary><div class="folded-tools-content"><section id="sync" class="section"><div class="sect-head"><div><p class="eyebrow">09 / ACROSS YOUR DEVICES</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg> 雲端同步工作室</h2><p class="description">GitHub Pages 放網站，Firebase 儲存私人旅行資料。登入相同 Google 帳號就能在手機、電腦接續規劃。</p></div></div>
+</div>
+ </div>
+ </details>
+</section>
+<section id="notes" class="section"><div class="sect-head"><div><p class="eyebrow">07 / SCRAPBOOK</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-note"></use></svg> 旅行備忘錄</h2><p class="description">想去的咖啡店、餐廳、伴手禮，甚至旅途中的心得都可以先寫在這。</p></div></div><details class="session-drawer" id="notesDrawer" data-session="notes">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">📝</span><span class="session-summary-text"><strong>旅途筆記與備忘</strong><small>紀錄旅遊靈感；文字會自動儲存</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+ <div class="session-inner">
+ <div class="card note-card"><label for="freeNotes" class="strong" style="display:block;margin-bottom:11px">我的京都小筆記</label><textarea id="freeNotes" class="field" placeholder="例如：想找京都特別的咖啡館、冬季限定和菓子、古董市集……"></textarea><div class="subtle" style="margin-top:8px">輸入時自動儲存，不需額外按儲存。</div></div>
+ </div>
+ </details>
+</section>
+<details class="folded-tools" id="accountSettings"><summary class="folded-tools-title">⚙ 個人設定・Google 同步與資料備份 <span class="subtle">點選展開</span></summary><div class="folded-tools-content">
+<details class="settings-subdrawer" id="syncDrawer"><summary class="settings-subtoggle">☁ 雲端同步與 Google 帳號 <span aria-hidden="true">⌄</span></summary><div class="settings-subinner"><section id="sync" class="section"><div class="sect-head"><div><p class="eyebrow">09 / ACROSS YOUR DEVICES</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg> 雲端同步工作室</h2><p class="description">GitHub Pages 放網站，Firebase 儲存私人旅行資料。登入相同 Google 帳號就能在手機、電腦接續規劃。</p></div></div>
 <div class="card sync-section">
  <div class="sync-status" id="cloudStatus" role="status" aria-live="polite">等待 Firebase 設定…</div>
  <div class="flex"><button id="cloudRetry" class="btn sun" type="button" hidden>↻ 重新同步</button></div>
@@ -425,8 +502,8 @@ service cloud.firestore {
   }
 }</pre>
  <p class="sync-footnote">🔒 所有使用者只能存取自己 Google 帳號 UID 的行程文件；不會互相看見。資料存放於 <code>trips/{uid}</code>。本版以每人一份行程文件同步，若多台裝置同時編輯有衝突，會提醒選擇版本。請避免上傳私人 JSON 或含私人資料的舊 HTML 到公開 GitHub。</p>
- </div></section>
-<section id="data" class="section"><div class="sect-head"><div><p class="eyebrow">10 / KEEP IT SAFE</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-archive"></use></svg> 資料與備份</h2><p class="description">網站程式與私人行程分開保存，避免把訂房資料不小心發布到 GitHub。</p></div></div><div class="card data-box"><div class="tip"><strong>兩種下載的差別：</strong>「可部署 HTML」<b>只包含網站／Firebase 設定，不包含個人行程</b>，可以安全上傳 GitHub Pages；「JSON 私人備份」會包含你填的行程與訂房資訊，請妥善保管。Google Fonts 與 Firebase SDK 需要網路載入。</div><div class="data-buttons"><button type="button" class="btn sun" id="exportHTML">⬇ 下載可部署的 index.html</button><button type="button" class="btn sky" id="exportJSON">⬇ 匯出私人 JSON</button><button type="button" class="btn mint" id="importBtn">⬆ 匯入 JSON</button><button type="button" class="btn danger" id="resetBtn">↺ 重設示範資料</button></div><div class="outline-dash subtle">☁ 已登入時變更會送至 Firestore，斷線時仍會保留本機草稿並在重連後嘗試同步。瀏覽器私密模式、換裝置、清除網站資料可能遺失未同步草稿。建議定期下載 JSON 備份。</div><input type="file" id="importFile" accept=".json,application/json" hidden></div></section>
+ </div></section></div></details>
+<details class="settings-subdrawer" id="dataDrawer"><summary class="settings-subtoggle">🗃️ 資料備份與匯入 <span aria-hidden="true">⌄</span></summary><div class="settings-subinner"><section id="data" class="section"><div class="sect-head"><div><p class="eyebrow">10 / KEEP IT SAFE</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-archive"></use></svg> 資料與備份</h2><p class="description">網站程式與私人行程分開保存，避免把訂房資料不小心發布到 GitHub。</p></div></div><div class="card data-box"><div class="tip"><strong>兩種下載的差別：</strong>「可部署 HTML」<b>只包含網站／Firebase 設定，不包含個人行程</b>，可以安全上傳 GitHub Pages；「JSON 私人備份」會包含你填的行程與訂房資訊，請妥善保管。Google Fonts 與 Firebase SDK 需要網路載入。</div><div class="data-buttons"><button type="button" class="btn sun" id="exportHTML">⬇ 下載可部署的 index.html</button><button type="button" class="btn sky" id="exportJSON">⬇ 匯出私人 JSON</button><button type="button" class="btn mint" id="importBtn">⬆ 匯入 JSON</button><button type="button" class="btn danger" id="resetBtn">↺ 重設示範資料</button></div><div class="outline-dash subtle">☁ 已登入時變更會送至 Firestore，斷線時仍會保留本機草稿並在重連後嘗試同步。瀏覽器私密模式、換裝置、清除網站資料可能遺失未同步草稿。建議定期下載 JSON 備份。</div><input type="file" id="importFile" accept=".json,application/json" hidden></div></section></div></details>
 </div></details>
 <footer class="foot">Made with ♡ for a winter journey · <strong>京洛浮世旅帖</strong><br>江戶末期浮世繪 × 明治旅行印刷品 · 單一 HTML · 無付費 AI API</footer>
 </main>
@@ -527,6 +604,7 @@ function migrateTripCalendar(){
  }
 }
 let currentDay=0,ideaFilter='全部',ideaSearch='',toastTimer=null;
+let shoppingOpenCats=new Set();
 migrateTripCalendar();
 adoptLegacyCosts();
 ensureIntercityData();
@@ -914,10 +992,12 @@ function productShopQuotes(x){
  return [1,2,3].map(i=>({name:String(x['shop'+i]||'').trim(),price:parsedMoney(x['shopPrice'+i])})).filter(x=>x.name||x.price!==null);
 }
 function renderShoppingChecklist(){
+ const existing=[...$('shoppingChecklist').querySelectorAll('details[data-shopcat]')];
+ if(existing.length)shoppingOpenCats=new Set(existing.filter(el=>el.open).map(el=>el.dataset.shopcat));
  $('shoppingChecklist').innerHTML=shoppingCategories.map(cat=>{
   const list=state.shoppingItems.filter(x=>x.category===cat),done=list.filter(x=>x.done).length;
-  return `<div class="card checklist-category"><div class="checklist-category-head"><div><h3>${esc(cat)}</h3><span class="subtle">${done} / ${list.length} 已購買</span></div>
-   <button class="btn small sky" type="button" data-addshopcat="${attr(cat)}">＋ 項目</button></div>
+  return `<details class="card checklist-category shop-category-fold" data-shopcat="${attr(cat)}" ${shoppingOpenCats.has(cat)?'open':''}><summary class="checklist-category-head"><div><h3>${esc(cat)}</h3><span class="subtle">${done} / ${list.length} 已購買</span></div><span class="shop-fold-chevron" aria-hidden="true">⌄</span></summary>
+   <div class="shop-category-content"><div class="shop-category-actions"><button class="btn small sky" type="button" data-addshopcat="${attr(cat)}">＋ 新增品項</button></div>
    <div class="shopping-items">${list.length?list.map(x=>{
     const quotes=productShopQuotes(x),numeric=quotes.filter(q=>q.price!==null),lowest=numeric.length>1?Math.min(...numeric.map(q=>q.price)):null;
     return `<article class="shopping-checkitem ${x.done?'purchased':''}"><div class="shopping-checktop">
@@ -926,7 +1006,7 @@ function renderShoppingChecklist(){
      ${x.note?`<p class="shopping-note">${esc(x.note)}</p>`:''}
      ${quotes.length?`<div class="shop-quotes">${quotes.map(q=>`<div class="shop-quote"><span>${esc(q.name||'店家待補')}</span><strong class="${lowest!==null&&q.price===lowest?'cheapest':''}">${q.price!==null?'¥'+q.price.toLocaleString('zh-TW'):'價格待補'}${lowest!==null&&q.price===lowest?' ★ 最低價':''}</strong></div>`).join('')}</div>`:''}
      <div class="shopping-recommend-links">${[1,2,3].map(i=>urlSafe(x['link'+i])?`<a href="${attr(urlSafe(x['link'+i]))}" target="_blank" rel="noopener noreferrer">推薦連結 ${i} ↗</a>`:'').join('')}</div>
-    </article>`}).join(''):'<p class="subtle">尚無清單，點「＋ 項目」新增。</p>'}</div></div>`
+    </article>`}).join(''):'<p class="subtle">尚無清單，點「＋ 新增品項」新增。</p>'}</div></div></details>`
  }).join('');
 }
 function editShoppingItem(id=null,selectedCategory=null){
@@ -1133,16 +1213,22 @@ $('todoList').addEventListener('change',ev=>{const el=ev.target.closest('[data-t
 for(const key of ['otherJPY','otherTWD'])$(key).addEventListener('change',e=>{if(e.target.value&&!amountFilled(e.target.value)){alert('請輸入 0 或正數');renderBudget();return}state[key]=e.target.value;save();renderBudget()});
 $('fxManualRate').addEventListener('change',e=>{const x=e.target.value;if(x&&!(Number(x)>0)){alert('匯率需大於 0');renderBudget();return}state.fxManualRate=x;save();renderBudget()});
 $('refreshFX').addEventListener('click',()=>refreshFx(true));$('freeNotes').addEventListener('input',ev=>{state.notes=ev.target.value;save()});
-function revealLogistics(hash=location.hash){
- const h=String(hash||'').replace(/^#/,'');
- if(!['travel-logistics','flights','stays','intercity','city-transit'].includes(h))return;
- const main=$('logisticsDrawer');if(!main)return;
- main.open=true;
- const sub=h==='flights'?'flightsPanel':h==='stays'?'staysPanel':h==='intercity'?'intercityPanel':h==='city-transit'?'cityTransitPanel':null;
- if(sub)$(sub).open=true;
+/* 深層錨點：展開目標的所有折疊祖先，兼容航班、住宿、設定與出發前待辦。 */
+function revealSectionForHash(hash=location.hash,scroll=false){
+ let id=String(hash||'').replace(/^#/,'');
+ try{id=decodeURIComponent(id)}catch{}
+ if(!id)return;
+ const target=document.getElementById(id);if(!target)return;
+ const ancestors=[];for(let el=target;el;el=el.parentElement)if(el.tagName==='DETAILS')ancestors.push(el);
+ for(const el of ancestors.reverse())el.open=true;
+ if(target.matches('section.section,section.journey-before')){
+  const drawer=target.querySelector(':scope > details.session-drawer,:scope > details.logistics-drawer');
+  if(drawer)drawer.open=true;
+ }
+ if(scroll)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));
 }
-document.addEventListener('click',ev=>{const a=ev.target.closest('a[href^="#"]');if(a)revealLogistics(a.getAttribute('href'))});
-window.addEventListener('hashchange',()=>revealLogistics());
+document.addEventListener('click',ev=>{const a=ev.target.closest('a[href^="#"]');if(a)revealSectionForHash(a.getAttribute('href'),true)});
+window.addEventListener('hashchange',()=>revealSectionForHash(location.hash,true));
 // Firebase 模組介面：一般功能維持單檔離線瀏覽，連上 Firebase 才同步。
 window.KyotoPlanner={
  read:()=>clone(state),
@@ -1179,7 +1265,7 @@ $('copyRules').addEventListener('click',async()=>{try{await navigator.clipboard.
 if(firebaseConfigured){window.KyotoPlanner.setLock(true);window.KyotoPlanner.setCloudStatus('Firebase 已設定・等待連線','登入 Google 後同步私人資料');$('saveStatus').style.display='inline';$('saveStatus').textContent='🔒 請登入';}
 else{window.KyotoPlanner.setCloudStatus('尚未設定 Firebase','首次使用請至下方貼上 Web App Config');$('saveStatus').style.display='inline';$('saveStatus').textContent='● 本機編輯模式';}
 
-updateCountdown();rerender();refreshFx();revealLogistics();if(!canStore){$('saveStatus').style.display='inline';$('saveStatus').textContent='⚠ 無法自動儲存，請下載 HTML 版本';toast('此瀏覽器未提供儲存功能，請用 HTML 備份保存變更')}
+updateCountdown();rerender();refreshFx();revealSectionForHash(location.hash,!!location.hash);if(!canStore){$('saveStatus').style.display='inline';$('saveStatus').textContent='⚠ 無法自動儲存，請下載 HTML 版本';toast('此瀏覽器未提供儲存功能，請用 HTML 備份保存變更')}
 </script>
 <script type="module">
 // 官方 Firebase v13.1.0 CDN；仍然只有一份 index.html，無需建置工具。
