@@ -94,12 +94,40 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .linked-expense{background:#E8F0F2}
 .auto-item .event-block{border-left:4px solid var(--blue)!important;background:#EAF1F5!important}
 @media(max-width:500px){.budget-table th,.budget-table td{padding:12px 9px}.expense-edit{display:inline-block;margin-left:0}}
+
+/* Low-frequency logistics drawer: flights, three transfers, stays */
+.logistics-drawer{background:#F1F5F7;border:2px solid var(--ink);border-radius:22px;box-shadow:3px 3px 0 var(--ink);overflow:hidden}
+.logistics-toggle{list-style:none;display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;min-height:88px}
+.logistics-toggle::-webkit-details-marker,.logistics-part-toggle::-webkit-details-marker{display:none}
+.logistics-toggle-icon{width:49px;height:49px;border:2px solid var(--ink);border-radius:14px;background:#DDE9EC;display:grid;place-items:center;flex:none}
+.logistics-summary-text{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}.logistics-summary-text strong{font-size:18px}.logistics-summary-text small{font-size:12px;color:var(--sub)}
+.logistics-cta{font-size:13px;font-weight:800;color:#426781;white-space:nowrap}.logistics-cta span{display:inline-block;transition:transform .15s}.logistics-drawer[open] .logistics-cta span{transform:rotate(180deg)}
+.logistics-inner{padding:0 14px 16px;display:grid;gap:12px}
+.logistics-part{background:#F9FBFC;border:1.5px solid var(--ink);border-radius:15px;overflow:hidden}
+.logistics-part-toggle{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;font-weight:800;min-height:62px}
+.logistics-part-toggle::-webkit-details-marker{display:none}
+.logistics-part-toggle>span{display:flex;gap:10px;align-items:center}
+.logistics-part-toggle small{font-size:12px;color:var(--sub);font-weight:400;text-align:right}
+.logistics-part[open] .logistics-part-toggle{background:#E7EFF2;border-bottom:1px dashed #A4B5C0}
+.logistics-body{padding:18px 14px 20px;scroll-margin-top:135px}
+.logistics-body>.description{margin:0 0 15px}
+.intercity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px}
+.intercity-card{box-shadow:2px 2px 0 var(--ink)!important;padding:16px}
+.intercity-card .travel-top h3{font-size:18px;line-height:1.3}
+.intercity-route{display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);align-items:center;gap:8px;margin:18px 0 12px}
+.intercity-route>div:not(.intercity-arrow){display:flex;flex-direction:column;gap:5px;min-width:0}
+.intercity-route small{color:var(--sub);font-size:12px}.intercity-route strong{font-size:14px;overflow-wrap:anywhere;line-height:1.35}.intercity-route span{color:#426781;font-weight:700;font-size:13px}
+.intercity-arrow{text-align:center;color:#B44735;font-size:20px;font-weight:900}
+.intercity-chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 15px}
+.intercity-card .description{font-size:13px;line-height:1.6}
+@media(max-width:600px){.logistics-toggle{padding:15px 12px}.logistics-toggle-icon{width:41px;height:41px}.logistics-summary-text strong{font-size:16px}.logistics-cta{font-size:12px}.logistics-inner{padding:0 10px 12px}.logistics-part-toggle{flex-wrap:wrap}.logistics-body{padding:15px 9px}}
+@media(prefers-reduced-motion:reduce){.logistics-cta span{transition:none}}
 </style>
 </head>
-<body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol></defs></svg>
+<body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
 <header class="top">
   <div class="wrap top-in"><a href="#home" class="brand" aria-label="回首頁"><span class="brand-mark"><svg viewBox="0 0 38 38" aria-label="朱紅鳥居" role="img"><path d="M4 8Q19 11 34 8L32 14H6Z" fill="#E02E2E" stroke="#243447" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 16H29V20H9Z" fill="#E02E2E" stroke="#243447" stroke-width="1.7" stroke-linejoin="round"/><path d="M11 20H16V34H11ZM23 20H28V34H23Z" fill="#E02E2E" stroke="#243447" stroke-width="1.7"/><path d="M16 25H23" stroke="#243447" stroke-width="1.4" stroke-linecap="round"/></svg></span><span>京洛浮世旅帖</span></a><div class="top-actions"><span class="save-indicator" id="saveStatus">● 自動儲存已開啟</span><a class="btn small sky compact-label" href="#sync">☁ 雲端同步</a></div></div>
-  <nav class="wrap nav" aria-label="主要導覽"><a href="#home"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-home"></use></svg>首頁</a><a href="#flights"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-plane"></use></svg>航班</a><a href="#itinerary"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg>每日行程</a><a href="#ideas"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-flower"></use></svg>靈感收藏</a><a href="#stays"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-bed"></use></svg>住宿</a><a href="#todos"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-check"></use></svg>待辦</a><a href="#budget"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-money"></use></svg>預算</a><a href="#notes"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-note"></use></svg>筆記</a><a href="#missing"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-pin"></use></svg>待補資訊</a><a href="#sync"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg>雲端同步</a></nav>
+  <nav class="wrap nav" aria-label="主要導覽"><a href="#home"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-home"></use></svg>首頁</a><a href="#itinerary"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg>每日行程</a><a href="#ideas"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-flower"></use></svg>靈感收藏</a><a href="#todos"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-check"></use></svg>待辦</a><a href="#travel-logistics"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-train"></use></svg>交通・住宿</a><a href="#budget"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-money"></use></svg>旅費</a><a href="#notes"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-note"></use></svg>筆記</a><a href="#missing"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-pin"></use></svg>待補資訊</a><a href="#sync"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg>雲端同步</a></nav>
 </header>
 <main class="wrap">
 <div class="cloud-strip" aria-live="polite"><div class="cloud-message"><span id="cloudDot" class="cloud-dot"></span><span id="cloudTopText">雲端同步尚未設定</span><span id="cloudTopDetail" class="cloud-info">尚未連線時可先瀏覽示範行程</span></div><a class="btn small sky" href="#sync">同步管理 ↗</a></div>
@@ -110,12 +138,37 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 </div></div><div class="hero-footer"><div class="hero-stats"><div class="hero-stat"><span>距離出發</span><strong id="countdown">— 天</strong></div><div class="hero-stat"><span>旅程安排</span><strong>10 天 9 夜*</strong></div></div><div class="subtle">* 京都 12/25–1/2，1/2–1/3 大阪延伸暫定；回程日期與住宿尚待確認。</div></div></div>
 <div class="overview" id="overview"></div>
 </section>
-<section id="flights" class="section"><div class="sect-head"><div><p class="eyebrow">01 / TRAVEL</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-plane"></use></svg> 飛行日記</h2><p class="description">尚未確認的班機以待補欄位呈現，不會當作已訂票。</p></div></div><div class="flight-grid" id="flightCards"></div></section>
 <section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">02 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">點日期切換，直接增刪改時間軸行程；活動時間請以主辦單位公告為準。</p></div><button class="btn primary" id="addEvent">＋ 新增行程</button></div><div class="days-top"><button class="btn icon ghost" id="prevDay" aria-label="前一天">‹</button><div class="days" id="dayTabs" role="tablist" aria-label="行程日期"></div><button class="btn icon ghost" id="nextDay" aria-label="後一天">›</button></div><div class="card day-panel" id="dayPanel" role="tabpanel"></div></section>
 <section id="ideas" class="section"><div class="sect-head"><div><p class="eyebrow">03 / LITTLE DISCOVERIES</p><h2><svg class="ui-line  ink-red" aria-hidden="true"><use href="#u-flower"></use></svg> 京都靈感抽屜</h2><p class="description">已先收錄年末年始特色體驗，點「加入行程」即可放進指定日期，後續自由編輯。</p></div></div><div class="inspo-head" id="ideaFilters"></div><div class="inspo-grid" id="ideaGrid"></div><p class="description" style="margin-top:12px">＊清單中的時間為初步參考；門票、營業日與是否需預約，出發前請再向官方查核。</p></section>
-<section id="stays" class="section"><div class="sect-head"><div><p class="eyebrow">04 / SLEEP WELL</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-bed"></use></svg> 住宿小屋</h2><p class="description">京都與大阪住宿欄位都留好了，先不填也完全沒問題。</p></div></div><div class="stay-grid" id="stayCards"></div></section>
+<section id="travel-logistics" class="section">
+ <div class="sect-head"><div><p class="eyebrow">04 / TRAVEL ESSENTIALS</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 交通與住宿</h2><p class="description">機票、城際交通和飯店集中在這裡。平常先收合，需要查車次或入住資訊再展開；填好的時間與費用仍會自動連動每日散策、旅費小帳本。</p></div></div>
+ <details class="logistics-drawer" id="logisticsDrawer">
+ <summary class="logistics-toggle">
+  <span class="logistics-toggle-icon"><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg></span>
+  <span class="logistics-summary-text"><strong>旅程交通與住宿總覽</strong><small id="logisticsProgress">航班 0/2 · 城際交通 0/3 · 住宿 0/2</small></span>
+  <span class="logistics-cta">展開查閱 <span aria-hidden="true">⌄</span></span>
+ </summary>
+ <div class="logistics-inner">
+  <details class="logistics-part" id="flightsPanel">
+   <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-plane"></use></svg> 航班｜來回機票</span><small>去回程班號、時間與總額</small></summary>
+   <div id="flights" class="logistics-body"><p class="description">來回機票總額只需填寫一次。時間會同步至每日散策。</p><div class="flight-grid" id="flightCards"></div></div>
+  </details>
+  <details class="logistics-part" id="intercityPanel">
+   <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-train"></use></svg> 城際交通｜三段移動</span><small>機場 → 京都 → 大阪 → 機場</small></summary>
+   <div id="intercity" class="logistics-body">
+    <p class="description">已預留三段移動路線，可編輯交通方式、車次、日期、出發／抵達站、時間、實際車資、訂票連結及備註。尚未購票的資訊先以「待規劃」顯示。</p>
+    <div class="intercity-grid" id="intercityCards"></div>
+   </div>
+  </details>
+  <details class="logistics-part" id="staysPanel">
+   <summary class="logistics-part-toggle"><span><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-bed"></use></svg> 住宿｜京都與大阪</span><small>飯店、入住退房、訂房資訊</small></summary>
+   <div id="stays" class="logistics-body"><p class="description">京都、大阪兩段住宿；時間與花費會連動行程及旅費。</p><div class="stay-grid" id="stayCards"></div></div>
+  </details>
+ </div>
+ </details>
+</section>
 <section id="todos" class="section"><div class="sect-head"><div><p class="eyebrow">05 / BEFORE WE GO</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-check"></use></svg> 出發小清單</h2><p class="description">登入後跨裝置同步；同步期間會先保留本機暫存。</p></div></div><div class="card todo-section"><div class="todo-title"><h3>行前準備進度</h3><span class="chip green" id="todoProgressLabel">0 / 0 完成</span></div><div class="progress" role="progressbar" aria-label="待辦完成比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="todoBar"><div class="progress-fill" id="todoProgressFill" style="width:0%"></div></div><div class="todo-list" id="todoList"></div><form class="add-todo" id="todoForm"><input class="field" id="todoInput" required maxlength="120" aria-label="新增待辦事項" placeholder="例如：預訂知恩院除夜鐘門票"><button class="btn mint" type="submit">＋ 加入</button></form></div></section>
-<section id="budget" class="section"><div class="sect-head"><div><p class="eyebrow">06 / TRAVEL EXPENSES</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-money"></use></svg> 旅費小帳本</h2><p class="description">只記錄實際花費，不設定預算。來回機票與京都／大阪住宿的費用從上方資料自動帶入，無須重複填寫；其他項目可直接輸入支出。</p></div></div><div class="card finance"><div class="flex"><span class="chip yellow">計價：TWD 新台幣</span><span class="subtle">外幣請先換算成新台幣，再填入金額</span></div><div class="finance-totals"><div class="money-total"><small>累計實際花費</small><strong id="budgetActual">NT$0</strong></div></div><div class="budget-scroll"><table class="budget-table"><thead><tr><th>費用項目</th><th>實際支出（TWD）</th></tr></thead><tbody id="budgetRows"></tbody></table></div><p class="description" style="margin:13px 0 0">✦ 機票與住宿會隨上方編輯自動更新。灰色金額為連動結果；其他支出可在此直接編輯。</p></div></section>
+<section id="budget" class="section"><div class="sect-head"><div><p class="eyebrow">06 / TRAVEL EXPENSES</p><h2><svg class="ui-line ink-blue" aria-hidden="true"><use href="#u-money"></use></svg> 旅費小帳本</h2><p class="description">只記錄實際花費，不設定預算。來回機票、京都／大阪住宿與三段城際交通費用從上方資料自動帶入，無須重複填寫；其他項目可直接輸入支出。</p></div></div><div class="card finance"><div class="flex"><span class="chip yellow">計價：TWD 新台幣</span><span class="subtle">外幣請先換算成新台幣，再填入金額</span></div><div class="finance-totals"><div class="money-total"><small>累計實際花費</small><strong id="budgetActual">NT$0</strong></div></div><div class="budget-scroll"><table class="budget-table"><thead><tr><th>費用項目</th><th>實際支出（TWD）</th></tr></thead><tbody id="budgetRows"></tbody></table></div><p class="description" style="margin:13px 0 0">✦ 機票、住宿及城際交通都會隨上方編輯自動更新。灰色金額為連動結果；其他支出可在此直接編輯。</p></div></section>
 <section id="notes" class="section"><div class="sect-head"><div><p class="eyebrow">07 / SCRAPBOOK</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-note"></use></svg> 旅行備忘錄</h2><p class="description">想去的咖啡店、餐廳、伴手禮，甚至旅途中的心得都可以先寫在這。</p></div></div><div class="card note-card"><label for="freeNotes" class="strong" style="display:block;margin-bottom:11px">我的京都小筆記</label><textarea id="freeNotes" class="field" placeholder="例如：想找京都特別的咖啡館、冬季限定和菓子、古董市集……"></textarea><div class="subtle" style="margin-top:8px">輸入時自動儲存，不需額外按儲存。</div></div></section>
 <section id="missing" class="section"><div class="sect-head"><div><p class="eyebrow">08 / FILL IN LATER</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-pin"></use></svg> 還要補什麼？</h2><p class="description">根據已填資料即時整理缺口，逐步補上就好。</p></div><span class="chip pink" id="missingCount">待補 0 項</span></div><div class="missing-list" id="missingList"></div></section>
 <section id="sync" class="section"><div class="sect-head"><div><p class="eyebrow">09 / ACROSS YOUR DEVICES</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg> 雲端同步工作室</h2><p class="description">GitHub Pages 放網站，Firebase 儲存私人旅行資料。登入相同 Google 帳號就能在手機、電腦接續規劃。</p></div></div>
@@ -179,6 +232,12 @@ const ideaData=[
 ];
 const e=(id,time,title,place,note,transport='步行',must=false,url='')=>({id,time,title,place,note,transport,must,url,status:'候選'});
 const seedData={version:2,days:DATES.map((d,i)=>({date:d[0],title:d[3],note:i===0?'以航班抵達時間為準，當天兩個活動可能無法全排。':i===2?'知恩院與能劇時段衝突，選一個做主軸。':i===6?'晚上活動可能延續至深夜，白天建議留體力。':i===8?'大阪住宿為暫定計畫，移動時間待確認。':'節奏保持鬆一點，留時間偶遇京都。',events:[]})),flights:[{id:'out',label:'去程｜台灣 → 日本',date:'2026-12-25',from:'TPE',to:'KIX',airline:'',number:'',depart:'',arrive:'',luggage:'',price:'',booking:'',url:'',note:'航班未確認，請確認能否趕上 12/25 市集／音樂會。'},{id:'back',label:'回程｜日本 → 台灣',date:'',from:'KIX',to:'TPE',airline:'',number:'',depart:'',arrive:'',luggage:'',price:'',booking:'',url:'',note:'曾規劃 1/2–1/3 大阪住宿，回程究竟 1/2 或 1/3 尚待確認。'}],stays:[{id:'kyoto',city:'京都',dates:'2026/12/25–2027/01/02',name:'',address:'',station:'',checkin:'',checkout:'',price:'',booking:'',url:'',note:'希望獨立房、交通方便、CP 值優先。'},{id:'osaka',city:'大阪（暫定）',dates:'2027/01/02–2027/01/03',name:'',address:'',station:'',checkin:'',checkout:'',price:'',booking:'',url:'',note:'依回程航班日期調整是否住宿。'}],todos:[{id:'t1',text:'確認去程與回程航班日期、班號、行李額度',done:false},{id:'t2',text:'訂妥京都住宿',done:false},{id:'t3',text:'確認是否 1/2–1/3 住大阪',done:false},{id:'t4',text:'查詢 12/25 音樂會票況',done:false},{id:'t5',text:'追蹤 12/31 知恩院除夜鐘預約',done:false},{id:'t6',text:'確認 12/25 從關西機場到京都交通',done:false},{id:'t7',text:'整理各日餐廳候選與休館日',done:false},{id:'t8',text:'準備日本冬季保暖裝備',done:false},{id:'t9',text:'確認 eSIM、保險、交通卡',done:false}],budget:[{name:'機票',plan:0,actual:0},{name:'住宿',plan:0,actual:0},{name:'城際交通',plan:0,actual:0},{name:'市內交通',plan:0,actual:0},{name:'餐飲',plan:0,actual:0},{name:'門票體驗',plan:0,actual:0},{name:'購物',plan:0,actual:0},{name:'其他',plan:0,actual:0}],notes:''};
+const intercitySeed=()=>[
+ {id:'airport-to-kyoto',label:'關西機場 → 京都',date:'2026-12-25',from:'關西國際機場（KIX）',to:'京都市區',fromStation:'',toStation:'',depart:'',arrive:'',mode:'待確認',service:'',price:'',booking:'',url:'',status:'待規劃',note:'候選：JR HARUKA 或機場巴士。以實際航班抵達時間與京都住宿位置決定。'},
+ {id:'kyoto-to-osaka',label:'京都 → 大阪',date:'2027-01-02',from:'京都市區',to:'大阪市區',fromStation:'',toStation:'',depart:'',arrive:'',mode:'待確認',service:'',price:'',booking:'',url:'',status:'待規劃',note:'候選：JR／阪急／京阪，依京都與大阪飯店位置選擇。'},
+ {id:'osaka-to-airport',label:'大阪 → 關西機場',date:'2027-01-03',from:'大阪市區',to:'關西國際機場（KIX）',fromStation:'',toStation:'',depart:'',arrive:'',mode:'待確認',service:'',price:'',booking:'',url:'',status:'待規劃',note:'日期暫定為 1/3；請以回程機票日期為準。候選：JR 或南海電鐵。'}
+];
+seedData.intercity=intercitySeed();
 // 初步放入少量種子活動，其餘保留到「靈感收藏」，避免虛構已確認的固定行程。
 seedData.days[0].events=[e('ev1','待確認','關西機場 → 京都','關西國際機場','航班和抵達時間待補。','電車')];
 seedData.days[2].events=[e('ev2','14:00','知恩院・除夜鐘試敲','知恩院','優先候選；與能樂演出撞期。','步行',true,'https://www.chion-in.or.jp/special/joya/')];
@@ -207,6 +266,7 @@ let state=clone(seedData);if(embedded&&verifyData(embedded.payload))state=embedd
 if(canStore&&!firebaseConfigured){try{const saved=JSON.parse(localStorage.getItem(namespace));if(verifyData(saved))state=saved}catch{}}
 let currentDay=0,ideaFilter='全部',toastTimer=null;
 adoptLegacyCosts();
+ensureIntercityData();
 const $=id=>document.getElementById(id);
 const money=n=>'NT$'+(Number(n)||0).toLocaleString('zh-TW',{maximumFractionDigits:0});
 
@@ -224,7 +284,7 @@ function adoptLegacyCosts(){
  if(stay&&Number(stay.actual)>0&&!state.stays.some(s=>String(s.price||'').trim()))state.stays[0].price=String(stay.actual);
 }
 function synchronizedItems(date){
- const items=[],add=(x)=>{if(x.date===date&&x.time)items.push({...x,auto:true,must:false,status:'自動同步'})};
+ const items=[],add=(x)=>{if(x.date===date&&(x.time||x.isIntercity))items.push({...x,auto:true,must:false,status:'自動同步'})};
  state.flights.forEach((f,i)=>{
    const name=i?'回程':'去程';
    const out=isoDate(f.date),arr=isoDate(f.arriveDate||f.date);
@@ -237,7 +297,26 @@ function synchronizedItems(date){
    add({date:dates.start,time:s.checkin,title:'🏨 入住｜'+label,place:s.address||'',note:'入住時間同步自飯店資訊',transport:'住宿',autoLink:'#stays'});
    add({date:dates.end,time:s.checkout,title:'🧳 退房｜'+label,place:s.address||'',note:'退房時間同步自飯店資訊',transport:'住宿',autoLink:'#stays'});
  });
+ state.intercity.forEach(t=>{
+   if(!t.date)return;
+   const tt=t.depart||'待確認';
+   add({date:t.date,time:tt,title:'🚆 城際移動｜'+t.label,place:t.fromStation||t.from,
+    note:[t.service,t.arrive?'預計抵達 '+t.arrive:'抵達時間待補',t.toStation?'抵達站 '+t.toStation:'',t.status].filter(Boolean).join(' · '),
+    transport:t.mode==='機場巴士'||t.mode==='巴士'?'巴士':t.mode==='計程車'?'計程車':t.mode==='待確認'?'待確認':'電車',
+    autoLink:'#intercity',isIntercity:true});
+ });
  return items;
+}
+function ensureIntercityData(){
+ if(!Array.isArray(state.intercity))state.intercity=intercitySeed();
+ else{const template=intercitySeed();state.intercity=template.map((s,i)=>{const old=state.intercity.find(x=>x&&x.id===s.id)||state.intercity[i];return {...s,...(old&&typeof old==='object'?old:{})}})}
+ const old=state.budget.find(b=>b.name==='城際交通');
+ if(old)old.name='其他城際交通';
+ // Remove only untouched seed placeholders now represented by the linked intercity cards.
+ for(const [date,id,title] of [['2026-12-25','ev1','關西機場 → 京都'],['2027-01-02','ev6','京都退房 → 大阪']]){
+  const day=state.days.find(d=>d.date===date);
+  if(day)day.events=day.events.filter(x=>!(x.id===id&&x.title===title&&x.time==='待確認'&&(x.status||'候選')==='候選'));
+ }
 }
 function save(){
  if(firebaseConfigured){
@@ -262,13 +341,26 @@ function renderDay(){
 }
 function switchDay(i){currentDay=Math.max(0,Math.min(state.days.length-1,i));renderDay();const btn=$('dayTabs').querySelector(`[data-day="${currentDay}"]`);btn?.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(btn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){btn.classList.remove('bounce');void btn.offsetWidth;btn.classList.add('bounce')}}
 function renderIdeas(){let cats=['全部','祭典','跨年','新年','藝文'];$('ideaFilters').innerHTML=cats.map(c=>`<button class="filter ${c===ideaFilter?'active':''}" data-filter="${esc(c)}" type="button" aria-pressed="${c===ideaFilter}">${esc(c)}</button>`).join('');let arr=ideaFilter==='全部'?ideaData:ideaData.filter(i=>i.category===ideaFilter);$('ideaGrid').innerHTML=arr.map(x=>{const added=state.days.some(d=>d.events.some(y=>y.ideaId===x.id));return `<article class="card idea"><div class="idea-top"><div class="idea-icon">${uiIcon(x.category==="跨年"?"umbrella":x.category==="祭典"?"flower":x.category==="新年"?"scroll":"note",x.category==="跨年"?"red":"blue")}</div><div style="min-width:0"><h3>${esc(x.title)}</h3><div class="flex" style="margin-top:6px"><span class="chip ${x.category==='跨年'?'pink':x.category==='新年'?'green':'yellow'}">${esc(x.category)}</span><span class="subtle">${esc(x.date.slice(5).replace('-','/'))} · ${esc(x.time)}</span></div><p>${esc(x.note)}</p></div></div><div class="idea-bottom"><div class="flex"><a class="subtle" href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">${uiIcon("pin","blue",true)} 地圖 ↗</a>${urlSafe(x.url)?`<a class="subtle" href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方 ↗</a>`:''}</div><button type="button" class="btn small ${added?'mint':'sun'}" data-addidea="${x.id}">${added?'＋ 再加入':'＋ 加入行程'}</button></div></article>`}).join('')}
+function renderIntercity(){
+ $('intercityCards').innerHTML=state.intercity.map((t,i)=>`<article class="card intercity-card">
+ <div class="travel-top"><div><span class="eyebrow">TRANSFER 0${i+1}</span><h3>${esc(t.label)}</h3></div><button type="button" class="btn small ${i===1?'mint':'sky'}" data-editintercity="${i}">✎ 編輯</button></div>
+ <div class="intercity-route"><div><small>出發</small><strong>${esc(t.fromStation||t.from)}</strong><span>${esc(t.depart||'時間待補')}</span></div><div class="intercity-arrow" aria-hidden="true">➜</div><div><small>抵達</small><strong>${esc(t.toStation||t.to)}</strong><span>${esc(t.arrive||'時間待補')}</span></div></div>
+ <div class="intercity-chips"><span class="chip blue">${esc(t.mode||'待確認')}</span><span class="chip ${t.status==='已預訂'?'green':'soft'}">${esc(t.status||'待規劃')}</span><span class="chip soft">${esc(t.date||'日期待補')}</span></div>
+ <div class="booking-details"><div class="row-kv"><span>路線／車次</span><span>${esc(t.service||'待選擇')}</span></div><div class="row-kv"><span>實際車費（TWD）</span><span>${esc(costLabel(t.price))}</span></div></div>
+ ${t.note?`<p class="description">${esc(t.note)}</p>`:''}
+ ${urlSafe(t.url)?`<a class="subtle" href="${attr(urlSafe(t.url))}" target="_blank" rel="noopener noreferrer">車票／路線連結 ↗</a>`:''}
+ </article>`).join('')
+ const confirmed=state.intercity.filter(x=>x.status==='已預訂'||x.status==='已確認').length;
+ $('logisticsProgress').textContent=`航班 ${state.flights.filter(f=>f.number).length}/2 · 城際交通 ${confirmed}/3 · 住宿 ${state.stays.filter(s=>s.name).length}/2`;
+}
 function renderStays(){
  $('stayCards').innerHTML=state.stays.map((s,i)=>{const d=getStayDates(s);return `<div class="card travel-card"><div class="travel-top"><div><div class="eyebrow">${i===0?'STAY IN KYOTO':'STAY IN OSAKA'}</div><h3>${uiIcon("bed")} ${esc(s.city)}</h3><div class="stay-tag">${esc(d.start&&d.end?d.start+' → '+d.end:s.dates||'住宿日期待補')}</div></div><button class="btn small ${i?'sky':'mint'}" data-editstay="${i}" type="button">✎ 編輯</button></div><div class="stay-name">${esc(s.name||'飯店名稱待補')}</div><div class="booking-details"><div class="row-kv"><span>最近車站</span><span>${esc(s.station||'待補')}</span></div><div class="row-kv"><span>飯店地址</span><span>${esc(s.address||'待補')}</span></div><div class="row-kv"><span>入住／退房</span><span>${esc((s.checkin||'待補')+' / '+(s.checkout||'待補'))}</span></div><div class="row-kv"><span>住宿實支（TWD）</span><span>${esc(costLabel(s.price))}</span></div></div>${s.note?`<p class="description">💌 ${esc(s.note)}</p>`:''}<div class="flex" style="margin-top:13px">${s.address?`<a class="btn small sun" href="${attr(maps(s.address))}" target="_blank" rel="noopener noreferrer">打開地圖 ↗</a>`:''}${urlSafe(s.url)?`<a class="btn small" href="${attr(urlSafe(s.url))}" target="_blank" rel="noopener noreferrer">訂房連結 ↗</a>`:''}</div></div>`}).join('')
 }
 function renderTodos(){const done=state.todos.filter(t=>t.done).length,total=state.todos.length,percentage=total?Math.round(done/total*100):0;$('todoProgressLabel').textContent=`${done} / ${total} 完成`;$('todoProgressFill').style.width=percentage+'%';$('todoBar').setAttribute('aria-valuenow',percentage);$('todoList').innerHTML=state.todos.length?state.todos.map(t=>`<div class="todo ${t.done?'done':''}"><input type="checkbox" id="todo-${attr(t.id)}" data-todocheck="${attr(t.id)}" ${t.done?'checked':''}><label for="todo-${attr(t.id)}" class="todo-txt"><strong>${esc(t.text)}</strong></label><button class="link-btn" type="button" data-todoedit="${attr(t.id)}" aria-label="編輯待辦 ${attr(t.text)}">編輯</button><button class="link-btn" type="button" data-tododel="${attr(t.id)}" aria-label="刪除待辦 ${attr(t.text)}">刪除</button></div>`).join(''):`<div class="empty">沒有待辦啦，新增一項吧。</div>`}
 function renderBudget(){
- const fixed=[{name:'來回機票',raw:roundtripFare(),target:'#flights',desc:'從去程航班費用自動帶入'},{name:'京都住宿',raw:state.stays[0]?.price,target:'#stays',desc:'從京都飯店自動帶入'},{name:'大阪住宿',raw:state.stays[1]?.price,target:'#stays',desc:'從大阪飯店自動帶入'}];
- const manual=state.budget.map((b,i)=>({...b,index:i})).filter(b=>!['機票','住宿'].includes(b.name));
+ const fixed=[{name:'來回機票',raw:roundtripFare(),target:'#flights',desc:'從去程航班費用自動帶入'},{name:'京都住宿',raw:state.stays[0]?.price,target:'#stays',desc:'從京都飯店自動帶入'},{name:'大阪住宿',raw:state.stays[1]?.price,target:'#stays',desc:'從大阪飯店自動帶入'},
+  ...state.intercity.map(t=>({name:'城際｜'+t.label,raw:t.price,target:'#intercity',desc:'從城際交通卡片自動帶入'}))];
+ const manual=state.budget.map((b,i)=>({...b,index:i})).filter(b=>!['機票','住宿','城際交通'].includes(b.name));
  let total=manual.reduce((sum,b)=>sum+(Number(b.actual)||0),0);
  for(const x of fixed){const amount=amountTWD(x.raw);if(Number.isFinite(amount))total+=amount}
  $('budgetActual').textContent=money(total);
@@ -276,6 +368,8 @@ function renderBudget(){
  manual.map(b=>`<tr><td>${esc(b.name)}</td><td><input type="number" min="0" step="1" value="${Number(b.actual)||0}" data-budget="${b.index}" data-field="actual" aria-label="${esc(b.name)}實際支出"></td></tr>`).join('');
 }
 function renderMissing(){let arr=[];
+ const unplanned=state.intercity.filter(t=>!t.service||!t.depart||!t.arrive);
+ if(unplanned.length)arr.push(['🚆','城際交通待規劃',`還有 ${unplanned.length} 段移動尚未補齊車次與出發／抵達時間`,'#intercity']);
  if(!state.flights[0].number||!state.flights[0].depart||!state.flights[0].arrive)arr.push(['✈️','去程航班','確認班號、起飛與抵達時間，之後會自動顯示在每日散策','#flights']);
  if(!state.flights[1].date||!state.flights[1].number)arr.push(['🛬','回程航班日期','確認到底是 1/2 或 1/3 回台及班機時段','#flights']);
  if(!state.stays[0].name||!state.stays[0].address)arr.push(['🏡','京都住宿','補上飯店名稱、地址、車站及入住資訊','#stays']);
@@ -288,7 +382,7 @@ function renderMissing(){let arr=[];
  $('missingCount').textContent=`待補 ${arr.length} 項`;
  $('missingList').innerHTML=arr.length?arr.map(x=>`<a class="missing-item" href="${x[3]}" style="text-decoration:none"><span class="missing-i">${x[0]}</span><div><strong>${esc(x[1])} ↗</strong><p>${esc(x[2])}</p></div></a>`).join(''):`<div class="empty">主要待補資料已完成！其他細節依喜好慢慢增加就好 🌷</div>`;
 }
-function rerender(){renderOverview();renderFlights();renderDay();renderIdeas();renderStays();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
+function rerender(){renderOverview();renderFlights();renderIntercity();renderDay();renderIdeas();renderStays();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
 const inputField=(key,label,value='',type='text',extra='')=>`<label class="field-label">${esc(label)}<input class="field" name="${attr(key)}" type="${type}" value="${attr(value)}" ${extra}></label>`;
 const textareaField=(key,label,value='')=>`<label class="field-label">${esc(label)}<textarea class="field" name="${attr(key)}" rows="3">${esc(value)}</textarea></label>`;
 const selectField=(key,label,options,value)=>`<label class="field-label">${esc(label)}<select class="field" name="${attr(key)}">${options.map(o=>`<option value="${attr(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
@@ -309,6 +403,24 @@ function editStay(i){
    if(o.price&&!Number.isFinite(amountTWD(o.price))){alert('請填寫以新台幣計價的住宿金額，例如 15800；外幣請先換算。');return false}
    if(o.checkinDate&&o.checkoutDate&&o.checkoutDate<o.checkinDate){alert('退房日期不能早於入住日期。');return false}
    Object.assign(s,o);if(o.checkinDate&&o.checkoutDate)s.dates=o.checkinDate+'–'+o.checkoutDate;return true
+ });
+}
+function editIntercity(i){
+ const t=state.intercity[i];
+ openModal('🚆 編輯城際交通｜'+t.label,`
+ <div class="form-2">${inputField('date','移動日期',t.date,'date')}${selectField('status','目前狀態',['待規劃','已確認','已預訂','已完成'],t.status)}</div>
+ <div class="form-2">${inputField('from','出發區域',t.from)}${inputField('to','抵達區域',t.to)}</div>
+ <div class="form-2">${inputField('fromStation','出發車站／月台',t.fromStation)}${inputField('toStation','抵達車站',t.toStation)}</div>
+ <div class="form-2">${inputField('depart','出發時間（24 小時制）',t.depart,'text','placeholder="例如 14:30"')}${inputField('arrive','抵達時間（24 小時制）',t.arrive,'text','placeholder="例如 16:00"')}</div>
+ <div class="form-2">${selectField('mode','交通方式',['待確認','電車','JR','私鐵','機場巴士','巴士','計程車','其他'],t.mode)}${inputField('service','路線／車次',t.service,'text','placeholder="例如 HARUKA、JR 新快速"')}</div>
+ <div class="form-2">${inputField('price','實際車費（TWD）',t.price,'text','inputmode="decimal" placeholder="例如 600"')}${inputField('booking','訂票編號（選填）',t.booking)}</div>
+ ${inputField('url','交通／訂票資訊連結（選填）',t.url,'url')}
+ ${textareaField('note','交通備註、換乘或行李提醒',t.note)}
+ `,o=>{
+  if(o.price&&!Number.isFinite(amountTWD(o.price))){alert('請先將車費換算為新台幣後填入，例如 600');return false}
+  if(o.date&&!state.days.some(d=>d.date===o.date)){alert('日期必須在 2026/12/25 至 2027/1/3 的旅程範圍內');return false}
+  for(const k of ['depart','arrive'])if(o[k]&&!/^([01]?\d|2[0-3]):[0-5]\d$/.test(o[k])){alert('時間請使用 24 小時制，例如 14:30');return false}
+  Object.assign(t,o);return true
  });
 }
 function editDay(){const day=state.days[currentDay];openModal('🗓️ 編輯當日主題',`${inputField('title','日期主題',day.title,'text','required maxlength="80"')}${textareaField('note','當日提醒與說明',day.note)}`,o=>{Object.assign(day,o);return true})}
@@ -339,21 +451,32 @@ function exportHTML(){
  download(html,'index.html','text/html;charset=utf-8');toast('已下載可公開部署的 index.html（不含私人行程）');
 }
 $('exportJSON').addEventListener('click',exportJSON);$('exportHTML').addEventListener('click',exportHTML);
-$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);adoptLegacyCosts();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
+$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async ev=>{const file=ev.target.files?.[0];if(!file)return;try{let data=JSON.parse(await file.text());let imported=data.payload||data;if(!verifyData(imported))throw new Error('資料格式不符');if(!confirm('確定匯入嗎？會覆蓋目前頁面所有已編輯資料。建議先匯出備份。'))return;state=clone(imported);adoptLegacyCosts();ensureIntercityData();currentDay=0;save();rerender();toast('匯入成功！')}catch(err){alert('匯入失敗：'+err.message)}finally{ev.target.value=''}});
 $('resetBtn').addEventListener('click',()=>{if(!confirm('將所有行程、待辦、預算、筆記還原到最初示範資料？這個動作無法復原。'))return;state=clone(seedData);currentDay=0;save();rerender();toast('已重設示範資料')});
 $('dayTabs').addEventListener('click',ev=>{const el=ev.target.closest('[data-day]');if(el)switchDay(Number(el.dataset.day))});$('prevDay').addEventListener('click',()=>switchDay(currentDay-1));$('nextDay').addEventListener('click',()=>switchDay(currentDay+1));$('addEvent').addEventListener('click',()=>editEvent());
 $('dayPanel').addEventListener('click',ev=>{if(ev.target.closest('#editDay'))return editDay();if(ev.target.closest('#emptyAdd'))return editEvent();const edit=ev.target.closest('[data-editevent]');if(edit)return editEvent(edit.dataset.editevent);const del=ev.target.closest('[data-delevent]');if(del&&confirm('確定刪除這筆行程？')){const day=state.days[currentDay];day.events=day.events.filter(x=>x.id!==del.dataset.delevent);save();renderDay();renderIdeas();toast('已移除行程')}});
 $('flightCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editflight]');if(b)editFlight(Number(b.dataset.editflight))});$('stayCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editstay]');if(b)editStay(Number(b.dataset.editstay))});
+$('intercityCards').addEventListener('click',ev=>{const b=ev.target.closest('[data-editintercity]');if(b)editIntercity(Number(b.dataset.editintercity))});
 $('ideaFilters').addEventListener('click',ev=>{const b=ev.target.closest('[data-filter]');if(b){ideaFilter=b.dataset.filter;renderIdeas()}});$('ideaGrid').addEventListener('click',ev=>{const b=ev.target.closest('[data-addidea]');if(b){const idea=ideaData.find(x=>x.id===b.dataset.addidea);if(idea)editEvent(null,idea)}});
 $('todoForm').addEventListener('submit',ev=>{ev.preventDefault();const inp=$('todoInput');const text=inp.value.trim();if(!text)return;state.todos.push({id:mkId(),text,done:false});inp.value='';save();renderTodos();toast('已加入待辦事項')});
 $('todoList').addEventListener('change',ev=>{const el=ev.target.closest('[data-todocheck]');if(!el)return;const x=state.todos.find(t=>t.id===el.dataset.todocheck);if(x){x.done=el.checked;save();renderTodos()}});$('todoList').addEventListener('click',ev=>{const ed=ev.target.closest('[data-todoedit]');if(ed)return editTodo(ed.dataset.todoedit);const del=ev.target.closest('[data-tododel]');if(del&&confirm('刪除此待辦項目？')){state.todos=state.todos.filter(t=>t.id!==del.dataset.tododel);save();renderTodos()}});
 $('budgetRows').addEventListener('change',ev=>{const inp=ev.target.closest('[data-budget]');if(!inp)return;let n=Number(inp.value);if(!Number.isFinite(n)||n<0)n=0;state.budget[Number(inp.dataset.budget)].actual=n;save();renderBudget()});$('freeNotes').addEventListener('input',ev=>{state.notes=ev.target.value;save()});
+function revealLogistics(hash=location.hash){
+ const h=String(hash||'').replace(/^#/,'');
+ if(!['travel-logistics','flights','stays','intercity'].includes(h))return;
+ const main=$('logisticsDrawer');if(!main)return;
+ main.open=true;
+ const sub=h==='flights'?'flightsPanel':h==='stays'?'staysPanel':h==='intercity'?'intercityPanel':null;
+ if(sub)$(sub).open=true;
+}
+document.addEventListener('click',ev=>{const a=ev.target.closest('a[href^="#"]');if(a)revealLogistics(a.getAttribute('href'))});
+window.addEventListener('hashchange',()=>revealLogistics());
 // Firebase 模組介面：一般功能維持單檔離線瀏覽，連上 Firebase 才同步。
 window.KyotoPlanner={
  read:()=>clone(state),
  valid:verifyData,
  seed:()=>clone(seedData),
- show:(data)=>{if(!verifyData(data))return false;state=clone(data);adoptLegacyCosts();rerender();return true},
+ show:(data)=>{if(!verifyData(data))return false;state=clone(data);adoptLegacyCosts();ensureIntercityData();rerender();return true},
  oldDraft:()=>{try{let d=JSON.parse(localStorage.getItem(namespace));return verifyData(d)?d:null}catch{return null}},
  setCloudStatus:(message,detail='',tone='')=>{
   $('cloudStatus').textContent=message+(detail?'｜'+detail:'');
@@ -384,7 +507,7 @@ $('copyRules').addEventListener('click',async()=>{try{await navigator.clipboard.
 if(firebaseConfigured){window.KyotoPlanner.setLock(true);window.KyotoPlanner.setCloudStatus('Firebase 已設定・等待連線','登入 Google 後同步私人資料');$('saveStatus').style.display='inline';$('saveStatus').textContent='🔒 請登入';}
 else{window.KyotoPlanner.setCloudStatus('尚未設定 Firebase','首次使用請至下方貼上 Web App Config');$('saveStatus').style.display='inline';$('saveStatus').textContent='● 本機編輯模式';}
 
-updateCountdown();rerender();if(!canStore){$('saveStatus').style.display='inline';$('saveStatus').textContent='⚠ 無法自動儲存，請下載 HTML 版本';toast('此瀏覽器未提供儲存功能，請用 HTML 備份保存變更')}
+updateCountdown();rerender();revealLogistics();if(!canStore){$('saveStatus').style.display='inline';$('saveStatus').textContent='⚠ 無法自動儲存，請下載 HTML 版本';toast('此瀏覽器未提供儲存功能，請用 HTML 備份保存變更')}
 </script>
 <script type="module">
 // 官方 Firebase v13.1.0 CDN；仍然只有一份 index.html，無需建置工具。
