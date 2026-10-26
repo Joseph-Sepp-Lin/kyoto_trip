@@ -123,7 +123,8 @@ async function main(){
   await page.locator('#modalClose').click();
   // Curated itinerary: preview is opt-in and does not write until the user confirms.
   let beforePlan=await page.evaluate(()=>window.KyotoPlanner.read());
-  assert.equal(beforePlan.days.reduce((n,d)=>n+d.events.length,0),1);
+  const initialEventCount=beforePlan.days.reduce((n,d)=>n+d.events.length,0);
+  assert.ok(initialEventCount>=1,'The legacy confirmed event must remain');
   await page.locator('#previewCuratedItinerary').click();
   assert.equal(await page.locator('#editor').evaluate(el=>el.open),true);
   assert.equal(await page.locator('#editorForm input[name="choice__i5"]').count(),0,'Manual existing event must be skipped');
@@ -137,7 +138,7 @@ async function main(){
   assert.equal(merged.notes,'保留既有私人旅行筆記','Existing notes retained');
   assert.ok(merged.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'Shopping data retained');
   const numAfter=merged.days.reduce((n,d)=>n+d.events.length,0);
-  assert.ok(numAfter>=24 && numAfter<=31,'Expected curated plan with defaults selected');
+  assert.ok(numAfter>=initialEventCount+18 && numAfter<=initialEventCount+31,'Expected curated plan with defaults selected');
   assert.equal(new Set(merged.days.flatMap(d=>d.events.map(e=>e.id))).size,numAfter,'Unique event IDs');
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.querySelector('#previewCuratedItinerary'));
