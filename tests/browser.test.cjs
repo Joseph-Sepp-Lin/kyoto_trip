@@ -47,7 +47,8 @@ async function main(){
   await page.locator('#ideasDrawer > summary').click();
   assert.equal(await page.locator('#ideasDrawer').evaluate(x=>x.open),true,'Ideas can expand');
   assert.match(await page.locator('#ideaCount').innerText(),/55／55/);
-  assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),5);
+  assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),6);
+  assert.equal(await page.locator('#shoppingChecklist details[data-shopcat="香品／線香"] .shopping-checkitem').count(),8);
   const themes=await page.locator('#ideaFilters button').allTextContents();
   assert.equal(themes.length,9,'全部 + 八個主題');
   const sizes=[320,375,768,1280];
@@ -81,6 +82,7 @@ async function main(){
   saved=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.ok(saved.days.some(d=>d.events.some(e=>e.ideaId==='tea-kambayashi-shunsho')),'Added idea must survive reload');
   assert.equal(saved.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4);
+  assert.equal(saved.shoppingItems.filter(x=>x.category==='香品／線香').length,8);
   await page.locator('#shoppingDrawer > summary').click();
   await page.locator('#shoppingChecklist details[data-shopcat="日本茶／茶葉"] > summary').click();
   await page.locator('#shoppingChecklist [data-checkshop="tea-ayataka"]').check();
@@ -108,6 +110,16 @@ async function main(){
   assert.equal(legacy.flights[0].price,'4321');
   assert.ok(legacy.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'legacy shopping item lost');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4,'Cloud legacy show migration');
+  assert.equal(legacy.shoppingItems.filter(x=>x.category==='香品／線香').length,8,'Cloud legacy incense migration');
+  const incenseNotes=legacy.shoppingItems.filter(x=>x.category==='香品／線香');
+  assert.ok(incenseNotes.every(x=>x.note.includes('• ')&&Number(x.shopPrice1)>0),'Incense product notes and store totals');
+  await page.locator('#shoppingDrawer > summary').click();
+  await page.locator('#shoppingChecklist details[data-shopcat="香品／線香"] > summary').click();
+  await page.locator('#shoppingChecklist [data-editshopitem="incense-store-shoyeido"]').click();
+  const notes=await page.locator('#editorForm textarea[name="note"]').inputValue();
+  assert.ok(notes.includes('芳輪 京五彩')&&notes.includes('¥1,650'));
+  assert.equal(await page.locator('#editorForm input[name="shopPrice1"]').inputValue(),'3630');
+  await page.locator('#modalClose').click();
   await page.setViewportSize({width:1280,height:900});
   await page.locator('#ideasDrawer > summary').click();
   await page.locator('#ideaFilters [data-filter="全部"]').click();
