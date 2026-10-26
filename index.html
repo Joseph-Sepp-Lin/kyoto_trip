@@ -446,7 +446,7 @@ const fareRecord=()=>{
  const a=state.flights[0]||{};return {jpy:a.jpy??'',twd:Object.prototype.hasOwnProperty.call(a,'twd')?a.twd:roundtripFare()};
 };
 let fxRate=null,fxDate='',fxError='',fxPending=false;
-const taipeiToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).replace(/\//g,'-');
+const taipeiToday=()=>{const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const x=k=>p.find(z=>z.type===k).value;return x('year')+'-'+x('month')+'-'+x('day')};
 let fxCached=null;try{fxCached=JSON.parse(localStorage.getItem('kyoto-jpy-twd-daily-v1')||'null')}catch{}
 if(fxCached?.checked===taipeiToday()&&Number(fxCached.rate)>0){fxRate=Number(fxCached.rate);fxDate=fxCached.date||''}
 const appliedRate=()=>String(state.fxManualRate??'').trim()?Number(state.fxManualRate)||null:fxRate;
@@ -465,7 +465,7 @@ async function refreshFx(force=false){
 }
 const normalizedCost=x=>{
  const yen=parsedMoney(currencyField(x,'JPY')),twd=parsedMoney(currencyField(x,'TWD')),rate=appliedRate();
- return {yen,twd,converted:yen!==null?(rate!==null?Math.round(yen*rate):null):twd};
+ return {yen,twd,converted:yen!==null?(yen===0?0:rate!==null?Math.round(yen*rate):null):twd};
 };
 const currencySummary=x=>{const v=normalizedCost(x);return v.yen!==null?('¥'+v.yen.toLocaleString('zh-TW')+(v.twd!==null?' · 實刷 '+money(v.twd):'')):v.twd!==null?money(v.twd):'待填'};
 const ledgerRecords=()=>{
@@ -479,7 +479,7 @@ const ledgerRecords=()=>{
   for(const [key,x] of Object.entries(d.transfers||{}))if(!used.has(key)&&anyCurrencyFilled(x))out.push({category:'市內交通',item:x});
  });
  (state.purchases||[]).forEach(x=>out.push({category:x.kind||'其他',item:x}));
- out.push({category:'其他',item:{jpy:state.otherJPY??'',twd:state.otherTWD??''}});
+ if(amountFilled(state.otherJPY)||amountFilled(state.otherTWD))out.push({category:'其他',item:{jpy:state.otherJPY??'',twd:state.otherTWD??''}});
  return out;
 };
 function migrateLedger(){
