@@ -22,14 +22,17 @@ async function main(){
  const browser=await chromium.launch({headless:true,channel:'chrome',args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:375,height:812},deviceScaleFactor:1});
  const jsErrors=[];
- page.on('pageerror',e=>jsErrors.push(String(e)));
+ page.on('pageerror',e=>{jsErrors.push(String(e));console.error('BROWSER PAGE ERROR',e.stack||e)});
+ page.on('console',msg=>{if(msg.type()==='error')console.error('BROWSER CONSOLE ERROR',msg.text())});
  await page.route('**/*',route=>{
   const u=new URL(route.request().url());
   if(u.hostname==='127.0.0.1')route.continue(); else route.abort();
  });
  try{
   await page.goto(url,{waitUntil:'domcontentloaded'});
-  await page.locator('#ideaGrid .idea').first().waitFor();
+  await page.waitForTimeout(1000);
+  console.log('DIAGNOSTIC',JSON.stringify({ideaCount:await page.locator('#ideaCount').textContent(),gridCount:await page.locator('#ideaGrid .idea').count(),shoppingCount:await page.locator('#shoppingChecklist .checklist-category').count(),html:await page.title(),jsErrors}));
+  await page.locator('#ideaGrid .idea').first().waitFor({timeout:7000});
   assert.match(await page.locator('#ideaCount').innerText(),/55／55/);
   assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),5);
   const themes=await page.locator('#ideaFilters button').allTextContents();
