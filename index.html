@@ -532,7 +532,7 @@ adoptLegacyCosts();
 ensureIntercityData();
 migrateLedger();
 migrateCityTransitLines();
-ensureTravelWishlists();
+// 購物清單的預設茶款待宣告完成後才注入，避免 TDZ 初始化錯誤。
 const $=id=>document.getElementById(id);
 const money=n=>'NT$'+(Number(n)||0).toLocaleString('zh-TW',{maximumFractionDigits:0});
 
@@ -675,6 +675,7 @@ function migrateLedger(){
 }
 const shoppingCategories=['保健品','日用品','衣物鞋包','零食伴手禮','日本茶／茶葉'];
 const teaShoppingSeeds=[{"id":"tea-ayataka","category":"日本茶／茶葉","title":"上林春松本店｜綾鷹煎茶 70g","done":false,"note":"最接近熟悉綾鷹概念的散茶候選；與瓶裝茶配方不同。以茶香、回甘與餘香為重點。價格為先前官網參考，現場確認。","shop1":"上林春松本店","shopPrice1":"864","link1":"https://shop.shunsho.co.jp/"},{"id":"tea-tsurezure","category":"日本茶／茶葉","title":"お茶のかんばやし｜煎茶 徒然 100g","done":false,"note":"平價經典煎茶，試較低水溫與較高水溫的回甘和清香差異。價格以現場為準。","shop1":"お茶のかんばやし","shopPrice1":"1404","link1":"https://otya.co.jp/item/sencha/"},{"id":"tea-kabuse","category":"日本茶／茶葉","title":"福壽園｜宇治の朝 冠茶 50g","done":false,"note":"想找甘醇、尾韻清爽的日常日本茶首選；不用追求昂貴玉露。價格以現場為準。","shop1":"福壽園宇治茶工房","shopPrice1":"1620","link1":"https://www.ujikoubou.com/ujicha-koubou/tea-shop/"},{"id":"tea-karigane","category":"日本茶／茶葉","title":"福壽園｜宇治の朝 雁ヶ音 50g","done":false,"note":"清甜較低澀的莖茶，小包裝作為風味對照。若當日試喝不喜歡就不用買。","shop1":"福壽園宇治茶工房","shopPrice1":"1080","link1":"https://www.ujikoubou.com/ujicha-koubou/tea-shop/"}];
+ensureTravelWishlists();
 const diningCategories=['拉麵','壽司／海鮮','和食','燒肉／鍋物','甜點／咖啡','其他'];
 let restaurantFilter='全部';
 function ensureTravelWishlists(){
