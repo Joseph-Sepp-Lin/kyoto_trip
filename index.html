@@ -680,7 +680,8 @@ function renderCityTransit(){
  }).join('');
  $('cityDayProgress').textContent=`已記帳 ${completed} / ${state.days.length} 天；車資逐筆加減，自動連動小帳本。`;
  const progress=$('logisticsProgress'),label='市內交通 '+completed+'/'+state.days.length;
- progress.textContent=(progress.textContent||'').replace(/市內交通 \d+\/\d+/,label);
+ const prev=progress.textContent||'';
+ progress.textContent=/市內交通 \d+\/\d+/.test(prev)?prev.replace(/市內交通 \d+\/\d+/,label):prev.replace(' · 住宿 ',' · '+label+' · 住宿 ');
 }
 function editTransitLine(index,id=null,operation='+'){
  const day=state.days[index];if(!day)return;
@@ -779,7 +780,7 @@ function renderMissing(){let arr=[];
  if(!state.stays[1].name)arr.push(['🏨','大阪住宿安排','確認是否住 1/2–1/3，若不住可直接忽略','#stays']);
  if(!state.days.some(d=>d.events.some(x=>x.title.includes('交響'))))arr.push(['🎻','年末第九交響曲','評估 12/25 晚間班機能否銜接音樂會','#ideas']);
  if(!state.todos.some(t=>t.text.includes('預約')&&t.done))arr.push(['🔔','跨年活動預約','檢查知恩院除夜鐘的開放預約資訊','#todos']);
- if(!amountTWD(roundtripFare())||!state.stays.some(s=>amountTWD(s.price)>0))arr.push(['💰','機票與住宿花費','在上方機票、飯店各填一次金額，就會自動匯入旅費紀錄','#budget']);
+ if(!anyCurrencyFilled(fareRecord())||state.stays.some(s=>!anyCurrencyFilled(s)))arr.push(['💰','機票與住宿費用待補','在航班或飯店卡片填入日圓或台幣其中一種金額，費用會自動納入旅費紀錄','#travel-logistics']);
  let sparse=state.days.filter(d=>d.events.length===0&&synchronizedItems(d.date).length===0).length;
  if(sparse)arr.push(['📅','未排定的日期',`還有 ${sparse} 天沒有任何活動，之後可以慢慢添加`,'#itinerary']);
  $('missingCount').textContent=`待補 ${arr.length} 項`;
