@@ -41,7 +41,7 @@ for(const shop of categoryData.incenseShoppingSeeds){
  uniqueStoreIds.add(shop.id);
  assert.equal(shop.done,false);
  assert.ok(shop.title&&shop.note&&shop.shop1&&shop.link1&&shop.link2);
- const lines=shop.note.split('\\n').filter(s=>s.startsWith('• '));
+ const lines=shop.note.split(/\r?\n/).filter(s=>s.startsWith('• '));
  assert.ok(lines.length>=1&&lines.length<=5,'1–5 scents/store: '+shop.id);
  const costs=lines.map(s=>{const m=s.match(/｜¥([0-9,]+)/);assert.ok(m,'Missing unit price: '+s);return Number(m[1].replace(/,/g,''))});
  assert.ok(costs.every(n=>n>0&&n<=2000),'Each scent must be <= ¥2,000');
