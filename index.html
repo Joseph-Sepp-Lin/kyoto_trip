@@ -175,6 +175,7 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .spending-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .spending-card{padding:17px}.spending-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .spending-head h3{margin:0;font-size:18px}.spending-list{margin-top:14px;display:grid;gap:9px}
+.spending-item.card-complete{background:#E8F2E7;border-radius:9px;padding:10px}.spending-item.card-incomplete{background:#FBEDE8;border-radius:9px;padding:10px}
 .spending-item{display:flex;align-items:center;gap:10px;justify-content:space-between;border-top:1px dashed #B6C7C7;padding:12px 2px}
 .spending-item-body{display:flex;flex-direction:column;gap:4px;min-width:0;overflow-wrap:anywhere}.spending-item-body strong{font-size:13px}.spending-item-body small{font-size:11px;color:#667783}
 .spending-cost{font-size:13px;font-weight:800;color:#426781}
@@ -565,7 +566,7 @@ function renderIntercity(){
 }
 
 function renderPurchases(){
- const cards=k=>(state.purchases||[]).filter(p=>p.kind===k).map(p=>`<article class="spending-item"><div class="spending-item-body"><strong>${esc(p.title||'未命名')}</strong><small>${esc(p.date||'日期未填')}</small><span class="spending-cost">${esc(currencySummary(p))}</span></div><button class="btn small" type="button" data-editpurchase="${attr(p.id)}">編輯</button></article>`).join('')||'<div class="empty">尚無紀錄，點「新增」即可開始。</div>';
+ const cards=k=>(state.purchases||[]).filter(p=>p.kind===k).map(p=>`<article class="spending-item ${hasText(p.title)&&anyCurrencyFilled(p)?'card-complete':'card-incomplete'}"><div class="spending-item-body"><strong>${esc(p.title||'未命名')}</strong><small>${hasText(p.title)&&anyCurrencyFilled(p)?'✓ 資料完整':'✎ 名稱或費用尚待補齊'}</small><small>${esc(p.date||'日期未填')}</small><span class="spending-cost">${esc(currencySummary(p))}</span></div><button class="btn small" type="button" data-editpurchase="${attr(p.id)}">編輯</button></article>`).join('')||'<div class="empty">尚無紀錄，點「新增」即可開始。</div>';
  $('diningList').innerHTML=cards('餐飲');$('shoppingList').innerHTML=cards('購物');
 }
 function editPurchase(kind,id=null){
