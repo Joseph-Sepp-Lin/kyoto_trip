@@ -14,7 +14,7 @@ const between=(start,end)=>{
 };
 const ideaCode=between('const DATES=','const e=');
 const cat=vm.runInNewContext(ideaCode+'\n({ideaData,ideaThemes})');
-assert.equal(cat.ideaData.length,55,'靈感總數不應意外改變');
+assert.equal(cat.ideaData.length,65,'靈感總數不應意外改變');
 const htmlMapSections=['id="map"','id="mapDrawer"','id="geoMapCanvas"','id="geoMapResults"','id="geoOpenRoute"'];
 for(const key of htmlMapSections)assert.ok(html.includes(key),'Missing map UI '+key);
 for(const source of ['idea','restaurant','event'])assert.ok(html.includes("source:'"+source+"'"),'Missing map source '+source);
@@ -46,7 +46,7 @@ for(const group of itineraryCatalog){
   total++;
  }
 }
-assert.equal(total,31);
+assert.equal(total,38);
 assert.ok(html.includes('get readyForImport(){'),'Cloud write must wait for remote initialization');
 assert.ok(source.includes('function curatedImportEligibility(){'));
 const idset=new Set(cat.ideaData.map(x=>x.id));
@@ -61,7 +61,7 @@ for(const idea of cat.ideaData){
  assert.ok(cat.ideaThemes.includes(idea.category),'未知主題: '+idea.category);
  assert.ok(/^https:\/\//.test(idea.url),'官方／活動來源需要安全連結: '+idea.id);
 }
-const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=').replace(/\nensureTravelWishlists\(\);\n/,'\n')+'\n({shoppingCategories,teaShoppingSeeds,incenseShoppingSeeds})');
+const categoryData=vm.runInNewContext(between('const shoppingCategories=','const diningCategories=').replace(/\nensureTravelWishlists\(\);\n/,'\n')+'\n({shoppingCategories,teaShoppingSeeds,incenseShoppingSeeds,newYearShoppingSeeds})');
 assert.ok(categoryData.shoppingCategories.includes('日本茶／茶葉'));
 assert.equal(categoryData.teaShoppingSeeds.length,4);
 assert.ok(categoryData.shoppingCategories.includes('香品／線香'));
@@ -89,27 +89,27 @@ for(const item of categoryData.teaShoppingSeeds){
 }
 const ensureSource=between('function ensureTravelWishlists(){','function synchronizedItems(');
 const state={restaurants:[{id:'food1'}],shoppingItems:[{id:'existing',title:'原有購物清單',category:'日用品'}]};
-const migrate=vm.createContext({state,teaShoppingSeeds:categoryData.teaShoppingSeeds,incenseShoppingSeeds:categoryData.incenseShoppingSeeds});
+const migrate=vm.createContext({state,teaShoppingSeeds:categoryData.teaShoppingSeeds,incenseShoppingSeeds:categoryData.incenseShoppingSeeds,newYearShoppingSeeds:categoryData.newYearShoppingSeeds});
 vm.runInContext(ensureSource+'\nensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,13,'應增加4款茶及8個購香地點');
+assert.equal(state.shoppingItems.length,28,'應增加4款茶及8個購香地點');
 assert.equal(state.shoppingItems[0].title,'原有購物清單','原有資料必須保留');
 state.shoppingItems[1].done=true;
 vm.runInContext('ensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,13,'已標記品項不可重複');
+assert.equal(state.shoppingItems.length,28,'已標記品項不可重複');
 const removed=state.shoppingItems.splice(1,1)[0];
 vm.runInContext('ensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,12,'使用者刪除後不可復活: '+removed.id);
+assert.equal(state.shoppingItems.length,27,'使用者刪除後不可復活: '+removed.id);
 const incenseRemoved=state.shoppingItems.find(x=>x.id==='incense-store-lisn');
 state.shoppingItems=state.shoppingItems.filter(x=>x.id!==incenseRemoved.id);
 vm.runInContext('ensureTravelWishlists()',migrate);
-assert.equal(state.shoppingItems.length,11,'刪除的香舖不應重複出現');
+assert.equal(state.shoppingItems.length,26,'刪除的香舖不應重複出現');
 assert.equal(state.shoppingItems.filter(x=>x.category==='香品／線香').length,7);
 const els={ideaFilters:{innerHTML:''},ideaGrid:{innerHTML:''},ideaCount:{textContent:''}};
 const renderer=between('function renderIdeas(){','function renderIntercity(){');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ctx=vm.createContext({ideaData:cat.ideaData,ideaThemes:cat.ideaThemes,ideaFilter:'全部',ideaSearch:'',state:{days:[]},$:k=>els[k],esc,attr:esc,uiIcon:()=>'',maps:x=>'https://maps.example/?q='+encodeURIComponent(x),urlSafe:x=>/^https:\/\//.test(x)?x:''});
 vm.runInContext(renderer+'\nrenderIdeas()',ctx);
-assert.match(els.ideaCount.textContent,/55／55/);
+assert.match(els.ideaCount.textContent,/65／65/);
 assert.match(els.ideaGrid.innerHTML,/Google Maps/);
 assert.match(els.ideaGrid.innerHTML,/營業日期與時間/);
 assert.match(els.ideaGrid.innerHTML,/公休日／休館/);
@@ -122,4 +122,4 @@ ctx.ideaSearch='綾鷹';
 vm.runInContext('renderIdeas()',ctx);
 assert.match(els.ideaGrid.innerHTML,/綾鷹/);
 assert.doesNotMatch(els.ideaGrid.innerHTML,/福壽園・宇治茶工房/);
-console.log('PASS: 內嵌 JS 語法／55 筆8主題／舊 ID／各欄位／主題及文字篩選／購物與線香分類價格總和、遷移與刪除保留');
+console.log('PASS: 內嵌 JS 語法／65 筆8主題／舊 ID／各欄位／主題及文字篩選／購物與線香分類價格總和、遷移與刪除保留');
