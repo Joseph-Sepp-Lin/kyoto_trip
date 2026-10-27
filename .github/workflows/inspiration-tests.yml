@@ -6,6 +6,7 @@ on:
       - feature/foldable-sessions-2026
       - feature/incense-shopping-by-store-2026
       - feature/kyoto-map-overview-2026
+      - fix/map-event-marker-pseudo-circle-2026
       - feature/curated-itinerary-safe-cloud-import-2026
   pull_request:
     paths:

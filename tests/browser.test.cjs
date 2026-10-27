@@ -54,6 +54,20 @@ async function main(){
   assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),true);
   await page.waitForTimeout(350);
   console.log('MAP_DIAG',JSON.stringify(await page.evaluate(()=>({mapOpen:document.getElementById('mapDrawer').open,results:document.querySelectorAll('#geoMapResults .geo-result').length,preview:document.getElementById('geoMapResults').innerText.slice(0,180),count:document.getElementById('geoMapCount').textContent,hasGeoFn:typeof geoCatalog==='function',catalogLen:typeof geoCatalog==='function'?geoCatalog().length:-1,types:typeof geoCatalog==='function'?geoCatalog().reduce((o,x)=>(o[x.source]=(o[x.source]||0)+1,o),{}):{},geoState:typeof geoLeafletState!=='undefined'?geoLeafletState:'unknown'}))));
+  const markerStyle=await page.evaluate(()=>{
+    const marker=document.createElement('div');
+    marker.className='geo-pin geo-event approx';marker.innerHTML='<span><em>🗓️</em></span>';
+    document.body.appendChild(marker);
+    const content=getComputedStyle(marker,'::before').content;
+    const border=getComputedStyle(marker.querySelector('span')).borderTopColor;
+    const line=document.createElement('div');line.className='event';document.body.appendChild(line);
+    const timelineCircle=getComputedStyle(line,'::before').content;
+    marker.remove();line.remove();
+    return {content,border,timelineCircle};
+  });
+  assert.ok(!['""',"''"].includes(markerStyle.content),'Map markers must not inherit the timeline circle pseudo-element');
+  assert.ok(['""',"''"].includes(markerStyle.timelineCircle),'Daily itinerary timeline circle must remain');
+  assert.equal(markerStyle.border,'rgb(143, 89, 129)','Scheduled pin keeps its purple category border');
   await page.waitForFunction(()=>document.querySelectorAll('#geoMapResults .geo-result').length>=55,{timeout:8000});
   assert.match(await page.locator('#geoMapCount').innerText(),/顯示 \d+ 筆/);
   assert.ok((await page.locator('#geoMapResults .geo-result').allTextContents()).some(x=>x.includes('上林春松本店')));
