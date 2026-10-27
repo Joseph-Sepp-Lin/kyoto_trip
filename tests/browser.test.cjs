@@ -155,7 +155,7 @@ async function main(){
    window.KyotoPlanner.show(draft);
   });
   await page.locator('#mapDrawer > summary').click();
-  assert.ok((await page.locator('#geoMapResults').innerText()).includes('測試京都餐廳'));
+  await page.waitForFunction(()=>document.querySelector('#geoMapResults').innerText.includes('測試京都餐廳'),{timeout:8000});
   await page.locator('#mapSource').selectOption('restaurant');
   assert.equal(await page.locator('#geoMapResults .geo-result').count(),1);
   await page.locator('#geoMapResults [data-geoedit="r-map-1"]').click();
