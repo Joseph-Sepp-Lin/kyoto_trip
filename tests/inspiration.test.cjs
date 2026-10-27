@@ -21,6 +21,10 @@ for(const source of ['idea','restaurant','event'])assert.ok(html.includes("sourc
 assert.ok(html.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"),'Map tiles require valid openstreetmap URL');
 assert.ok(html.includes("© OpenStreetMap contributors"),'Map attribution must remain visible');
 assert.ok(!html.includes('nominatim.openstreetmap.org'),'No bulk geocoding via public Nominatim');
+assert.ok(html.includes("className:'geo-pin geo-'+p.source"),'Map marker class must be namespaced to avoid the timeline .event::before decoration');
+assert.doesNotMatch(html,/\.geo-pin\.event\s+span\{/,'Do not apply timeline .event styles to map pins');
+assert.match(html,/\.geo-pin\.geo-event\s+span\{/,'Map event markers keep their own purple styling');
+assert.match(html,/\.event:before\{/,'Timeline circles should still render within daily itinerary');
 
 assert.equal(cat.ideaThemes.length,8);
 const itineraryCatalog=vm.runInNewContext(between('const recommendedItinerary=','const e=')+'\nrecommendedItinerary');
