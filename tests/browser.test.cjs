@@ -48,6 +48,42 @@ async function main(){
   assert.equal(await page.locator('#ideasDrawer').evaluate(x=>x.open),true,'Ideas can expand');
   assert.match(await page.locator('#ideaCount').innerText(),/55／55/);
   assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),6);
+  // 京都地圖：不需要連接真實 Firebase，也不要求地圖 CDN 載入才可以使用地點清單。
+  assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),false);
+  await page.locator('a[href="#map"]').click();
+  assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),true);
+  await page.waitForTimeout(350);
+  console.log('MAP_DIAG',JSON.stringify(await page.evaluate(()=>({mapOpen:document.getElementById('mapDrawer').open,results:document.querySelectorAll('#geoMapResults .geo-result').length,preview:document.getElementById('geoMapResults').innerText.slice(0,180),count:document.getElementById('geoMapCount').textContent,hasGeoFn:typeof geoCatalog==='function',catalogLen:typeof geoCatalog==='function'?geoCatalog().length:-1,types:typeof geoCatalog==='function'?geoCatalog().reduce((o,x)=>(o[x.source]=(o[x.source]||0)+1,o),{}):{},geoState:typeof geoLeafletState!=='undefined'?geoLeafletState:'unknown'}))));
+  await page.waitForFunction(()=>document.querySelectorAll('#geoMapResults .geo-result').length>=55,{timeout:8000});
+  assert.match(await page.locator('#geoMapCount').innerText(),/顯示 \d+ 筆/);
+  assert.ok((await page.locator('#geoMapResults .geo-result').allTextContents()).some(x=>x.includes('上林春松本店')));
+  const positions=await page.evaluate(()=>({
+   tea:getGeoPosition({place:'平等院'}),
+   shrine:getGeoPosition({place:'貴船神社'}),
+   restaurant:getGeoPosition({place:'Example',area:'祇園'}),
+   exact:getGeoPosition({place:'Example',googleUrl:'https://www.google.com/maps/place/Foo/@35.0041,135.7777,18z'}),
+   missing:getGeoPosition({place:'Unknown',area:''}),
+   route:geoRouteUrl([{query:'清水寺 京都 日本'},{query:'建仁寺 京都 日本'},{query:'知恩院 京都 日本'}])
+  }));
+  assert.equal(positions.tea.precision,'參考位置');
+  assert.ok(positions.tea.lat<34.95);
+  assert.ok(positions.shrine.lat>35.09);
+  assert.equal(positions.restaurant.precision,'區域概略');
+  assert.equal(positions.exact.precision,'Google Maps 座標');
+  assert.equal(positions.missing,null);
+  assert.match(positions.route,/waypoints=/);
+  await page.locator('#mapSource').selectOption('idea');
+  await page.locator('#mapDate').selectOption('2026-12-26');
+  assert.ok(await page.locator('#geoMapResults .geo-result').count()>=7);
+  await page.locator('#mapDate').selectOption('all');
+  await page.locator('#mapSource').selectOption('all');
+  await page.locator('#geoMapResults [data-geoselect]').first().check();
+  await page.locator('#geoMapResults [data-geoselect]').nth(1).check();
+  assert.match(await page.locator('#geoRouteCount').innerText(),/2\/5/);
+  await page.locator('#geoResetRoute').click();
+  assert.match(await page.locator('#geoRouteCount').innerText(),/0\/5/);
+  await fs.promises.mkdir('test-artifacts',{recursive:true});
+  await page.locator('#map').screenshot({path:'test-artifacts/kyoto-map-overview.png',animations:'disabled'});
   assert.equal(await page.locator('#shoppingChecklist details[data-shopcat="香品／線香"] .shopping-checkitem').count(),8);
   const themes=await page.locator('#ideaFilters button').allTextContents();
   assert.equal(themes.length,9,'全部 + 八個主題');
@@ -112,6 +148,25 @@ async function main(){
   assert.ok(legacy.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'legacy shopping item lost');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4,'Cloud legacy show migration');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='香品／線香').length,8,'Cloud legacy incense migration');
+  // User's private restaurant names remain in memory and render in map but are never baked into GitHub source.
+  await page.evaluate(()=>{
+   const draft=window.KyotoPlanner.read();
+   draft.restaurants=[{id:'r-map-1',name:'測試京都餐廳',area:'東山區',googleUrl:'',dish:'湯豆腐',category:'和食',note:''}];
+   window.KyotoPlanner.show(draft);
+  });
+  console.log('MAP_LEGACY_DIAG',JSON.stringify(await page.evaluate(()=>({open:document.querySelector('#mapDrawer').open,source:mapSource.value,date:mapDate.value,region:mapRegion.value,search:mapSearch.value,rest:window.KyotoPlanner.read().restaurants.length,geo:geoCatalog().filter(x=>x.source==='restaurant').length,visible:geoVisiblePoints().filter(x=>x.source==='restaurant').length}))));
+  if(!(await page.locator('#mapDrawer').evaluate(x=>x.open)))await page.locator('#mapDrawer > summary').click();
+  await page.waitForFunction(()=>document.querySelector('#geoMapResults').innerText.includes('測試京都餐廳'),null,{timeout:8000});
+  await page.locator('#mapSource').selectOption('restaurant');
+  assert.equal(await page.locator('#geoMapResults .geo-result').count(),1);
+  await page.locator('#geoMapResults [data-geoedit="r-map-1"]').click();
+  assert.equal(await page.locator('#editorForm input[name="locationLat"]').count(),1);
+  await page.locator('#editorForm input[name="locationLat"]').fill('35.0045');
+  await page.locator('#editorForm input[name="locationLng"]').fill('135.7785');
+  await page.locator('#editorForm button[type="submit"]').click();
+  assert.equal((await page.evaluate(()=>window.KyotoPlanner.read())).restaurants[0].locationLat,'35.0045');
+  await page.locator('#mapSource').selectOption('all');
+
   const incenseNotes=legacy.shoppingItems.filter(x=>x.category==='香品／線香');
   assert.ok(incenseNotes.every(x=>x.note.includes('• ')&&Number(x.shopPrice1)>0),'Incense product notes and store totals');
   await page.locator('#shoppingDrawer > summary').click();

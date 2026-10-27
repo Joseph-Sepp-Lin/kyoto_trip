@@ -354,12 +354,53 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .curated-choice input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:#668B80}.curated-choice span{display:grid;min-width:0;gap:3px}
 .curated-choice b{font-size:13px;color:#263B46}.curated-choice small{font-size:12px;color:#546775}
 @media(max-width:660px){.curated-entry-actions{width:100%}.curated-entry-actions>.btn{flex:1 1 180px}}
+
+/* Read-only map overview: compact filters, responsive two-column map/list, clear accuracy labels. */
+.geo-toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.geo-toolbar label{font-size:12px;font-weight:850;color:#456879;display:grid;gap:5px;min-width:0}
+.geo-toolbar .field{width:100%;min-width:0;background:#FFFDF7}
+.geo-filter-hint{padding:10px 12px;background:#FFF8E3;border:1px solid #DDC9A5;border-radius:12px;font-size:12px;line-height:1.7;margin-bottom:12px}
+.geo-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:14px;align-items:start;min-width:0}
+.geo-canvas-wrap,.geo-list-wrap{background:#FFFCF7;border:1.5px solid #A8B7BF;border-radius:16px;overflow:hidden;min-width:0}
+.geo-map-canvas{height:510px;min-height:300px;background:#EAF0EA;position:relative;isolation:isolate;z-index:0}
+.geo-map-placeholder{height:100%;display:grid;place-items:center;text-align:center;font-size:13px;color:#667B7E;padding:24px}
+.geo-map-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:9px 12px;font-size:11px;color:#617880}
+.geo-map-footer a{text-decoration:underline}
+.geo-list-head{padding:14px 14px 6px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.geo-list-head small{white-space:nowrap;color:#617880;font-weight:800}
+.geo-route-options{display:flex;flex-wrap:wrap;gap:7px;padding:8px 12px}
+.geo-route-options .field{width:auto;flex:1;min-width:90px;font-size:12px}
+.geo-route-options .btn{font-size:12px;line-height:1.2}
+.geo-route-help{font-size:11px;color:#627679;padding:0 13px 8px;margin:0;line-height:1.6}
+.geo-map-results{max-height:398px;overflow-y:auto;border-top:1px dashed #BBCACB;padding:8px 12px 13px;display:grid;align-content:start;gap:8px}
+.geo-region-title{font-size:12px;font-weight:900;color:#426781;margin:11px 0 0;background:#EAF2F2;padding:5px 8px;border-radius:8px}
+.geo-result{border:1px solid #CCD9D9;border-radius:11px;background:white;padding:10px;display:grid;gap:7px}
+.geo-result-top{display:flex;align-items:start;gap:8px}
+.geo-result-top label{display:flex;align-items:start;gap:7px;flex:1;min-width:0;font-size:13px;font-weight:800;line-height:1.4;cursor:pointer}
+.geo-result-top input{flex:none;accent-color:#4A8193;margin-top:3px}
+.geo-result-name{overflow-wrap:anywhere}
+.geo-result-note{font-size:11px;color:#647780;line-height:1.5}
+.geo-result-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:11px}
+.geo-result-actions a{color:#426781;font-weight:800}
+.geo-result-actions button{border:0;background:none;text-decoration:underline;padding:0;font-size:11px;font-weight:800;color:#426781}
+.geo-type-tag{font-weight:850;color:#8A5551;white-space:nowrap;font-size:11px}
+.geo-pin{background:none!important;border:0!important}
+.geo-pin span{display:grid;place-items:center;width:29px;height:29px;background:#FCF9EE;border:2px solid #426781;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:1px 2px 5px #3344}
+.geo-pin em{font-size:16px;font-style:normal;transform:rotate(45deg)}
+.geo-pin.restaurant span{border-color:#B17D3B;background:#FFF4DF}
+.geo-pin.event span{border-color:#8F5981;background:#FBEFFC}
+.geo-pin.approx span{border-style:dashed;opacity:.85}
+.geo-popup{min-width:180px;font-size:12px}.geo-popup strong{display:block;margin-bottom:6px;line-height:1.4}.geo-popup small{display:block;color:#657C7E;margin-bottom:8px}
+.geo-popup a{font-size:12px;color:#356B82}
+.geo-privacy{font-size:12px;line-height:1.7;margin:15px 2px 2px}
+@media(max-width:850px){.geo-toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.geo-layout{grid-template-columns:1fr}.geo-map-canvas{height:400px}.geo-map-results{max-height:420px}}
+@media(max-width:420px){.geo-toolbar{grid-template-columns:1fr 1fr}.geo-map-canvas{height:330px}.geo-route-options .btn{flex-grow:1}.geo-map-results{max-height:440px}}
 </style>
 </head>
 <body><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs><symbol id="u-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7v9H3z"/><path d="M9 21v-8h6v8"/></symbol><symbol id="u-plane" viewBox="0 0 24 24"><path d="M12 3v18m0-12L3 15v3l9-3 9 3v-3l-9-6m-4 12 4-3 4 3"/></symbol><symbol id="u-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18M8 15h3m3 0h3"/></symbol><symbol id="u-flower" viewBox="0 0 24 24"><path d="M12 5c-2-4-5-3-5 0-4-2-5 2-2 5-4 1-4 5 0 5-2 4 2 5 5 2 1 4 5 4 5 0 4 2 5-2 2-5 4-1 4-5 0-5 2-4-2-5-5-2z"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="u-bed" viewBox="0 0 24 24"><path d="M3 21V10m18 11V10M3 14h18v5H3z"/><rect x="4" y="9" width="16" height="5" rx="2"/><path d="M6 9V6a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/></symbol><symbol id="u-check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8 12 3 3 5-6"/></symbol><symbol id="u-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><circle cx="12" cy="12.5" r="3"/></symbol><symbol id="u-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol><symbol id="u-cloud" viewBox="0 0 24 24"><path d="M6 18h12a4 4 0 1 0-.8-7.9A6 6 0 0 0 5.6 11 3.5 3.5 0 0 0 6 18z"/></symbol><symbol id="u-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.6"/></symbol><symbol id="u-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol><symbol id="u-edit" viewBox="0 0 24 24"><path d="m4 20 4-.8L20 7.5a2 2 0 0 0-3.5-3.5L4.9 15.7z"/><path d="M14 6l4 4"/></symbol><symbol id="u-archive" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="5" rx="2"/><path d="M5 10v10h14V10M10 14h4"/></symbol><symbol id="u-scroll" viewBox="0 0 24 24"><path d="M7 3h11a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/><path d="M7 3v12a2 2 0 1 0 4 0V7M13 8h5M13 12h5"/></symbol><symbol id="u-umbrella" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0M3 12c2-2 4-2 6 0 2-2 4-2 6 0 2-2 4-2 6 0M12 4v14a3 3 0 0 0 6 0"/></symbol><symbol id="u-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M8 8h8M8 12h8M8 18l-2 3m10-3 2 3M8 16h.01M16 16h.01" /></symbol></defs></svg>
 <header class="top">
   <div class="wrap top-in"><a href="#home" class="brand" aria-label="回首頁"><span class="brand-mark"><svg viewBox="0 0 38 38" aria-label="朱紅鳥居" role="img"><path d="M4 8Q19 11 34 8L32 14H6Z" fill="#E02E2E" stroke="#243447" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 16H29V20H9Z" fill="#E02E2E" stroke="#243447" stroke-width="1.7" stroke-linejoin="round"/><path d="M11 20H16V34H11ZM23 20H28V34H23Z" fill="#E02E2E" stroke="#243447" stroke-width="1.7"/><path d="M16 25H23" stroke="#243447" stroke-width="1.4" stroke-linecap="round"/></svg></span><span>京洛浮世旅帖</span></a><div class="top-actions"><span class="save-indicator" id="saveStatus">● 自動儲存已開啟</span><a class="btn small sky compact-label" href="#sync">☁ 雲端同步</a></div></div>
-  <nav class="wrap nav" aria-label="主要導覽"><a href="#home"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-home"></use></svg>首頁</a><a href="#before-trip"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-check"></use></svg>出發前</a><a href="#itinerary"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg>每日散策</a><a href="#ideas"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-flower"></use></svg>靈感抽屜</a><a href="#restaurants">🍜 要吃什麼</a><a href="#shopping">🛍️ 要買什麼</a><a href="#travel-logistics"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-train"></use></svg>交通・住宿</a><a href="#budget"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-money"></use></svg>費用統計</a><a href="#notes"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-note"></use></svg>備忘錄</a><a href="#accountSettings"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg>設定</a></nav>
+  <nav class="wrap nav" aria-label="主要導覽"><a href="#home"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-home"></use></svg>首頁</a><a href="#before-trip"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-check"></use></svg>出發前</a><a href="#itinerary"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg>每日散策</a><a href="#ideas"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-flower"></use></svg>靈感抽屜</a><a href="#restaurants">🍜 要吃什麼</a><a href="#map">🗺️ 京都地圖</a><a href="#shopping">🛍️ 要買什麼</a><a href="#travel-logistics"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-train"></use></svg>交通・住宿</a><a href="#budget"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-money"></use></svg>費用統計</a><a href="#notes"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-note"></use></svg>備忘錄</a><a href="#accountSettings"><svg class="ui-line sm ink-blue" aria-hidden="true"><use href="#u-cloud"></use></svg>設定</a></nav>
 </header>
 <main class="wrap">
 <div class="cloud-strip" aria-live="polite"><div class="cloud-message"><span id="cloudDot" class="cloud-dot"></span><span id="cloudTopText">雲端同步尚未設定</span><span id="cloudTopDetail" class="cloud-info">尚未連線時可先瀏覽示範行程</span></div><div class="compact-signin"><button id="googleLogin" class="btn mint" type="button" disabled>🔑 使用 Google 登入</button><button id="googleLogout" class="btn ghost" type="button" hidden>登出</button><a class="btn small sky" href="#accountSettings">設定 ⚙</a></div></div>
@@ -411,6 +452,35 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
  <div class="spending-head"><h3>餐飲實際支出</h3><button class="btn small mint" id="addDining" type="button">＋ 新增餐費</button></div><div id="diningList" class="spending-list"></div></details>
 
  </div>
+ </details>
+</section>
+
+<section id="map" class="section">
+ <div class="sect-head"><div><p class="eyebrow">MAP / KYOTO NEIGHBORHOODS</p><h2>🗺️ 京洛地圖總覽</h2><p class="description">將靈感、已排行程與私人餐廳收藏放在同一張地圖，按主題、日期或區域篩選，減少跨區折返。</p></div></div>
+ <details class="session-drawer" id="mapDrawer" data-session="map">
+  <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🗺️</span><span class="session-summary-text"><strong>景點與餐廳分布地圖</strong><small>多點地圖・區域分組・Google Maps 路線</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+  <div class="session-inner">
+   <div class="geo-toolbar">
+    <label>顯示類型<select id="mapSource" class="field"><option value="all">全部地點</option><option value="idea">靈感抽屜</option><option value="restaurant">餐廳收藏</option><option value="event">已排行程</option></select></label>
+    <label>日期<select id="mapDate" class="field"><option value="all">所有日期</option></select></label>
+    <label>京都區域<select id="mapRegion" class="field"><option value="all">全部區域</option></select></label>
+    <label>搜尋<input id="mapSearch" class="field" type="search" placeholder="例如 東山、茶、拉麵" aria-label="搜尋地圖地點"></label>
+   </div>
+   <div class="geo-filter-hint">📍 實心圖釘為已提供座標的位置；<strong>區域參考</strong>圖釘僅供規劃大方向，不代表店門口。餐廳可在「編輯」中填入 Google Maps 連結或經緯度提高精準度。</div>
+   <div class="geo-layout">
+    <div class="geo-canvas-wrap">
+     <div id="geoMapCanvas" class="geo-map-canvas" role="region" aria-label="京都靈感景點與餐廳地圖"><div class="geo-map-placeholder">展開地圖後載入互動底圖。需要網路連線，清單與 Google Maps 連結仍可單獨使用。</div></div>
+     <div class="geo-map-footer"><span id="geoMapStatus" role="status">尚未載入底圖</span><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></div>
+    </div>
+    <div class="geo-list-wrap">
+     <div class="geo-list-head"><strong id="geoMapCount">地點整理中</strong><small id="geoRouteCount">已選 0/5 站</small></div>
+     <div class="geo-route-options"><select id="geoTravelMode" class="field" aria-label="Google Maps 交通方式"><option value="transit">大眾運輸</option><option value="walking">步行</option><option value="driving">開車</option></select><button class="btn small sky" type="button" id="geoOpenRoute">在 Google Maps 規劃路線 ↗</button><button class="btn small" type="button" id="geoResetRoute">清空</button></div>
+     <p class="geo-route-help" id="geoRouteHelp">依勾選順序排列站點；最多 5 站（支援手機版 Google Maps 的最多 3 個中途點）。Google Maps 會提供實際交通時間。</p>
+     <div id="geoMapResults" class="geo-map-results" aria-live="polite"></div>
+    </div>
+   </div>
+   <p class="description geo-privacy">地圖由 Leaflet 與 OpenStreetMap 提供；不需要付費 Google API 金鑰。底圖開啟時會連線地圖服務，但<strong>不會向第三方批次上傳餐廳名單或私人行程</strong>。定位不足的餐廳會明確標示概略位置或未定位。地圖不會自動計算或承諾交通時間，路線請以 Google Maps 實際結果為準。</p>
+  </div>
  </details>
 </section>
 <section id="shopping" class="section">
@@ -828,7 +898,7 @@ function save(){
    else {$('saveStatus').textContent='🔒 請登入後編輯';return;}
  }else if(canStore){try{localStorage.setItem(namespace,JSON.stringify(state));$('saveStatus').textContent='● 本機自動儲存'}catch{canStore=false}}
  if(!canStore)$('saveStatus').textContent='⚠ 本機暫存失敗，請匯出 JSON';
- renderOverview();renderMissing();
+ renderOverview();renderMissing();if($('mapDrawer')?.open)refreshGeoOverview();
 }
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
 function updateCountdown(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const get=x=>Number(p.find(z=>z.type===x).value);const today=Date.UTC(get('year'),get('month')-1,get('day'));const start=Date.UTC(2026,11,25);const end=Date.UTC(2027,0,4);const n=Math.round((start-today)/86400000);$('countdown').textContent=n>0?n+' 天':n===0?'今天出發！':today<=end?'旅途中 ♡':'回憶收藏中'}
@@ -999,12 +1069,12 @@ function editRestaurant(id=null){
  ${inputField('dish','想吃的料理或招牌品項',x.dish,'text','maxlength="160"')}
  ${selectField('category','料理類型',diningCategories,x.category||'其他')}
  ${inputField('area','地區／地址',x.area,'text','placeholder="例如 京都・四條河原町"')}
- ${inputField('googleUrl','Google Maps 店家連結（選填）',x.googleUrl,'url')}
+ ${inputField('googleUrl','Google Maps 店家連結（選填）',x.googleUrl,'url')}${inputField('locationLat','緯度（選填；地圖精確定位）',x.locationLat||'','text','placeholder="例如 35.0042"')}${inputField('locationLng','經度（選填；地圖精確定位）',x.locationLng||'','text','placeholder="例如 135.7749"')}
  ${inputField('tabelogUrl','Tabelog 店家網址（選填）',x.tabelogUrl,'url')}
  ${inputField('url','推薦文連結（Threads、IG 等）',x.url,'url')}
  ${textareaField('note','預約提醒或口味筆記',x.note)}`,
  o=>{if(!String(o.name||'').trim()&&!String(o.dish||'').trim()){alert('餐廳名稱或想吃的料理請至少填一項');return false}
-  if(old)Object.assign(old,o);else state.restaurants.push({...o,id:mkId()});return true;
+  if((String(o.locationLat||'').trim()||String(o.locationLng||'').trim())&&!geoCoordsValid(Number(o.locationLat),Number(o.locationLng))){alert('請輸入有效的日本京都地區經緯度（緯度 34.4–35.5，經度 135.3–136.3），或兩欄都留空');return false}if(old)Object.assign(old,o);else state.restaurants.push({...o,id:mkId()});return true;
  },{danger:old?()=>{if(confirm('確定移除這則餐廳收藏？')){state.restaurants=state.restaurants.filter(r=>r.id!==id);closeModal();save();rerender();toast('已移除餐廳收藏')}}:null});
 }
 /* Wishlist with up to three actual store/price quotes and three recommendation URLs. */
@@ -1119,7 +1189,256 @@ function renderMissing(){let arr=[];
  $('missingCount').textContent=`待補 ${arr.length} 項`;
  $('missingList').innerHTML=arr.length?arr.map(x=>`<a class="missing-item" href="${x[3]}" style="text-decoration:none"><span class="missing-i">${x[0]}</span><div><strong>${esc(x[1])} ↗</strong><p>${esc(x[2])}</p></div></a>`).join(''):`<div class="empty">主要待補資料已完成！其他細節依喜好慢慢增加就好 🌷</div>`;
 }
-function rerender(){renderOverview();renderFlights();renderIntercity();renderCityTransit();renderDay();renderIdeas();renderRestaurants();renderShoppingChecklist();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
+
+/* 地理總覽：固定京都興趣點只作視覺參考。個人資料不傳至定位 API。
+   坐標為附近參考位置，絕不可當作寺院入口／店舖地址；手動 GPS 與 Google Maps 座標才標精確。 */
+const geoLandmarks={
+ '北野天滿宮':[35.0313,135.7352],'京都音樂廳':[35.0502,135.7661],
+ '六波羅蜜寺':[34.9971,135.7717],'京都市京瓷美術館':[35.0123,135.7823],
+ '知恩院':[35.0058,135.7838],'京都觀世會館':[35.0143,135.7833],
+ '太秦映畫村':[35.0150,135.7098],'八坂神社':[35.0036,135.7785],
+ '伏見稻荷大社':[34.9672,135.7727],'護王神社':[35.0251,135.7562],
+ 'お東さん廣場（東本願寺前）':[34.9904,135.7579],
+ '梅小路公園':[34.9884,135.7483],'上賀茂神社':[35.0602,135.7521],
+ '清水寺山門前':[34.9961,135.7841],'清水寺':[34.9949,135.7851],
+ '岡崎公園':[35.0123,135.7821],'錦市場':[35.0051,135.7672],
+ '上林春松本店':[34.8933,135.8069],'お茶のかんばやし':[34.8927,135.8073],
+ '宇治茶道場 匠の館':[34.8921,135.8057],'福寿園 宇治茶工房':[34.8887,135.8054],
+ '売茶中村':[34.8890,135.8059],'通圓茶屋':[34.8923,135.8065],
+ '平等院':[34.8895,135.8077],'松栄堂 京都本店':[35.0117,135.7593],
+ '山田松香木店 京都本店':[35.0252,135.7582],
+ '薫玉堂 本店':[34.9925,135.7518],'Lisn Kyoto':[35.0032,135.7597],
+ '京都鳩居堂 本店':[35.0080,135.7678],'香彩堂 京都本店':[34.9990,135.7720],
+ '林龍昇堂':[35.0084,135.7528],'二井三':[35.0040,135.7790],
+ '三十三間堂':[34.9883,135.7714],'銀閣寺':[35.0270,135.7981],
+ '建仁寺':[35.0001,135.7756],'貴船神社':[35.1214,135.7631],
+ '祇王寺':[35.0237,135.6640],'西芳寺':[34.9918,135.6831],
+ '上七軒歌舞練場':[35.0313,135.7369],'先斗町歌舞練場':[35.0089,135.7705],
+ '玄想庵':[35.0020,135.7600],'とようけ屋山本':[35.0304,135.7375],
+ '辻和金網':[35.0124,135.7681],'俵屋吉富 本店':[35.0217,135.7592],
+ '出町桝形商店街':[35.0287,135.7724],'あじき路地':[34.9958,135.7704],
+ '晴鴨楼':[34.9908,135.7707],'京都府立府民ホール ALTI':[35.0260,135.7580],
+ 'ギオンコーナー':[35.0009,135.7785],'西陣織会館':[35.0270,135.7499]
+};
+const geoAreaCentres={
+ '宇治':[34.892,135.806],'貴船':[35.121,135.763],'鞍馬':[35.113,135.772],
+ '嵐山':[35.015,135.676],'嵯峨':[35.021,135.669],'西京':[34.993,135.703],
+ '東山':[34.999,135.779],'祇園':[35.003,135.778],'清水':[34.997,135.781],
+ '伏見':[34.958,135.764],'上京':[35.027,135.754],'北野':[35.030,135.736],
+ '西陣':[35.028,135.749],'下京':[34.997,135.757],'京都站':[34.986,135.758],
+ '中京':[35.008,135.762],'四條':[35.003,135.766],'河原町':[35.004,135.769],
+ '岡崎':[35.012,135.784],'左京':[35.021,135.790],'右京':[35.016,135.725],
+ '北區':[35.052,135.754],'南區':[34.974,135.750]
+};
+const geoRegionName=(lat,lng)=>{
+ if(lat<34.93)return '宇治・京都南郊';
+ if(lat>35.09)return '貴船・洛北';
+ if(lat<34.981)return '伏見・稻荷';
+ if(lng<135.70)return '嵯峨・嵐山／西京';
+ if(lat>35.052)return '上賀茂・洛北';
+ if(lat>35.023&&lng<135.758)return '北野・西陣';
+ if(lat>35.019&&lng>=135.758)return '御所・出町柳';
+ if(lng>=135.778&&lat>35.007)return '岡崎・哲學之道';
+ if(lng>=135.77)return '東山・祇園';
+ if(lat<34.999)return '京都站・下京';
+ return '四條・河原町／市中心';
+};
+const geoCoordsValid=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&a>=34.4&&a<=35.5&&b>=135.3&&b<=136.3;
+function coordsFromGoogleUrl(url){
+ const t=String(url||'');
+ let m=t.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/);
+ if(!m)m=t.match(/!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)/);
+ if(!m)m=t.match(/(?:[?&](?:q|query|center|ll)=)(-?\d{1,3}\.\d+)(?:%2C|,)(-?\d{1,3}\.\d+)/i);
+ if(!m)return null;
+ const lat=Number(m[1]),lng=Number(m[2]);
+ return geoCoordsValid(lat,lng)?[lat,lng]:null;
+}
+function getGeoPosition({place='',area='',googleUrl='',locationLat='',locationLng=''}){
+ const lat=Number(locationLat),lng=Number(locationLng);
+ if(String(locationLat).trim()&&String(locationLng).trim()&&geoCoordsValid(lat,lng))return {lat,lng,precision:'手動座標'};
+ const fromUrl=coordsFromGoogleUrl(googleUrl);
+ if(fromUrl)return {lat:fromUrl[0],lng:fromUrl[1],precision:'Google Maps 座標'};
+ const name=String(place).trim();
+ if(Object.prototype.hasOwnProperty.call(geoLandmarks,name)){
+  const a=geoLandmarks[name];return {lat:a[0],lng:a[1],precision:'參考位置'};
+ }
+ // Same-day itinerary may include descriptive prefix/suffix around a recognized attraction name.
+ const match=Object.entries(geoLandmarks).filter(([key])=>key.length>=4&&name.includes(key)).sort((a,b)=>b[0].length-a[0].length)[0];
+ if(match)return {lat:match[1][0],lng:match[1][1],precision:'參考位置'};
+ const areaText=String(area).trim();
+ const rough=Object.entries(geoAreaCentres).find(([part])=>areaText.includes(part));
+ if(rough)return {lat:rough[1][0],lng:rough[1][1],precision:'區域概略'};
+ return null;
+}
+function geoQueryFor(point){
+ return [point.place,point.area||'京都'].filter(Boolean).join(' ')+' 京都 日本';
+}
+function geoCatalog(){
+ const all=[];
+ for(const x of ideaData){
+  const pos=getGeoPosition({place:x.place,area:x.area});
+  all.push({key:'idea:'+x.id,source:'idea',title:x.title,place:x.place,area:x.area,date:x.date||'',category:x.category||'靈感',query:geoQueryFor(x),url:maps(x.mapQuery||x.place),...pos});
+ }
+ for(const r of state.restaurants||[]){
+  const place=String(r.name||r.dish||'未命名餐飲').trim();
+  const pos=getGeoPosition({place,area:r.area,googleUrl:r.googleUrl,locationLat:r.locationLat,locationLng:r.locationLng});
+  const url=urlSafe(r.googleUrl)||maps(place+' '+String(r.area||'京都'));
+  all.push({key:'restaurant:'+r.id,source:'restaurant',restaurantId:r.id,title:place,place,area:r.area||'',date:'',category:r.category||'餐廳',query:geoQueryFor({place,area:r.area}),url,...pos});
+ }
+ for(const d of state.days){
+  for(const e of d.events||[]){
+   if(!e.place)continue;
+   const pos=getGeoPosition({place:e.place,area:'',googleUrl:e.googleUrl,locationLat:e.locationLat,locationLng:e.locationLng});
+   all.push({key:'event:'+e.id,source:'event',title:e.title||e.place,place:e.place,area:'',date:d.date,category:'已排行程',query:geoQueryFor(e),url:maps(e.place),...pos});
+  }
+ }
+ return all.map(x=>({...x,region:x.lat==null?'未定位':geoRegionName(x.lat,x.lng)}));
+}
+let geoFilterSource='all',geoFilterDate='all',geoFilterRegion='all',geoSearch='',geoStops=[];
+let geoLeafletMap=null,geoLeafletLayer=null,geoLeafletState='idle',geoRefreshToken=0;
+const geoTypeText={idea:'🌸 靈感',restaurant:'🍜 餐廳',event:'🗓️ 行程'};
+const geoTypeIcon={idea:'🌸',restaurant:'🍜',event:'🗓️'};
+function geoVisiblePoints(){
+ const q=geoSearch.trim().toLocaleLowerCase();
+ return geoCatalog().filter(x=>(geoFilterSource==='all'||x.source===geoFilterSource)
+  &&(geoFilterDate==='all'||x.source==='restaurant'||x.date===geoFilterDate)
+  &&(geoFilterRegion==='all'||x.region===geoFilterRegion)
+  &&(!q||[x.title,x.place,x.area,x.category,x.region].some(v=>String(v||'').toLocaleLowerCase().includes(q))));
+}
+function geoRouteUrl(stops,travelmode='transit'){
+ if(stops.length===0)return '';
+ if(stops.length===1)return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(stops[0].query);
+ const parts=['api=1','origin='+encodeURIComponent(stops[0].query),'destination='+encodeURIComponent(stops[stops.length-1].query),
+ 'travelmode='+encodeURIComponent(travelmode)];
+ if(stops.length>2)parts.push('waypoints='+encodeURIComponent(stops.slice(1,-1).map(x=>x.query).join('|')));
+ return 'https://www.google.com/maps/dir/?'+parts.join('&');
+}
+function geoSetRouteCount(){
+ $('geoRouteCount').textContent='已選 '+geoStops.length+'/5 站';
+ const names=geoCatalog().filter(x=>geoStops.includes(x.key));
+ const byOrder=geoStops.map(k=>names.find(p=>p.key===k)).filter(Boolean);
+ $('geoRouteHelp').textContent=byOrder.length?
+  '順序：'+byOrder.map((x,i)=>(i+1)+'. '+x.place).join(' → ')+'。路線時間請查看 Google Maps。':
+  '依勾選順序排列站點；最多 5 站（手機版支援最多 3 個中途點）。Google Maps 顯示實際交通時間。';
+}
+function renderGeoResults(points){
+ const sorted=[...points].sort((a,b)=>a.region.localeCompare(b.region,'zh-Hant')||a.title.localeCompare(b.title,'zh-Hant'));
+ const positioned=points.filter(x=>Number.isFinite(x.lat)).length;
+ $('geoMapCount').textContent='顯示 '+points.length+' 筆・其中 '+positioned+' 筆有位置參考';
+ const groups=new Map();
+ for(const p of sorted){if(!groups.has(p.region))groups.set(p.region,[]);groups.get(p.region).push(p)}
+ $('geoMapResults').innerHTML=[...groups].map(([region,records])=>
+  '<div class="geo-region-title">'+esc(region)+' · '+records.length+' 筆</div>'+
+  records.map(p=>{
+   const accuracy=p.precision||'尚未定位',exact=p.precision==='手動座標'||p.precision==='Google Maps 座標';
+   return '<article class="geo-result">'+
+    '<div class="geo-result-top"><label><input type="checkbox" data-geoselect="'+attr(p.key)+'" '+(geoStops.includes(p.key)?'checked':'')+' aria-label="加入路線：'+attr(p.title)+'">'+
+    '<span class="geo-result-name">'+esc(p.title)+'</span></label><span class="geo-type-tag">'+esc(geoTypeText[p.source])+'</span></div>'+
+    '<div class="geo-result-note">'+esc(p.category)+'・'+esc(p.area||p.region)+'・'+esc(exact?'已提供座標':accuracy)+'</div>'+
+    '<div class="geo-result-actions">'+(p.lat!=null?'<button type="button" data-geofocus="'+attr(p.key)+'">📍 地圖聚焦</button>':'')+
+    '<a href="'+attr(p.url)+'" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>'+
+    (p.source==='restaurant'?'<button type="button" data-geoedit="'+attr(p.restaurantId)+'">✎ 補充店家位置</button>':'')+'</div></article>';
+  }).join('')).join('')||'<div class="empty">沒有符合這些條件的地點。請試著切換來源、日期或區域。</div>';
+ geoSetRouteCount();
+}
+function renderGeoMarkers(points){
+ if(!geoLeafletMap||!window.L)return;
+ geoLeafletLayer.clearLayers();
+ const bounds=[];
+ for(const p of points){
+  if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng))continue;
+  const approximate=p.precision==='參考位置'||p.precision==='區域概略';
+  const marker=window.L.marker([p.lat,p.lng],{icon:window.L.divIcon({
+    className:'geo-pin '+p.source+(approximate?' approx':''),
+    html:'<span><em>'+geoTypeIcon[p.source]+'</em></span>',iconSize:[30,30],iconAnchor:[15,28],popupAnchor:[0,-22]
+   })}).addTo(geoLeafletLayer);
+  marker.bindPopup('<div class="geo-popup"><strong>'+esc(p.title)+'</strong><small>'+esc(p.precision||'尚未定位')+'・'+esc(p.region)+'</small><a target="_blank" rel="noopener noreferrer" href="'+attr(p.url)+'">開啟 Google Maps ↗</a></div>');
+  bounds.push([p.lat,p.lng]);
+ }
+ if(bounds.length===1)geoLeafletMap.setView(bounds[0],13);
+ else if(bounds.length>1)geoLeafletMap.fitBounds(bounds,{padding:[27,27],maxZoom:13});
+ else geoLeafletMap.setView([35.0115,135.7585],11);
+ geoLeafletMap.invalidateSize();
+}
+function refreshGeoOverview(){
+ if(!$('geoMapResults'))return;
+ const all=geoCatalog(), regions=[...new Set(all.map(x=>x.region))].sort((a,b)=>a.localeCompare(b,'zh-Hant'));
+ const choose=$('mapRegion');
+ const opts=['<option value="all">全部區域</option>',...regions.map(r=>'<option value="'+attr(r)+'">'+esc(r)+'</option>')];
+ choose.innerHTML=opts.join('');
+ if(!regions.includes(geoFilterRegion))geoFilterRegion='all';
+ choose.value=geoFilterRegion;
+ const currentKeys=new Set(all.map(x=>x.key));geoStops=geoStops.filter(k=>currentKeys.has(k));
+ const points=geoVisiblePoints();
+ renderGeoResults(points);renderGeoMarkers(points);
+}
+async function geoLoadLeaflet(){
+ if(geoLeafletState==='ready')return;
+ if(geoLeafletState==='loading')return;
+ geoLeafletState='loading';$('geoMapStatus').textContent='正在載入互動地圖…';
+ // Tiles load only while map is opened. Never bulk-fetch, geocode, pre-cache or send a user's restaurant list to an API.
+ try{
+  if(!window.L){
+   await new Promise((resolve,reject)=>{
+    const css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(css);
+    const js=document.createElement('script');js.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    js.onload=resolve;js.onerror=()=>reject(new Error('地圖程式載入失敗'));document.head.appendChild(js);
+   });
+  }
+  if(!$('mapDrawer').open){geoLeafletState='idle';return;}
+  $('geoMapCanvas').replaceChildren();
+  geoLeafletMap=window.L.map('geoMapCanvas',{zoomControl:true,scrollWheelZoom:false}).setView([35.0115,135.7585],11);
+  window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+   attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+   maxZoom:18
+  }).addTo(geoLeafletMap);
+  geoLeafletLayer=window.L.layerGroup().addTo(geoLeafletMap);
+  geoLeafletState='ready';
+  $('geoMapStatus').textContent='可拖曳、縮放；點圖釘查看名稱與 Google Maps 連結';
+  refreshGeoOverview();
+ }catch(err){
+  geoLeafletState='failed';$('geoMapStatus').textContent='互動底圖暫時無法載入；下方清單與 Google Maps 連結仍可使用';
+ }
+}
+$('mapDrawer').addEventListener('toggle',()=>{
+ if($('mapDrawer').open){refreshGeoOverview();geoLoadLeaflet();if(geoLeafletMap)setTimeout(()=>geoLeafletMap.invalidateSize(),120);}
+});
+const geoDates=DATES.map(x=>'<option value="'+attr(x[0])+'">'+esc(x[1]+'（週'+x[2]+'）')+'</option>').join('');
+$('mapDate').insertAdjacentHTML('beforeend',geoDates);
+$('mapSource').addEventListener('change',ev=>{geoFilterSource=ev.target.value;refreshGeoOverview()});
+$('mapDate').addEventListener('change',ev=>{geoFilterDate=ev.target.value;refreshGeoOverview()});
+$('mapRegion').addEventListener('change',ev=>{geoFilterRegion=ev.target.value;refreshGeoOverview()});
+$('mapSearch').addEventListener('input',ev=>{geoSearch=ev.target.value;refreshGeoOverview()});
+$('geoMapResults').addEventListener('change',ev=>{
+ const t=ev.target.closest('[data-geoselect]');if(!t)return;
+ const id=t.dataset.geoselect;
+ if(t.checked&&!geoStops.includes(id)){
+  if(geoStops.length>=5){t.checked=false;toast('Google Maps 手機版建議最多 5 站；請先取消一個地點');return;}
+  geoStops.push(id);
+ }else if(!t.checked){geoStops=geoStops.filter(x=>x!==id);}
+ geoSetRouteCount();
+});
+$('geoMapResults').addEventListener('click',ev=>{
+ const edit=ev.target.closest('[data-geoedit]');
+ if(edit)return editRestaurant(edit.dataset.geoedit);
+ const focus=ev.target.closest('[data-geofocus]');
+ if(focus){
+  const p=geoCatalog().find(x=>x.key===focus.dataset.geofocus);
+  if(p?.lat!=null&&geoLeafletMap){geoLeafletMap.setView([p.lat,p.lng],15);geoLeafletMap.invalidateSize();}
+ }
+});
+$('geoResetRoute').addEventListener('click',()=>{geoStops=[];refreshGeoOverview()});
+$('geoOpenRoute').addEventListener('click',()=>{
+ const candidates=geoCatalog();
+ const stops=geoStops.map(k=>candidates.find(p=>p.key===k)).filter(Boolean);
+ if(stops.length<2){toast('請先從清單勾選至少 2 個地點，再開啟路線規劃');return}
+ const url=geoRouteUrl(stops,$('geoTravelMode').value);
+ const w=window.open(url,'_blank','noopener,noreferrer');
+ if(!w)toast('請允許開啟 Google Maps 的新分頁');
+});
+
+function rerender(){renderOverview();renderFlights();renderIntercity();renderCityTransit();renderDay();renderIdeas();renderRestaurants();if($('mapDrawer')?.open)refreshGeoOverview();renderShoppingChecklist();renderStays();renderPurchases();renderTodos();renderBudget();renderMissing();$('freeNotes').value=state.notes||''}
 const inputField=(key,label,value='',type='text',extra='')=>`<label class="field-label">${esc(label)}<input class="field" name="${attr(key)}" type="${type}" value="${attr(value)}" ${extra}></label>`;
 const textareaField=(key,label,value='')=>`<label class="field-label">${esc(label)}<textarea class="field" name="${attr(key)}" rows="3">${esc(value)}</textarea></label>`;
 const selectField=(key,label,options,value)=>`<label class="field-label">${esc(label)}<select class="field" name="${attr(key)}">${options.map(o=>`<option value="${attr(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
