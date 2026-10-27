@@ -202,6 +202,13 @@ async function main(){
   assert.equal(await page.locator('#editorForm input[name="choice__i5"]').count(),0,'Manual existing event must be skipped');
   assert.equal(await page.locator('#editorForm input[name="choice__i1"]').isChecked(),true);
   assert.equal(await page.locator('#editorForm input[name="choice__film-pontocho"]').isChecked(),false,'Optional event must start unchecked');
+  assert.equal(await page.locator('#editorForm input[name="choice__ny-yasaka-oharae"]').isChecked(),true);
+  await page.locator('#editorForm input[name="choice__ny-kifune-oharae"]').check();
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#editorForm button[type="submit"]').click();
+  assert.equal(await page.locator('#editor').evaluate(el=>el.open),true,'Conflicting Oharae rituals must not save simultaneously');
+  assert.equal((await page.evaluate(()=>window.KyotoPlanner.read())).days.reduce((n,d)=>n+d.events.length,0),initialEventCount,'Failed selection must not modify events');
+  await page.locator('#editorForm input[name="choice__ny-kifune-oharae"]').uncheck();
   await page.locator('#editorForm button[type="submit"]').click();
   let merged=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.equal(merged.days.filter(d=>d.events.some(e=>e.id==='user-kept-i5')).length,1);
