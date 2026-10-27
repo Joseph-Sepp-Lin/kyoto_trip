@@ -5,6 +5,7 @@ on:
       - feature/kyoto-themed-inspiration-2026
       - feature/foldable-sessions-2026
       - feature/incense-shopping-by-store-2026
+      - feature/kyoto-map-overview-2026
       - feature/curated-itinerary-safe-cloud-import-2026
   pull_request:
     paths:
