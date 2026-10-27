@@ -82,6 +82,21 @@ for(const shop of categoryData.incenseShoppingSeeds){
  allIncenseTotal+=Number(shop.shopPrice1);
 }
 assert.equal(allIncenseTotal,35050);
+assert.ok(categoryData.shoppingCategories.includes('日本年貨／正月準備'));
+assert.equal(categoryData.newYearShoppingSeeds.length,15);
+for(const x of categoryData.newYearShoppingSeeds){
+ assert.equal(x.category,'日本年貨／正月準備');
+ assert.equal(x.done,false);
+ assert.ok(x.note.includes('文化典故：')&&x.note.includes('採買提醒：'));
+ const n=[x.shop1,x.shop2,x.shop3].filter(Boolean).length;
+ assert.ok(n>=2&&n<=3);
+ assert.ok(!x.shopPrice1&&!x.shopPrice2&&!x.shopPrice3);
+}
+assert.ok(!itineraryCatalog.some(g=>g.items.some(e=>e.ideaId==='shrine-saiho')));
+const dec31=itineraryCatalog.find(g=>g.date==='2026-12-31').items;
+assert.ok(dec31.some(e=>e.ideaId==='ny-kifune-oharae'&&!e.checked));
+assert.ok(dec31.some(e=>e.ideaId==='ny-yasaka-oharae'&&e.checked));
+assert.ok(itineraryCatalog.find(g=>g.date==='2027-01-01').items.some(e=>e.ideaId==='i11'&&e.checked));
 for(const item of categoryData.teaShoppingSeeds){
  assert.ok(item.id&&item.title&&item.note&&item.link1);
  assert.equal(item.category,'日本茶／茶葉');
@@ -104,6 +119,10 @@ state.shoppingItems=state.shoppingItems.filter(x=>x.id!==incenseRemoved.id);
 vm.runInContext('ensureTravelWishlists()',migrate);
 assert.equal(state.shoppingItems.length,26,'刪除的香舖不應重複出現');
 assert.equal(state.shoppingItems.filter(x=>x.category==='香品／線香').length,7);
+assert.equal(state.shoppingItems.filter(x=>x.category==='日本年貨／正月準備').length,15);
+state.shoppingItems=state.shoppingItems.filter(x=>x.id!=='newyear-miso');
+vm.runInContext('ensureTravelWishlists()',migrate);
+assert.equal(state.shoppingItems.filter(x=>x.category==='日本年貨／正月準備').length,14,'Deleted New Year list entry stays deleted');
 const els={ideaFilters:{innerHTML:''},ideaGrid:{innerHTML:''},ideaCount:{textContent:''}};
 const renderer=between('function renderIdeas(){','function renderIntercity(){');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
