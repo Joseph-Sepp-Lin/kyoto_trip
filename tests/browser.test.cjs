@@ -154,8 +154,9 @@ async function main(){
    draft.restaurants=[{id:'r-map-1',name:'測試京都餐廳',area:'東山區',googleUrl:'',dish:'湯豆腐',category:'和食',note:''}];
    window.KyotoPlanner.show(draft);
   });
-  await page.locator('#mapDrawer > summary').click();
-  await page.waitForFunction(()=>document.querySelector('#geoMapResults').innerText.includes('測試京都餐廳'),{timeout:8000});
+  console.log('MAP_LEGACY_DIAG',JSON.stringify(await page.evaluate(()=>({open:document.querySelector('#mapDrawer').open,source:mapSource.value,date:mapDate.value,region:mapRegion.value,search:mapSearch.value,rest:window.KyotoPlanner.read().restaurants.length,geo:geoCatalog().filter(x=>x.source==='restaurant').length,visible:geoVisiblePoints().filter(x=>x.source==='restaurant').length}))));
+  if(!(await page.locator('#mapDrawer').evaluate(x=>x.open)))await page.locator('#mapDrawer > summary').click();
+  await page.waitForFunction(()=>document.querySelector('#geoMapResults').innerText.includes('測試京都餐廳'),null,{timeout:8000});
   await page.locator('#mapSource').selectOption('restaurant');
   assert.equal(await page.locator('#geoMapResults .geo-result').count(),1);
   await page.locator('#geoMapResults [data-geoedit="r-map-1"]').click();
