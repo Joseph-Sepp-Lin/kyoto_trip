@@ -218,7 +218,9 @@ async function main(){
   assert.equal(merged.days.reduce((n,d)=>n+d.events.length,0),numAfter,'Curated plan persisted after reload');
   await page.locator('#previewCuratedItinerary').click();
   const remaining=await page.locator('#editorForm input[type="checkbox"]').count();
-  assert.ok(remaining>=1 && remaining<=8,'After import, only previously unchecked alternatives remain');
+  const expectedRemaining=await page.evaluate(()=>curatedAvailableRows().reduce((n,g)=>n+g.rows.length,0));
+  assert.equal(remaining,expectedRemaining,'After import only remaining optional suggestions remain without duplicates');
+  assert.ok(remaining>=1,'Optional alternatives remain');
   await page.locator('#modalClose').click();
   await page.setViewportSize({width:1280,height:900});
   await page.locator('#ideasDrawer > summary').click();
