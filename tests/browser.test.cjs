@@ -52,7 +52,9 @@ async function main(){
   assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),false);
   await page.locator('a[href="#map"]').click();
   assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),true);
-  await page.waitForFunction(()=>document.querySelectorAll('#geoMapResults .geo-result').length===55);
+  await page.waitForTimeout(350);
+  console.log('MAP_DIAG',JSON.stringify(await page.evaluate(()=>({mapOpen:document.getElementById('mapDrawer').open,results:document.querySelectorAll('#geoMapResults .geo-result').length,preview:document.getElementById('geoMapResults').innerText.slice(0,180),count:document.getElementById('geoMapCount').textContent,hasGeoFn:typeof geoCatalog==='function',catalogLen:typeof geoCatalog==='function'?geoCatalog().length:-1,types:typeof geoCatalog==='function'?geoCatalog().reduce((o,x)=>(o[x.source]=(o[x.source]||0)+1,o),{}):{},geoState:typeof geoLeafletState!=='undefined'?geoLeafletState:'unknown',errors:jsErrors}))));
+  await page.waitForFunction(()=>document.querySelectorAll('#geoMapResults .geo-result').length===55,{timeout:8000});
   assert.match(await page.locator('#geoMapCount').innerText(),/55 筆/);
   assert.ok((await page.locator('#geoMapResults .geo-result').allTextContents()).some(x=>x.includes('上林春松本店')));
   const positions=await page.evaluate(()=>({
