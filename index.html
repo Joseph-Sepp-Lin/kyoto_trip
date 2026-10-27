@@ -1540,6 +1540,7 @@ function previewCuratedItinerary(){
   const latestEligibility=curatedImportEligibility();
   if(!latestEligibility.ok){alert(latestEligibility.reason);return false}
   const fresh=curatedAvailableRows(),picked=fresh.flatMap(group=>group.rows.map(e=>({...e,date:group.date}))).filter(e=>o['choice__'+e.ideaId]==='yes');
+  if(picked.some(e=>e.ideaId==='ny-yasaka-oharae')&&picked.some(e=>e.ideaId==='ny-kifune-oharae')){alert('八坂神社15:00大祓與貴船16:00大祓無法同時參加；請取消其中一場。');return false;}
   if(!picked.length){alert('請至少勾選一個尚未加入的景點，或取消關閉預覽。');return false}
   for(const item of picked){
    const day=state.days.find(d=>d.date===item.date),idea=item.idea;
