@@ -1387,6 +1387,7 @@ async function geoLoadLeaflet(){
    });
   }
   if(!$('mapDrawer').open){geoLeafletState='idle';return;}
+  $('geoMapCanvas').replaceChildren();
   geoLeafletMap=window.L.map('geoMapCanvas',{zoomControl:true,scrollWheelZoom:false}).setView([35.0115,135.7585],11);
   window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
