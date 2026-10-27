@@ -387,8 +387,8 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .geo-pin{background:none!important;border:0!important}
 .geo-pin span{display:grid;place-items:center;width:29px;height:29px;background:#FCF9EE;border:2px solid #426781;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:1px 2px 5px #3344}
 .geo-pin em{font-size:16px;font-style:normal;transform:rotate(45deg)}
-.geo-pin.restaurant span{border-color:#B17D3B;background:#FFF4DF}
-.geo-pin.event span{border-color:#8F5981;background:#FBEFFC}
+.geo-pin.geo-restaurant span{border-color:#B17D3B;background:#FFF4DF}
+.geo-pin.geo-event span{border-color:#8F5981;background:#FBEFFC}
 .geo-pin.approx span{border-style:dashed;opacity:.85}
 .geo-popup{min-width:180px;font-size:12px}.geo-popup strong{display:block;margin-bottom:6px;line-height:1.4}.geo-popup small{display:block;color:#657C7E;margin-bottom:8px}
 .geo-popup a{font-size:12px;color:#356B82}
@@ -1349,7 +1349,7 @@ function renderGeoMarkers(points){
   if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng))continue;
   const approximate=p.precision==='參考位置'||p.precision==='區域概略';
   const marker=window.L.marker([p.lat,p.lng],{icon:window.L.divIcon({
-    className:'geo-pin '+p.source+(approximate?' approx':''),
+    className:'geo-pin geo-'+p.source+(approximate?' approx':''),
     html:'<span><em>'+geoTypeIcon[p.source]+'</em></span>',iconSize:[30,30],iconAnchor:[15,28],popupAnchor:[0,-22]
    })}).addTo(geoLeafletLayer);
   marker.bindPopup('<div class="geo-popup"><strong>'+esc(p.title)+'</strong><small>'+esc(p.precision||'尚未定位')+'・'+esc(p.region)+'</small><a target="_blank" rel="noopener noreferrer" href="'+attr(p.url)+'">開啟 Google Maps ↗</a></div>');
