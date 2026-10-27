@@ -15,6 +15,13 @@ const between=(start,end)=>{
 const ideaCode=between('const DATES=','const e=');
 const cat=vm.runInNewContext(ideaCode+'\n({ideaData,ideaThemes})');
 assert.equal(cat.ideaData.length,55,'靈感總數不應意外改變');
+const htmlMapSections=['id="map"','id="mapDrawer"','id="geoMapCanvas"','id="geoMapResults"','id="geoOpenRoute"'];
+for(const key of htmlMapSections)assert.ok(html.includes(key),'Missing map UI '+key);
+for(const source of ['idea','restaurant','event'])assert.ok(html.includes("source:'"+source+"'"),'Missing map source '+source);
+assert.ok(html.includes("https://tile.openstreetmap.org/{z}/{x}/{y}.png"),'Map tiles require valid openstreetmap URL');
+assert.ok(html.includes("© OpenStreetMap contributors"),'Map attribution must remain visible');
+assert.ok(!html.includes('nominatim.openstreetmap.org'),'No bulk geocoding via public Nominatim');
+
 assert.equal(cat.ideaThemes.length,8);
 const itineraryCatalog=vm.runInNewContext(between('const recommendedItinerary=','const e=')+'\nrecommendedItinerary');
 assert.equal(itineraryCatalog.length,9,'京都行程應涵蓋12/25–1/2共9日');
