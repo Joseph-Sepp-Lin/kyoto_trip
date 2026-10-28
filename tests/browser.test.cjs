@@ -32,7 +32,7 @@ async function main(){
   await page.goto(url,{waitUntil:'domcontentloaded'});
   await page.waitForTimeout(1000);
   console.log('DIAGNOSTIC',JSON.stringify({ideaCount:await page.locator('#ideaCount').textContent(),gridCount:await page.locator('#ideaGrid .idea').count(),shoppingCount:await page.locator('#shoppingChecklist .checklist-category').count(),html:await page.title(),jsErrors}));
-  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55,{timeout:10000});
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===65,{timeout:10000});
   const sessionIds=['before-tripDrawer','itineraryDrawer','ideasDrawer','restaurantsDrawer','shoppingDrawer','logisticsDrawer','budgetDrawer','notesDrawer'];
   for(const id of sessionIds)assert.equal(await page.locator('#'+id).evaluate(x=>x.open),false,'Default collapsed: '+id);
   // Keyboard and navigation should open the right parent, including deep hash targets.
@@ -46,8 +46,8 @@ async function main(){
   await page.waitForFunction(()=>document.querySelector('#accountSettings').open&&document.querySelector('#syncDrawer').open);
   await page.locator('#ideasDrawer > summary').click();
   assert.equal(await page.locator('#ideasDrawer').evaluate(x=>x.open),true,'Ideas can expand');
-  assert.match(await page.locator('#ideaCount').innerText(),/55／55/);
-  assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),6);
+  assert.match(await page.locator('#ideaCount').innerText(),/65／65/);
+  assert.equal(await page.locator('#shoppingChecklist .checklist-category').count(),7);
   // 京都地圖：不需要連接真實 Firebase，也不要求地圖 CDN 載入才可以使用地點清單。
   assert.equal(await page.locator('#mapDrawer').evaluate(x=>x.open),false);
   await page.locator('a[href="#map"]').click();
@@ -109,9 +109,9 @@ async function main(){
   }
   await page.setViewportSize({width:375,height:812});
   await page.locator('#ideaFilters [data-filter="宇治茶與茶文化"]').click();
-  assert.match(await page.locator('#ideaCount').innerText(),/7／55/);
+  assert.match(await page.locator('#ideaCount').innerText(),/7／65/);
   await page.locator('#ideaSearch').fill('綾鷹');
-  assert.match(await page.locator('#ideaCount').innerText(),/1／55/);
+  assert.match(await page.locator('#ideaCount').innerText(),/1／65/);
   const card=page.locator('#ideaGrid .idea').first();
   await card.locator('summary').click();
   assert.equal(await card.locator('details').getAttribute('open'),'');
@@ -128,10 +128,11 @@ async function main(){
   let saved=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.ok(saved.days.some(d=>d.events.some(e=>e.ideaId==='tea-kambayashi-shunsho')),'Added idea must exist');
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55);
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===65);
   saved=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.ok(saved.days.some(d=>d.events.some(e=>e.ideaId==='tea-kambayashi-shunsho')),'Added idea must survive reload');
   assert.equal(saved.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4);
+  assert.equal(saved.shoppingItems.filter(x=>x.category==='日本年貨／正月準備').length,15);
   assert.equal(saved.shoppingItems.filter(x=>x.category==='香品／線香').length,8);
   await page.locator('#shoppingDrawer > summary').click();
   await page.locator('#shoppingChecklist details[data-shopcat="日本茶／茶葉"] > summary').click();
@@ -146,7 +147,7 @@ async function main(){
   await page.locator('#modalDanger').click();
   assert.equal(await page.locator('#shoppingChecklist [data-checkshop="tea-karigane"]').count(),0);
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===55);
+  await page.waitForFunction(()=>document.querySelectorAll('#ideaGrid .idea').length===65);
   assert.equal(await page.locator('#shoppingChecklist [data-checkshop="tea-karigane"]').count(),0,'Deleted tea should not resurrect after reload');
   const legacy=await page.evaluate(()=>{
    const old=window.KyotoPlanner.seed();
@@ -162,6 +163,8 @@ async function main(){
   assert.ok(legacy.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'legacy shopping item lost');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='日本茶／茶葉').length,4,'Cloud legacy show migration');
   assert.equal(legacy.shoppingItems.filter(x=>x.category==='香品／線香').length,8,'Cloud legacy incense migration');
+  assert.equal(legacy.shoppingItems.filter(x=>x.category==='日本年貨／正月準備').length,15,'New Year checklist is added on old cloud data');
+  assert.ok(legacy.shoppingItems.find(x=>x.id==='newyear-miso').shop2,'Multiple recommended shops');
   // User's private restaurant names remain in memory and render in map but are never baked into GitHub source.
   await page.evaluate(()=>{
    const draft=window.KyotoPlanner.read();
@@ -199,6 +202,13 @@ async function main(){
   assert.equal(await page.locator('#editorForm input[name="choice__i5"]').count(),0,'Manual existing event must be skipped');
   assert.equal(await page.locator('#editorForm input[name="choice__i1"]').isChecked(),true);
   assert.equal(await page.locator('#editorForm input[name="choice__film-pontocho"]').isChecked(),false,'Optional event must start unchecked');
+  assert.equal(await page.locator('#editorForm input[name="choice__ny-yasaka-oharae"]').isChecked(),true);
+  await page.locator('#editorForm input[name="choice__ny-kifune-oharae"]').check();
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#editorForm button[type="submit"]').click();
+  assert.equal(await page.locator('#editor').evaluate(el=>el.open),true,'Conflicting Oharae rituals must not save simultaneously');
+  assert.equal((await page.evaluate(()=>window.KyotoPlanner.read())).days.reduce((n,d)=>n+d.events.length,0),initialEventCount,'Failed selection must not modify events');
+  await page.locator('#editorForm input[name="choice__ny-kifune-oharae"]').uncheck();
   await page.locator('#editorForm button[type="submit"]').click();
   let merged=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.equal(merged.days.filter(d=>d.events.some(e=>e.id==='user-kept-i5')).length,1);
@@ -207,7 +217,7 @@ async function main(){
   assert.equal(merged.notes,'保留既有私人旅行筆記','Existing notes retained');
   assert.ok(merged.shoppingItems.some(x=>x.id==='legacy-own'&&x.done),'Shopping data retained');
   const numAfter=merged.days.reduce((n,d)=>n+d.events.length,0);
-  assert.ok(numAfter>=initialEventCount+18 && numAfter<=initialEventCount+31,'Expected curated plan with defaults selected');
+  assert.ok(numAfter>=initialEventCount+18 && numAfter<=initialEventCount+38,'Expected curated plan with defaults selected');
   assert.equal(new Set(merged.days.flatMap(d=>d.events.map(e=>e.id))).size,numAfter,'Unique event IDs');
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.querySelector('#previewCuratedItinerary'));
@@ -215,7 +225,9 @@ async function main(){
   assert.equal(merged.days.reduce((n,d)=>n+d.events.length,0),numAfter,'Curated plan persisted after reload');
   await page.locator('#previewCuratedItinerary').click();
   const remaining=await page.locator('#editorForm input[type="checkbox"]').count();
-  assert.ok(remaining>=1 && remaining<=8,'After import, only previously unchecked alternatives remain');
+  const expectedRemaining=await page.evaluate(()=>curatedAvailableRows().reduce((n,g)=>n+g.rows.length,0));
+  assert.equal(remaining,expectedRemaining,'After import only remaining optional suggestions remain without duplicates');
+  assert.ok(remaining>=1,'Optional alternatives remain');
   await page.locator('#modalClose').click();
   await page.setViewportSize({width:1280,height:900});
   await page.locator('#ideasDrawer > summary').click();
