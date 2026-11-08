@@ -27,10 +27,10 @@ async function main(){
  });
  try{
   await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.querySelectorAll('#dayPanel .trip-meal').length>=3,{timeout:15000});
+  await page.waitForFunction(()=>document.querySelectorAll('#dayPanel .trip-meal').length>=3,null,{timeout:15000});
+  await page.locator('#itineraryDrawer > summary').click();
   assert.match(await page.locator('#dayPanel').innerText(),/單一整合行程/);
   assert.match(await page.locator('#dayPanel').innerText(),/本家 第一旭 本店/);
-  await page.locator('#itineraryDrawer > summary').click();
   await page.locator('#dayPanel [data-meal-select]').first().check();
   let st=await page.evaluate(()=>window.KyotoPlanner.read());
   assert.equal(st.mealChoices['2026-12-25|breakfast'].selected,'本家 第一旭 本店');
