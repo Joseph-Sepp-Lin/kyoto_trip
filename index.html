@@ -245,6 +245,23 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
 .restaurant-category-fold[open]>summary{background:#E2EDF0;border-bottom:1px dashed #A9BFC4}
 .restaurant-category-fold>.restaurant-grid{padding:13px;grid-template-columns:repeat(auto-fit,minmax(min(100%,275px),1fr))}
 .restaurant-note{white-space:pre-wrap}
+/* The GitHub-maintained public itinerary is separate from private Firebase day records. */
+.public-day-heading{margin-bottom:14px}
+.public-day-heading .description{max-width:900px;line-height:1.7}
+.public-timeline{margin-top:8px}
+.public-event .event-block{border-left:2px solid #7DABA5}
+.public-event-note{white-space:pre-wrap;line-height:1.65}
+.public-itinerary-foot{font-size:12px;color:#637A83;line-height:1.65;background:#EAF1F1;border-radius:10px;padding:10px 12px;margin:14px 0 0}
+.public-empty{font-size:13px;color:#60717A;padding:24px 12px;text-align:center;background:#F4F7F7;border:1px dashed #B8C8C9;border-radius:12px}
+.private-day-archive{border:1px solid #C7D1D3;border-radius:12px;margin-top:16px;overflow:hidden;background:#F9FBFA}
+.private-day-archive>summary{padding:12px 14px;font-size:13px;font-weight:750;cursor:pointer;color:#385A67}
+.private-day-archive[open]>summary{border-bottom:1px solid #D1DCDB;background:#EEF3F3}
+.private-day-content{padding:13px}
+.private-day-content>.subtle{margin:0 0 12px;font-size:12px;line-height:1.6}
+.private-day-content .day-heading{padding:12px 0}
+.private-day-content .day-heading h3{font-size:16px}
+.private-day-content .day-heading .description{font-size:12px}
+
 
 .spending-fold{margin-top:18px;background:#F1F5F7;border:1px solid #B0C0C8;border-radius:14px;padding:13px}
 .spending-fold>summary{font-size:13px;color:#426781;font-weight:850;cursor:pointer}
@@ -435,8 +452,8 @@ html{scroll-padding-top:126px}body{background:#EEF2F0!important;background-image
  </details>
 </section>
 <div id="during-trip" class="journey-phase-heading"><span class="phase-no">02 / ON THE JOURNEY</span><h2>旅行中</h2></div>
-<section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">01 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">點日期切換，直接增刪改時間軸行程；活動時間請以主辦單位公告為準。</p></div><div class="flex curated-entry-actions"><button class="btn sky" id="previewCuratedItinerary" type="button">✦ 套用歲末年始・年貨推薦行程</button><button class="btn primary" id="addEvent">＋ 新增行程</button></div></div><details class="session-drawer" id="itineraryDrawer" data-session="itinerary">
- <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🗓️</span><span class="session-summary-text"><strong>每日行程時間軸</strong><small>選擇旅行日期、編輯景點與交通安排</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
+<section id="itinerary" class="section"><div class="sect-head"><div><p class="eyebrow">01 / EVERYDAY</p><h2><svg class="ui-line  ink-blue" aria-hidden="true"><use href="#u-calendar"></use></svg> 每日散策</h2><p class="description">公開行程由 GitHub 直接更新；私人加排行程、機票、住宿與費用保留在 Firebase。年末時間與活動請以主辦公告為準。</p></div><div class="flex curated-entry-actions"><button class="btn sky" id="previewCuratedItinerary" type="button" hidden style="display:none">舊版推薦行程（已停用）</button><button class="btn primary" id="addEvent">＋ 個人追加活動</button></div></div><details class="session-drawer" id="itineraryDrawer" data-session="itinerary">
+ <summary class="session-toggle"><span class="session-toggle-icon" aria-hidden="true">🗓️</span><span class="session-summary-text"><strong>公開版每日行程</strong><small>主時間軸由 GitHub 更新；舊版與私人紀錄可展開</small></span><span class="session-cta"><span class="session-cta-label">展開查閱</span><span class="session-chevron" aria-hidden="true">⌄</span></span></summary>
  <div class="session-inner">
  <details class="spending-fold"><summary>🎍 歲末年始・年貨文化與參拜提醒 <span class="subtle">12/29–1/1／展開看重點</span></summary>
  <div class="curated-tip">
@@ -609,6 +626,7 @@ service cloud.firestore {
 <!-- 在網頁內貼上 firebaseConfig，再下載可部署的 index.html；不需要手動寫程式。 -->
 <script id="firebase-config" type="application/json">{"apiKey":"AIzaSyDi2ow_RlMEuNphL4snd6w_QSyKOM75j2E","authDomain":"kyoto-trip-80462.firebaseapp.com","projectId":"kyoto-trip-80462","storageBucket":"kyoto-trip-80462.firebasestorage.app","messagingSenderId":"269850432674","appId":"1:269850432674:web:fc8e91f5824ed621b973fb","measurementId":"G-EXX83XHM83"}</script>
 <script src="food-expansion-seeds.js"></script>
+<script src="public-itinerary.js"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════════════════════════════
@@ -959,16 +977,38 @@ function save(){
 }
 function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
 function updateCountdown(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const get=x=>Number(p.find(z=>z.type===x).value);const today=Date.UTC(get('year'),get('month')-1,get('day'));const start=Date.UTC(2026,11,25);const end=Date.UTC(2027,0,4);const n=Math.round((start-today)/86400000);$('countdown').textContent=n>0?n+' 天':n===0?'今天出發！':today<=end?'旅途中 ♡':'回憶收藏中'}
-function renderOverview(){const filled=state.days.reduce((a,d)=>a+d.events.length,0);const done=state.todos.filter(t=>t.done).length;const reserved=state.flights.filter(f=>f.number).length+state.stays.filter(h=>h.name).length;$('overview').innerHTML=`<div class="mini"><span class="mini-icon">${uiIcon('calendar','blue')}</span><div><b>${state.days.length} 天</b><small>行程日期</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('pin','blue')}</span><div><b>${filled} 筆</b><small>已排入活動（含候選）</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('check','green')}</span><div><b>${done}/${state.todos.length}</b><small>行前待辦完成</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('scroll','red')}</span><div><b>${reserved}/4</b><small>已填機票／住宿</small></div></div>`}
+function renderOverview(){const filled=(window.KyotoPublicItinerary20261108||[]).reduce((a,d)=>a+d.events.length,0);const done=state.todos.filter(t=>t.done).length;const reserved=state.flights.filter(f=>f.number).length+state.stays.filter(h=>h.name).length;$('overview').innerHTML=`<div class="mini"><span class="mini-icon">${uiIcon('calendar','blue')}</span><div><b>${state.days.length} 天</b><small>行程日期</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('pin','blue')}</span><div><b>${filled} 筆</b><small>公開版行程（含候選）</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('check','green')}</span><div><b>${done}/${state.todos.length}</b><small>行前待辦完成</small></div></div><div class="mini"><span class="mini-icon">${uiIcon('scroll','red')}</span><div><b>${reserved}/4</b><small>已填機票／住宿</small></div></div>`}
 function renderFlights(){
  $('flightCards').innerHTML=state.flights.map((f,i)=>{const h=evaluateCard('flight',f);return `<article class="card travel-card ${completenessClass(h)}"><div class="travel-top"><div><div class="eyebrow">${i===0?'OUTBOUND FLIGHT':'RETURN FLIGHT'}</div><h3>${esc(f.label)}</h3>${completenessTag(h)}</div><button class="btn small ${i?'sky':'sun'}" type="button" data-editflight="${i}">✎ 編輯</button></div><div class="route"><div class="airport"><b>${esc(f.from||'—')}</b><p>${i===0?'台灣出發':'日本出發'}</p><p>${esc(f.date||'日期待確認')}</p><p>${esc(f.depart||'待補')} · ${esc(localTimeZone(f.from))}</p></div><div class="route-middle" aria-hidden="true">${uiIcon("plane")}</div><div class="airport text-right"><b>${esc(f.to||'—')}</b><p>${i===0?'日本抵達':'台灣抵達'}</p><p>${esc(f.arriveDate||f.date||'日期待確認')}</p><p>${esc(f.arrive||'抵達時間待補')} · ${esc(localTimeZone(f.to))}</p></div></div><div class="flight-info">${f.number?`<b>${esc(f.airline||'航空公司待補')} · ${esc(f.number)}</b>`:'✦ 航空公司／班號待補'}<br>🕒 起飛 ${esc(f.date||'待補')} ${esc(f.depart||'待補')} → 抵達 ${esc(f.arriveDate||f.date||'待補')} ${esc(f.arrive||'待補')}${flightMinutes(f)>0?` · 約 ${Math.floor(flightMinutes(f)/60)} 小時 ${String(flightMinutes(f)%60).padStart(2,'0')} 分`:''} · 🧳 行李 ${esc(f.luggage||'待補')}</div><div class="booking-details"><div class="row-kv"><span>${i===0?'來回機票費用':'機票費用'}</span><span>${i===0?esc(currencySummary(fareRecord())):'已合併於去程卡片'}</span></div><div class="row-kv"><span>訂票資訊</span><span>${f.booking?'已填寫':'尚未填寫'}</span></div></div>${missingSummary(h)}${f.note?`<p class="description">💡 ${esc(f.note)}</p>`:''}${urlSafe(f.url)?`<p style="margin:8px 0 0"><a class="subtle" target="_blank" rel="noopener noreferrer" href="${attr(urlSafe(f.url))}">開啟訂票連結 ↗</a></p>`:''}</article>`}).join('')
 }
 function renderTabs(){const days=$('dayTabs');days.innerHTML=state.days.map((d,i)=>`<button class="day-tab ${i===currentDay?'active':''}" role="tab" aria-selected="${i===currentDay}" aria-controls="dayPanel" data-day="${i}" type="button"><strong>${esc(DATES[i][1])}</strong><small>週${esc(DATES[i][2])}</small></button>`).join('');$('prevDay').disabled=currentDay===0;$('nextDay').disabled=currentDay===state.days.length-1}
 function timeSort(t){let s=String(t||'');let m=s.match(/(?:^|\s)(\d{1,2}):(\d{2})/);if(m)return Number(m[1])+Number(m[2])/60;for(let [key,h] of [['清晨',6],['早上',8],['上午',9],['中午',12],['下午',14],['傍晚',17],['晚間',19],['晚上',19],['深夜',23]])if(s.includes(key))return h;return 99}
 function transportColor(t){return t==='電車'||t==='飛機'?'blue':t==='巴士'?'yellow':t==='步行'?'green':t==='計程車'?'pink':'soft'}
-function renderDay(){
+function renderLegacyDayPanel(){
  renderTabs();const day=state.days[currentDay];const displayed=displayedItems(day);
  $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map(x=>{const h=eventHealth(x);return `<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span></div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}`
+
+}
+// 公開行程是 GitHub Pages 的唯一正式規劃來源。Firebase 既有 events、私人票券、費用完全不改寫。
+const publicPlanFor=date=>(window.KyotoPublicItinerary20261108||[]).find(d=>d.date===date);
+function renderDay(){
+ renderLegacyDayPanel();
+ const oldHTML=$('dayPanel').innerHTML,day=state.days[currentDay],plan=publicPlanFor(day.date);
+ if(!plan)return;
+ const publicRows=plan.events.map(x=>`<article class="event public-event ${x.must?'must':''}">
+  <div class="event-t">${esc(x.time||'時間待確認')}</div>
+  <div class="event-block">
+   <div class="flex">${x.must?'<span class="chip pink">★ 核心</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span><span class="chip soft">${esc(x.tier||'主要行程')}</span>${x.status&&x.status!=='規劃中'?'<span class="chip blue">'+esc(x.status)+'</span>':''}</div>
+   <h4 class="event-title">${esc(x.title)}</h4>
+   ${x.place?'<div class="subtle">'+uiIcon('pin','blue',true)+' '+esc(x.place)+'</div>':''}
+   ${x.note?'<p class="event-desc public-event-note">'+esc(x.note)+'</p>':''}
+   <div class="event-actions"><div class="event-links">${x.place?'<a href="'+attr(maps(x.place))+'" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>':''}${urlSafe(x.url)?'<a href="'+attr(urlSafe(x.url))+'" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>':''}</div></div>
+  </div></article>`).join('');
+ const count=day.events.length+synchronizedItems(day.date).length;
+ const publicHTML=`<div class="day-heading public-day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span><span class="chip blue">公開行程</span></div><h3>${esc(plan.title)}</h3><p class="description">${esc(plan.summary)}</p></div></div>
+ ${publicRows?'<div class="timeline public-timeline">'+publicRows+'</div>':'<div class="public-empty">這一天未安排任何公開景點，保留彈性給後續大阪規劃。</div>'}
+ <p class="public-itinerary-foot">公開行程會隨網站版本更新；個人訂位編號、機票、飯店、票價與其他費用不會寫入此時間軸。若要加自己的補充，請點上方「個人追加活動」。</p>`;
+ $('dayPanel').innerHTML=publicHTML+(count?`<details class="private-day-archive"><summary>🔒 展開既有 Firebase／本機活動與私人票務紀錄（${count} 筆）</summary><div class="private-day-content"><p class="subtle">以下保留你先前的活動、個人備註、同步交通及費用。可能含舊版候選，與上方公開時間軸重複；不會因網頁更新而刪除或覆蓋。此區的編輯會照原本方式儲存到 Firebase。</p>${oldHTML}</div></details>`: '');
 }
 function switchDay(i){currentDay=Math.max(0,Math.min(state.days.length-1,i));renderDay();const btn=$('dayTabs').querySelector(`[data-day="${currentDay}"]`);btn?.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(btn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){btn.classList.remove('bounce');void btn.offsetWidth;btn.classList.add('bounce')}}
 function renderIdeas(){
@@ -1042,7 +1082,7 @@ function renderCityTransit(){
   const converted=sum.pending?'部分 '+money(sum.converted)+'（待匯率）':money(sum.converted);
   return `<article class="daily-transit-entry ${done?'done':''}">
    <div class="daily-transit-head">
-    <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(d.title||'當日交通')}</small></div>
+    <div class="daily-transit-name"><strong>${esc(DATES[i][1])}（週${esc(DATES[i][2])}）</strong><small>DAY ${String(i+1).padStart(2,'0')} · ${esc(publicPlanFor(d.date)?.title||d.title||'當日交通')}</small></div>
     <div class="daily-transit-amount"><b>${esc(amount)}</b><small>計入台幣 ${esc(converted)}${sum.twd?' · 台幣紀錄 '+money(sum.twd):''}</small></div>
    </div>
    <div class="transit-calc-actions">
