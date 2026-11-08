@@ -1028,26 +1028,120 @@ function renderLegacyDayPanel(){
  $('dayPanel').innerHTML=`<div class="day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span></div><h3>${esc(day.title)}</h3><p class="description">${esc(day.note||'還沒寫下今天的小心情。')}</p></div><button type="button" class="btn small" id="editDay">✎ 編輯當天</button></div>${displayed.length?`<div class="timeline">${displayed.map(x=>{const h=eventHealth(x);return `<article class="event ${x.must?'must':''} ${x.auto?'auto-item':''} ${completenessClass(h)}"><div class="event-t">${esc(x.time||'待確認')}</div><div class="event-block"><div class="flex">${x.must?'<span class="chip pink">★ 必去</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'方式待補')}</span><span class="chip ${x.auto?'blue':'soft'}">${esc(x.status||'候選')}</span></div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="subtle">${uiIcon("pin","blue",true)} ${esc(x.place)}</div>`:''}${!x.auto?`<p class="event-price">行程費用：${esc(currencySummary(x))}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="event-actions"><div class="event-links">${!x.auto&&x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div><div class="event-controls">${x.auto?`<a class="btn small sky" href="${x.autoLink}">去來源資料修改 ↗</a>`:`<button class="btn small" type="button" data-editevent="${attr(x.id)}">編輯</button><button class="btn small danger" type="button" data-delevent="${attr(x.id)}" aria-label="刪除 ${attr(x.title)}">✕</button>`}</div></div></div></article>`}).join('')}</div>`:`<div class="empty"><div style="font-size:40px">🍡</div><strong>這一天還有空白可以期待。</strong><p>打開靈感抽屜，或新增自己的咖啡店與景點。</p><button type="button" class="btn small sun" id="emptyAdd">＋ 排入第一站</button></div>`}`
 
 }
-// 公開行程是 GitHub Pages 的唯一正式規劃來源。Firebase 既有 events、私人票券、費用完全不改寫。
-const publicPlanFor=date=>(window.KyotoPublicItinerary20261108||[]).find(d=>d.date===date);
+// Combined chronological public activities + private travel records + meal choices.
+function publicPlanFor(date){return (window.KyotoPublicItinerary20261108||[]).find(d=>d.date===date)}
+
+function mealPlanFor(date){return (window.KyotoMealRecommendations20261109||[]).find(d=>d.date===date)}
+
+function mealChoiceKey(date,slot){return date+'|'+slot}
+
+function mealChoicesFor(date,slot){const v=state.mealChoices?.[mealChoiceKey(date,slot)];return v&&typeof v==='object'?v:{selected:'',added:[]}}
+
+function privateDataVisible(){return !firebaseConfigured||!!window.KyotoCloud?.uid}
+
+function mealOptionList(date,slot){
+ const choice=mealChoicesFor(date,slot.id);
+ const main=(slot.options||[]).map((o,i)=>({...o,extra:false,index:i}));
+ const original=new Set(main.map(o=>normalizePlace(o.name)));
+ const added=(Array.isArray(choice.added)?choice.added:[]).map(id=>state.restaurants.find(r=>r.id===id)).filter(Boolean).filter(r=>!original.has(normalizePlace(r.name)));
+ const seen=new Set();
+ const extra=added.filter(r=>{const k=normalizePlace(r.name);if(seen.has(k))return false;seen.add(k);return true}).map(r=>({name:r.name,dish:r.dish||r.category||'',extra:true,id:r.id}));
+ return main.concat(extra);
+}
+
+function renderMealCard(date,slot){
+ const key=mealChoiceKey(date,slot.id),choice=mealChoicesFor(date,slot.id);
+ const editable=privateDataVisible();
+ const options=mealOptionList(date,slot);
+ const list=options.map((o,i)=>{
+  const r=state.restaurants.find(r=>normalizePlace(r.name)===normalizePlace(o.name));
+  const gmaps=urlSafe(r?.googleUrl)||maps(o.name+' 京都 日本');
+  const tabelog=urlSafe(r?.tabelogUrl);
+  const checked=choice.selected===o.name;
+  const links=`<span class="meal-choice-links"><a href="${attr(gmaps)}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>${tabelog?`<a href="${attr(tabelog)}" target="_blank" rel="noopener noreferrer">Tabelog ↗</a>`:''}</span>`;
+  return `<div class="meal-option ${checked?'chosen':''}"><label class="meal-choice"><input type="radio" data-meal-select="${attr(key)}" name="${attr('meal_'+key)}" value="${attr(o.name)}" ${checked?'checked':''} ${editable?'':'disabled'}><span class="meal-choice-txt"><strong>${esc(o.name)} ${i===0&&!o.extra?'<span class="meal-mini">首推</span>':''}${o.extra?'<span class="meal-mini">額外加入</span>':''}</strong><small>${esc(o.dish||'請參考餐廳收藏')}</small>${links}</span></label>${o.extra&&editable?`<button type="button" class="btn small ghost" data-meal-remove="${attr(key)}" data-meal-restid="${attr(o.id)}" aria-label="移除${attr(o.name)}">移除</button>`:''}</div>`;
+ }).join('');
+ return `<article class="event unified-event trip-meal"><div class="event-t">${esc(slot.time||'時間彈性')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">🍽 同時段餐廳選擇</span><span class="chip ${choice.selected?'green':'yellow'}">${choice.selected?'已選首選':'尚未決定'}</span></div><h4 class="event-title">${esc(slot.title)}</h4><div class="meal-options">${list}</div>${slot.hint?`<p class="trip-subnote">${esc(slot.hint)}</p>`:''}<div class="meal-add"><button type="button" class="btn small sky" data-meal-add="${attr(key)}" ${editable?'':'disabled'}>＋ 從完整餐廳清單加入</button><a class="subtle" href="#restaurants">查看餐廳收藏 ↗</a>${choice.selected?`<span class="meal-selected-status">✓ ${esc(choice.selected)}</span>`:''}</div></div></article>`;
+}
+
+function bookingMatchesEvent(booking,event){
+ const b=normalizePlace(booking.title),e=normalizePlace(event.title);
+ return !!(b&&e&&(b===e||b.includes(e)||e.includes(b)||(b.includes('第九')&&e.includes('第九'))));
+}
+
+function renderBookingDetail(items){
+ if(!items.length)return '';
+ return `<details class="trip-booking"><summary>🔒 已保留的私人票務／訂位資料（${items.length}）</summary>${items.map(b=>`<p><strong>${esc(b.title)}</strong>　${esc(b.status||'')}</p>${b.note?`<p>${esc(b.note)}</p>`:''}${anyCurrencyFilled(b)?`<p>費用：${esc(currencySummary(b))}</p>`:''}`).join('')}</details>`;
+}
+
+function renderPublicTripRow(x,day){
+ const booking=privateDataVisible()?(state.privateBookings||[]).filter(b=>b.date===day.date&&bookingMatchesEvent(b,x)):[];
+ return `<article class="event unified-event ${x.must?'must':''}"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">📍 ${esc(x.tier||'散策・活動')}</span>${x.status&&x.status!=='規劃中'?`<span class="chip blue">${esc(x.status)}</span>`:''}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="trip-loc">${uiIcon('pin','blue',true)} ${esc(x.place)}</div>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="trip-actions"><span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span>${x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div>${renderBookingDetail(booking)}</div></article>`;
+}
+
+function renderLogisticsTripRow(x){
+ const type=x.sourceKind,i=x.sourceIndex,src=type==='flight'?state.flights[i]:type==='stay'?state.stays[i]:state.intercity[i];
+ if(!src)return '';
+ const heading=type==='flight'?'✈ 航班':type==='stay'?'🏨 住宿':'🚆 城際交通';
+ const sub=type==='flight'?[src.airline,src.number,src.from+' → '+src.to,src.depart&&src.arrive?(src.depart+' → '+src.arrive):'',src.from?localTimeZone(src.from):''].filter(Boolean).join(' · '):
+  type==='stay'?[src.address,src.station?'最近車站 '+src.station:''].filter(Boolean).join(' · '):
+  [src.mode,src.service,src.fromStation+' → '+src.toStation,src.arrive?'抵達 '+src.arrive:''].filter(Boolean).join(' · ');
+ const url=urlSafe(src.url),location=type==='flight'?'':(type==='stay'?src.address:src.toStation||src.to||src.from);
+ const privateExtras=[src.booking?'訂票／訂房：'+src.booking:'',src.luggage?'行李：'+src.luggage:'',src.note||''].filter(Boolean);
+ return `<article class="event unified-event trip-logistics"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">${heading} · 私人資料同步</span>${src.status?`<span class="chip blue">${esc(src.status)}</span>`:''}</div><h4 class="event-title">${esc(x.title)}</h4>${sub?`<p class="trip-subnote">${esc(sub)}</p>`:''}<div class="trip-actions">${location?`<a href="${attr(maps(location))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${url?`<a href="${attr(url)}" target="_blank" rel="noopener noreferrer">訂票／路線 ↗</a>`:''}<button type="button" class="btn small sky" data-editsource="${attr(type)}" data-sourceindex="${i}">✎ 修改${type==='flight'?'航班':type==='stay'?'住宿':'城際交通'}</button></div>${privateExtras.length?`<details class="trip-booking"><summary>🔒 私人資訊／補充備註</summary><p>${esc(privateExtras.join('\n'))}</p></details>`:''}</div></article>`;
+}
+
+function renderCustomTripRow(x){
+ return `<article class="event unified-event trip-custom"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-type">✍️ 自訂活動（私人）</div><h4 class="event-title">${esc(x.title||'未命名活動')}</h4>${x.place?`<p class="trip-loc">${esc(x.place)}</p>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="trip-actions"><button type="button" class="btn small sky" data-editevent="${attr(x.id)}">✎ 編輯</button><button type="button" class="btn small ghost" data-delevent="${attr(x.id)}">刪除</button></div></div></article>`;
+}
+
+function renderUnmatchedBookingRow(x){
+ return `<article class="event unified-event trip-private-note"><div class="event-t">${esc(x.time||'時間彈性')}</div><div class="event-block"><div class="trip-type">🔒 私人票務／訂位備忘</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="trip-loc">${esc(x.place)}</div>`:''}${renderBookingDetail([x])}</div></article>`;
+}
+
 function renderDay(){
- renderLegacyDayPanel();
- const oldHTML=$('dayPanel').innerHTML,day=state.days[currentDay],plan=publicPlanFor(day.date);
- if(!plan)return;
- const publicRows=plan.events.map(x=>`<article class="event public-event ${x.must?'must':''}">
-  <div class="event-t">${esc(x.time||'時間待確認')}</div>
-  <div class="event-block">
-   <div class="flex">${x.must?'<span class="chip pink">★ 核心</span>':''}<span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span><span class="chip soft">${esc(x.tier||'主要行程')}</span>${x.status&&x.status!=='規劃中'?'<span class="chip blue">'+esc(x.status)+'</span>':''}</div>
-   <h4 class="event-title">${esc(x.title)}</h4>
-   ${x.place?'<div class="subtle">'+uiIcon('pin','blue',true)+' '+esc(x.place)+'</div>':''}
-   ${x.note?'<p class="event-desc public-event-note">'+esc(x.note)+'</p>':''}
-   <div class="event-actions"><div class="event-links">${x.place?'<a href="'+attr(maps(x.place))+'" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>':''}${urlSafe(x.url)?'<a href="'+attr(urlSafe(x.url))+'" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>':''}</div></div>
-  </div></article>`).join('');
- const count=day.events.length+synchronizedItems(day.date).length;
- const publicHTML=`<div class="day-heading public-day-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span><span class="chip blue">公開行程</span></div><h3>${esc(plan.title)}</h3><p class="description">${esc(plan.summary)}</p></div></div>
- ${publicRows?'<div class="timeline public-timeline">'+publicRows+'</div>':'<div class="public-empty">這一天未安排任何公開景點，保留彈性給後續大阪規劃。</div>'}
- <p class="public-itinerary-foot">公開行程會隨網站版本更新；個人訂位編號、機票、飯店、票價與其他費用不會寫入此時間軸。若要加自己的補充，請點上方「個人追加活動」。</p>`;
- $('dayPanel').innerHTML=publicHTML+(count?`<details class="private-day-archive"><summary>🔒 展開既有 Firebase／本機活動與私人票務紀錄（${count} 筆）</summary><div class="private-day-content"><p class="subtle">以下保留你先前的活動、個人備註、同步交通及費用。可能含舊版候選，與上方公開時間軸重複；不會因網頁更新而刪除或覆蓋。此區的編輯會照原本方式儲存到 Firebase。</p>${oldHTML}</div></details>`: '');
+ renderTabs();
+ const day=state.days[currentDay],plan=publicPlanFor(day.date)||{title:day.title,summary:day.note||'',events:[]},meals=mealPlanFor(day.date);
+ const rows=[];
+ (plan.events||[]).forEach((e,i)=>rows.push({at:timeSort(e.time),order:10+i,html:renderPublicTripRow(e,day)}));
+ (meals?.slots||[]).forEach((m,i)=>rows.push({at:timeSort(m.time),order:30+i,html:renderMealCard(day.date,m)}));
+ if(privateDataVisible()){
+  synchronizedItems(day.date).forEach((e,i)=>{
+   if(e.sourceKind==='flight'&&!hasText(state.flights[e.sourceIndex]?.number)&&!hasClock(e.time))return;
+   rows.push({at:timeSort(e.time),order:1+i/100,html:renderLogisticsTripRow(e)});
+  });
+  day.events.forEach((e,i)=>rows.push({at:timeSort(e.time),order:60+i,html:renderCustomTripRow(e)}));
+  (state.privateBookings||[]).filter(x=>x.date===day.date&&!(plan.events||[]).some(e=>bookingMatchesEvent(x,e))).forEach((e,i)=>rows.push({at:timeSort(e.time),order:70+i,html:renderUnmatchedBookingRow(e)}));
+ }
+ rows.sort((a,b)=>a.at-b.at||a.order-b.order);
+ const hotel=privateDataVisible()?state.stays.find(s=>{const d=getStayDates(s);return !!(s.name&&d.start&&d.end&&day.date>=d.start&&day.date<d.end)}):null;
+ const stayBanner=hotel?`<div class="trip-day-stay"><span>🏨 <strong>今晚住宿：${esc(hotel.name)}</strong><small>${esc(hotel.station||hotel.address||'住宿地址可在交通住宿資料中編輯')}</small></span><a href="${attr(maps(hotel.address||hotel.name+' 京都'))}" target="_blank" rel="noopener noreferrer">查看位置 ↗</a></div>`:'';
+ const signInHint=firebaseConfigured&&!privateDataVisible()?'<div class="trip-readonly">🔒 登入 Google 後，航班、城際車次、住宿及個人的餐廳選擇會直接出現在這條時間軸；未登入仍可查看公開活動與餐廳候選。</div>':'';
+ $('dayPanel').innerHTML=`<div class="day-heading trip-merged-heading"><div><div class="flex"><span class="chip yellow">DAY ${String(currentDay+1).padStart(2,'0')}</span><span class="subtle">${esc(day.date)}（週${esc(DATES[currentDay][2])}）</span><span class="chip green">單一整合行程</span></div><h3>${esc(plan.title)}</h3><p class="description">${esc(plan.summary||'今天可以自由安排散步與用餐。')}</p></div></div>${signInHint}${stayBanner}${rows.length?`<div class="timeline unified-timeline">${rows.map(x=>x.html).join('')}</div>`:'<div class="public-empty">今天暫時不排景點與餐廳；交通或飯店資訊一旦填寫便會顯示在此。</div>'}<p class="public-itinerary-foot">時間、營業日與跨年活動需以2026–2027官方公告為準；選餐與私人訂位資料僅保存在自己的帳號。</p>`;
+}
+
+function clearOldFirebaseItinerary(){
+ if(state.unifiedDayMigration20261109)return false;
+ if(!Array.isArray(state.privateBookings))state.privateBookings=[];
+ let kept=new Set(state.privateBookings.map(x=>String(x.id)));
+ for(const day of state.days){
+  for(const x of day.events||[]){
+   const protectedNote=/(order[\s-]*number|booking|reservation|seat|座位|票號|訂單|購票|已付款|已確認|予約番号|預約編號|確認碼)/i.test(x.note||'');
+   const confirmed=/(已確認|已購票|已預訂|已付款)/.test(x.status||'');
+   if(!(protectedNote||confirmed||anyCurrencyFilled(x)))continue;
+   const id='old-booking-'+(x.id||day.date+'-'+x.title);
+   if(kept.has(id))continue;
+   kept.add(id);
+   state.privateBookings.push({id,date:day.date,time:x.time||'',title:x.title||'私人活動',place:x.place||'',status:x.status||'',note:x.note||'',jpy:currencyField(x,'JPY'),twd:currencyField(x,'TWD'),url:x.url||''});
+  }
+  day.events=[];
+  day.title=publicPlanFor(day.date)?.title||day.title;
+  day.note='';
+ }
+ state.unifiedDayMigration20261109=true;
+ if(!state.mealChoices||typeof state.mealChoices!=='object')state.mealChoices={};
+ rerender();
+ return true;
 }
 function switchDay(i){currentDay=Math.max(0,Math.min(state.days.length-1,i));renderDay();const btn=$('dayTabs').querySelector(`[data-day="${currentDay}"]`);btn?.scrollIntoView({block:'nearest',inline:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});if(btn&&!matchMedia('(prefers-reduced-motion: reduce)').matches){btn.classList.remove('bounce');void btn.offsetWidth;btn.classList.add('bounce')}}
 function renderIdeas(){
