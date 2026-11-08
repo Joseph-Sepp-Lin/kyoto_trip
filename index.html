@@ -893,7 +893,8 @@ const ledgerRecords=()=>{
   for(const line of lines)out.push({category:'市內交通',item:line,factor:line.op==='-'?-1:1});
   for(const item of historical)out.push({category:'市內交通',item});
  });
- (state.purchases||[]).forEach(x=>out.push({category:x.kind||'其他',item:x}));
+ (state.privateBookings||[]).forEach(x=>out.push({category:'活動／門票',item:x}));
+  (state.purchases||[]).forEach(x=>out.push({category:x.kind||'其他',item:x}));
  if(amountFilled(state.otherJPY)||amountFilled(state.otherTWD))out.push({category:'其他',item:{jpy:state.otherJPY??'',twd:state.otherTWD??''}});
  return out;
 };
@@ -1413,10 +1414,10 @@ function renderMissing(){let arr=[];
  if(!state.flights[1].date||!state.flights[1].number)arr.push(['🛬','回程航班日期','已確認 1/3 大阪起飛、1/4 台北抵達，請補航班號碼','#flights']);
  if(!state.stays[0].name||!state.stays[0].address)arr.push(['🏡','京都住宿','補上飯店名稱、地址、車站及入住資訊','#stays']);
  if(!state.stays[1].name)arr.push(['🏨','大阪住宿安排','確認是否住 1/2–1/3，若不住可直接忽略','#stays']);
- if(!state.days.some(d=>d.events.some(x=>x.title.includes('交響'))))arr.push(['🎻','年末第九交響曲','評估 12/25 晚間班機能否銜接音樂會','#ideas']);
+ if(!state.days.some(d=>d.events.some(x=>x.title.includes('交響')))&&!(window.KyotoPublicItinerary20261108||[]).some(d=>d.events.some(x=>x.title.includes('交響'))))arr.push(['🎻','年末第九交響曲','評估 12/25 晚間班機能否銜接音樂會','#ideas']);
  if(!state.todos.some(t=>t.text.includes('預約')&&t.done))arr.push(['🔔','跨年活動預約','檢查知恩院除夜鐘的開放預約資訊','#todos']);
  if(!anyCurrencyFilled(fareRecord())||state.stays.some(s=>!anyCurrencyFilled(s)))arr.push(['💰','機票與住宿費用待補','在航班或飯店卡片填入日圓或台幣其中一種金額，費用會自動納入旅費紀錄','#travel-logistics']);
- let sparse=state.days.filter(d=>d.events.length===0&&synchronizedItems(d.date).length===0).length;
+ let sparse=state.days.filter(d=>d.events.length===0&&synchronizedItems(d.date).length===0&&!(publicPlanFor(d.date)?.events.length)&&!(mealPlanFor(d.date)?.slots.length)).length;
  if(sparse)arr.push(['📅','未排定的日期',`還有 ${sparse} 天沒有任何活動，之後可以慢慢添加`,'#itinerary']);
  $('missingCount').textContent=`待補 ${arr.length} 項`;
  $('missingList').innerHTML=arr.length?arr.map(x=>`<a class="missing-item" href="${x[3]}" style="text-decoration:none"><span class="missing-i">${x[0]}</span><div><strong>${esc(x[1])} ↗</strong><p>${esc(x[2])}</p></div></a>`).join(''):`<div class="empty">主要待補資料已完成！其他細節依喜好慢慢增加就好 🌷</div>`;
@@ -1905,6 +1906,7 @@ else{window.KyotoPlanner.setCloudStatus('尚未設定 Firebase','首次使用請
 
 updateCountdown();rerender();refreshFx();revealSectionForHash(location.hash,!!location.hash);if(!canStore){$('saveStatus').style.display='inline';$('saveStatus').textContent='⚠ 無法自動儲存，請下載 HTML 版本';toast('此瀏覽器未提供儲存功能，請用 HTML 備份保存變更')}
 </script>
+<script src="unified-controls.js"></script>
 <script type="module">
 // 官方 Firebase v13.1.0 CDN；仍然只有一份 index.html，無需建置工具。
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
@@ -1927,14 +1929,14 @@ if(config&&UI){
  const localPut=(key,data)=>{try{localStorage.setItem(key,JSON.stringify(data));return true}catch{return false}};
  const show=(s,d='',tone='')=>UI.setCloudStatus(s,d,tone);
  function cache(){if(!uid)return;const ok=localPut(uidCache(uid),{payload:UI.read(),baseRevision:localBaseRevision,dirty,storedAt:Date.now()});if(!ok)show('無法寫入瀏覽器暫存','請立即匯出私人 JSON 備份','warn')}
- function adopt(docData){if(!UI.valid(docData.payload))throw Error('雲端資料格式不符，請勿覆蓋');UI.show(docData.payload);remoteRevision=docData.revision||null;localBaseRevision=remoteRevision;dirty=false;lastPayloadHash=JSON.stringify(docData.payload);cache();UI.noteStatus('☁ 雲端已同步');show('☁ 雲端已同步','變更會自動儲存到私人行程','online');retry.hidden=true;}
+ function adopt(docData){if(!UI.valid(docData.payload))throw Error('雲端資料格式不符，請勿覆蓋');UI.show(docData.payload);remoteRevision=docData.revision||null;localBaseRevision=remoteRevision;dirty=false;lastPayloadHash=JSON.stringify(docData.payload);cache();UI.noteStatus('☁ 雲端已同步');show('☁ 雲端已同步','變更會自動儲存到私人行程','online');retry.hidden=true;if(UI.clearOldFirebaseItinerary()){UI.notify('已整理舊版私人行程；票券與花費保留');window.KyotoCloud.localChange(UI.read());}}
  function preserveAndAdopt(remote){
   UI.exportJSON();adopt(remote);UI.notify('已先下載本機備份，現在採用雲端版本');
  }
  function conflict(remote){
   if(conflictPromptOpen)return;conflictPromptOpen=true;
   if(confirm('⚠️ 另一裝置有較新的行程，且此裝置有未同步編輯。\n\n「確定」：以上傳本機版本為主。\n「取消」：先自動下載本機 JSON 備份，再使用雲端版本。')){
-   remoteRevision=remote.revision||null;localBaseRevision=remoteRevision;dirty=true;cache();queueFlush(0);
+   remoteRevision=remote.revision||null;localBaseRevision=remoteRevision;UI.clearOldFirebaseItinerary();dirty=true;cache();queueFlush(0);
   }else preserveAndAdopt(remote);
   conflictPromptOpen=false;
  }
@@ -1982,13 +1984,13 @@ if(config&&UI){
    loaded=true;
    if(remote){
     if(dirty){
-     if(rev===localBaseRevision){remoteRevision=rev;queueFlush(0)}
+     if(rev===localBaseRevision){remoteRevision=rev;if(UI.clearOldFirebaseItinerary()){dirty=true;revisionCounter++;cache()}queueFlush(0)}
      else conflict(remote);
     }else{
      const localOld=UI.oldDraft();
      if(localOld&&JSON.stringify(localOld)!==JSON.stringify(UI.seed())&&!localRead(uidCache(uid))){
       if(confirm('發現舊版京都手帖的本機行程。\n確定：將舊版內容上傳並取代此 Google 帳號目前的雲端內容；取消：保留雲端版本。')){
-       UI.show(localOld);dirty=true;remoteRevision=rev;localBaseRevision=rev;cache();queueFlush(0);
+       UI.show(localOld);UI.clearOldFirebaseItinerary();dirty=true;remoteRevision=rev;localBaseRevision=rev;cache();queueFlush(0);
       }else adopt(remote);
      }else adopt(remote);
     }
@@ -1998,7 +2000,7 @@ if(config&&UI){
     if(!dirty&&old&&JSON.stringify(old)!==JSON.stringify(UI.seed())){
      if(confirm('這個 Google 帳號還沒有雲端行程。偵測到舊版手帖本機資料，要將它搬到 Firebase 嗎？'))UI.show(old);
     }
-    dirty=true;cache();queueFlush(0);
+    UI.clearOldFirebaseItinerary();dirty=true;cache();queueFlush(0);
    }
    return;
   }
