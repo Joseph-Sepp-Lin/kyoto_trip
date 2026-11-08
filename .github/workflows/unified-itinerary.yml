@@ -1,0 +1,26 @@
+name: Kyoto unified itinerary smoke checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'public-itinerary.js'
+      - 'meal-recommendations.js'
+      - 'unified-controls.js'
+      - 'tests/unified-*.test.cjs'
+      - '.github/workflows/unified-itinerary.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JS syntax, meal schedule and migration integration
+        run: node tests/unified-itinerary.test.cjs
+      - name: Install Playwright for browser smoke test
+        run: npm install --no-save playwright@1.56.1
+      - name: Check selectable meals and combined private/public timeline
+        run: node tests/unified-browser.test.cjs
