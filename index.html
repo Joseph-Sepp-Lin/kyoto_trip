@@ -1072,12 +1072,25 @@ function bookingMatchesEvent(booking,event){
 
 function renderBookingDetail(items){
  if(!items.length)return '';
- return `<details class="trip-booking"><summary>🔒 已保留的私人票務／訂位資料（${items.length}）</summary>${items.map(b=>`<p><strong>${esc(b.title)}</strong>　${esc(b.status||'')}</p>${b.note?`<p>${esc(b.note)}</p>`:''}${anyCurrencyFilled(b)?`<p>費用：${esc(currencySummary(b))}</p>`:''}`).join('')}</details>`;
+ return `<details class="trip-booking"><summary>🔒 私人票券、訂位與費用紀錄（${items.length}）</summary>${items.map(b=>`<p><strong>${esc(b.title)}</strong>　${esc(b.status||'')}</p>${b.booking?`<p>訂單編號：${esc(b.booking)}</p>`:''}${b.note?`<p>${esc(b.note)}</p>`:''}${anyCurrencyFilled(b)?`<p>費用：${esc(currencySummary(b))}</p>`:''}${urlSafe(b.url)?`<p><a href="${attr(urlSafe(b.url))}" target="_blank" rel="noopener noreferrer">票券／訂位連結 ↗</a></p>`:''}`).join('')}</details>`;
 }
 
-function renderPublicTripRow(x,day){
- const booking=privateDataVisible()?(state.privateBookings||[]).filter(b=>b.date===day.date&&bookingMatchesEvent(b,x)):[];
- return `<article class="event unified-event ${x.must?'must':''}"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">📍 ${esc(x.tier||'散策・活動')}</span>${x.status&&x.status!=='規劃中'?`<span class="chip blue">${esc(x.status)}</span>`:''}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="trip-loc">${uiIcon('pin','blue',true)} ${esc(x.place)}</div>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="trip-actions"><span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span>${x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}</div>${renderBookingDetail(booking)}</div></article>`;
+/* A stable, private cost/booking record for each public itinerary activity. */
+function publicTicketKey(date,index){return date+'|'+index}
+function publicTicketFor(date,index){
+ const event=publicPlanFor(date)?.events?.[index];if(!event)return null;
+ const key=publicTicketKey(date,index);
+ return (state.privateBookings||[]).find(b=>b.eventKey===key)
+  ||(state.privateBookings||[]).find(b=>b.date===date&&!b.eventKey&&bookingMatchesEvent(b,event))
+  ||null;
+}
+function renderPublicTripRow(x,day,eventIndex){
+ const canEdit=privateDataVisible(),ticket=canEdit?publicTicketFor(day.date,eventIndex):null;
+ const booking=canEdit?(state.privateBookings||[]).filter(b=>b.date===day.date&&(b.eventKey===publicTicketKey(day.date,eventIndex)||(!b.eventKey&&bookingMatchesEvent(b,x)))):[];
+ const status=ticket?.status||x.status;
+ const ticketLabel=ticket&&anyCurrencyFilled(ticket)?'🎟 票價 '+currencySummary(ticket)+'・編輯':ticket?'🎟 編輯票務／費用':'🎟 記錄票價／訂位';
+ const ticketControl=`<button type="button" class="btn small sky" data-editticket="${attr(day.date)}" data-ticket-index="${eventIndex}" ${canEdit?'':'disabled title="登入 Google 後記錄私人票價"'}>${esc(ticketLabel)}</button>`;
+ return `<article class="event unified-event ${x.must?'must':''}"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">📍 ${esc(x.tier||'散策・活動')}</span>${status&&status!=='規劃中'?`<span class="chip blue">${esc(status)}</span>`:''}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="trip-loc">${uiIcon('pin','blue',true)} ${esc(x.place)}</div>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="trip-actions"><span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span>${x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}${ticketControl}</div>${renderBookingDetail(booking)}</div></article>`;
 }
 
 function renderLogisticsTripRow(x){
@@ -1104,7 +1117,7 @@ function renderDay(){
  renderTabs();
  const day=state.days[currentDay],plan=publicPlanFor(day.date)||{title:day.title,summary:day.note||'',events:[]},meals=mealPlanFor(day.date);
  const rows=[];
- (plan.events||[]).forEach((e,i)=>rows.push({at:timeSort(e.time),order:10+i,html:renderPublicTripRow(e,day)}));
+ (plan.events||[]).forEach((e,i)=>rows.push({at:timeSort(e.time),order:10+i,html:renderPublicTripRow(e,day,i)}));
  (meals?.slots||[]).forEach((m,i)=>rows.push({at:timeSort(m.time),order:30+i,html:renderMealCard(day.date,m)}));
  if(privateDataVisible()){
   synchronizedItems(day.date).forEach((e,i)=>{
