@@ -64,17 +64,66 @@ async function main(){
   assert.equal(cleared.bookings[0].jpy,'3000');
   assert.equal(cleared.flight,'TEST50');
   assert.equal(cleared.stay,'測試住宿');
-  assert.match(await page.locator('#dayPanel').innerText(),/已保留的私人票務/);
+  assert.match(await page.locator('#dayPanel').innerText(),/私人票券、訂位與費用紀錄/);
   assert.ok(!(await page.locator('#dayPanel').innerText()).includes('過去的行程候選'));
   const second=await page.evaluate(()=>window.KyotoPlanner.clearOldFirebaseItinerary());
   assert.equal(second,false,'Migration is one-time only');
+  // Migrated ticket must be editable in-place without being charged twice.
+  const concert=page.locator('#dayPanel .unified-event').filter({hasText:'京都市交響樂團・貝多芬第九'}).first();
+  await concert.locator('[data-editticket]').click();
+  assert.equal(await page.locator('#editorForm input[name="jpy"]').inputValue(),'3000');
+  await page.locator('#modalClose').click();
+  // teamLab has a dedicated private purchase editor attached to its public event.
+  await page.locator('#dayTabs [data-day="1"]').click();
+  const teamLab=page.locator('#dayPanel .unified-event').filter({hasText:'teamLab Biovortex Kyoto'}).first();
+  assert.equal(await teamLab.locator('[data-editticket]').count(),1);
+  await teamLab.locator('[data-editticket]').click();
+  assert.match(await page.locator('#modalTitle').innerText(),/門票・活動費用/);
+  await page.locator('#editorForm select[name="status"]').selectOption('已購票');
+  await page.locator('#editorForm input[name="jpy"]').fill('4200');
+  await page.locator('#editorForm input[name="twd"]').fill('1080');
+  await page.locator('#editorForm input[name="booking"]').fill('PRIVATE-TEST-ORDER');
+  await page.locator('#editorForm textarea[name="note"]').fill('票券備註 - private');
+  await page.locator('#editorForm button[type="submit"]').click();
+  let ticketDetails=await page.evaluate(()=>{
+   const d=window.KyotoPlanner.read();
+   const rows=ledgerRecords().filter(x=>x.category==='活動／門票'&&x.item.title?.includes('teamLab'));
+   const e=d.privateBookings.filter(x=>x.title.includes('teamLab'));
+   return {entries:e,ledgerCount:rows.length,cost:rows.length?normalizedCost(rows[0].item):null};
+  });
+  assert.equal(ticketDetails.entries.length,1,'Only one ticket per public event');
+  assert.equal(ticketDetails.entries[0].booking,'PRIVATE-TEST-ORDER');
+  assert.equal(ticketDetails.entries[0].status,'已購票');
+  assert.equal(ticketDetails.entries[0].jpy,'4200');
+  assert.equal(ticketDetails.entries[0].twd,'1080');
+  assert.equal(ticketDetails.ledgerCount,1);
+  assert.equal(ticketDetails.cost.converted,1080,'Actual TWD overrides JPY in ledger');
+  assert.match(await teamLab.innerText(),/票價 NT\\$1,080/);
+  assert.match(await teamLab.innerText(),/已購票/);
+  await teamLab.locator('[data-editticket]').click();
+  assert.equal(await page.locator('#editorForm input[name="twd"]').inputValue(),'1080');
+  await page.locator('#editorForm input[name="twd"]').fill('990');
+  await page.locator('#editorForm button[type="submit"]').click();
+  ticketDetails=await page.evaluate(()=>{
+   const d=window.KyotoPlanner.read();
+   const rows=ledgerRecords().filter(x=>x.category==='活動／門票'&&x.item.title?.includes('teamLab'));
+   return {count:d.privateBookings.filter(x=>x.title.includes('teamLab')).length,ledgerCount:rows.length,converted:normalizedCost(rows[0].item).converted};
+  });
+  assert.equal(ticketDetails.count,1,'Editing a ticket updates the same record');
+  assert.equal(ticketDetails.ledgerCount,1);
+  assert.equal(ticketDetails.converted,990);
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('#itineraryDrawer > summary').click();
+  await page.locator('#dayTabs [data-day="1"]').click();
+  const reloaded=await page.evaluate(()=>window.KyotoPlanner.read().privateBookings.find(x=>x.title.includes('teamLab')));
+  assert.equal(reloaded.twd,'990','Ticket payment persisted after reload');
   for(const width of [320,375,768]){
    await page.setViewportSize({width,height:820});
    const size=await page.evaluate(()=>document.documentElement.scrollWidth);
    assert.ok(size<=width+2,'No horizontal overflow at '+width+'px: '+size);
   }
   assert.deepEqual(errors,[]);
-  console.log('PASS unified itinerary browser: selects meals, adds 94-list restaurant, aligns Ohara lunch, merges flight/rail/stay, safely migrates Firebase day events');
+  console.log('PASS unified itinerary browser: meal options, travel integration, safe Firebase migration, private teamLab ticket price and TWD-first accounting');
  }finally{await browser.close();await new Promise(ok=>server.close(ok))}
 }
 main().catch(e=>{console.error(e.stack||e);process.exitCode=1});
