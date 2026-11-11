@@ -98,7 +98,7 @@ async function main(){
   assert.equal(ticketDetails.entries[0].twd,'1080');
   assert.equal(ticketDetails.ledgerCount,1);
   assert.equal(ticketDetails.cost.converted,1080,'Actual TWD overrides JPY in ledger');
-  assert.match(await teamLab.innerText(),/票價 NT\\$1,080/);
+  assert.match(await teamLab.innerText(),/票價 NT\$1,080/);
   assert.match(await teamLab.innerText(),/已購票/);
   await teamLab.locator('[data-editticket]').click();
   assert.equal(await page.locator('#editorForm input[name="twd"]').inputValue(),'1080');
