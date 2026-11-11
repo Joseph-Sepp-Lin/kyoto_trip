@@ -1088,7 +1088,9 @@ function renderPublicTripRow(x,day,eventIndex){
  const canEdit=privateDataVisible(),ticket=canEdit?publicTicketFor(day.date,eventIndex):null;
  const booking=canEdit?(state.privateBookings||[]).filter(b=>b.date===day.date&&(b.eventKey===publicTicketKey(day.date,eventIndex)||(!b.eventKey&&bookingMatchesEvent(b,x)))):[];
  const status=ticket?.status||x.status;
- const ticketLabel=ticket&&anyCurrencyFilled(ticket)?'🎟 票價 '+currencySummary(ticket)+'・編輯':ticket?'🎟 編輯票務／費用':'🎟 記錄票價／訂位';
+ const value=ticket?normalizedCost(ticket):null;
+ const shortPrice=value?.twd!==null&&value?.twd!==undefined?money(value.twd):value?.yen!==null&&value?.yen!==undefined?'¥'+value.yen.toLocaleString('zh-TW'):'';
+ const ticketLabel=shortPrice?'🎟 票價 '+shortPrice+'・編輯':ticket?'🎟 編輯票務／費用':'🎟 記錄票價／訂位';
  const ticketControl=`<button type="button" class="btn small sky" data-editticket="${attr(day.date)}" data-ticket-index="${eventIndex}" ${canEdit?'':'disabled title="登入 Google 後記錄私人票價"'}>${esc(ticketLabel)}</button>`;
  return `<article class="event unified-event ${x.must?'must':''}"><div class="event-t">${esc(x.time||'時間待確認')}</div><div class="event-block"><div class="trip-headline"><span class="trip-type">📍 ${esc(x.tier||'散策・活動')}</span>${status&&status!=='規劃中'?`<span class="chip blue">${esc(status)}</span>`:''}</div><h4 class="event-title">${esc(x.title)}</h4>${x.place?`<div class="trip-loc">${uiIcon('pin','blue',true)} ${esc(x.place)}</div>`:''}${x.note?`<p class="event-desc">${esc(x.note)}</p>`:''}<div class="trip-actions"><span class="chip ${transportColor(x.transport)}">${esc(x.transport||'待確認')}</span>${x.place?`<a href="${attr(maps(x.place))}" target="_blank" rel="noopener noreferrer">地圖 ↗</a>`:''}${urlSafe(x.url)?`<a href="${attr(urlSafe(x.url))}" target="_blank" rel="noopener noreferrer">官方資訊 ↗</a>`:''}${ticketControl}</div>${renderBookingDetail(booking)}</div></article>`;
 }
